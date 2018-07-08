@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Kexi.UI.View.RenamePopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:popup="clr-namespace:Kexi.ViewModel.Popup;assembly=Kexi"
+             xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance viewModel:RenamePopupViewModel}">
+
+    <Popup StaysOpen="False" PopupAnimation="Fade" Closed="RenamePopupOnClosed" Opened="RenamePopup_Opened"
+           IsOpen="{Binding IsOpen, Mode=TwoWay}" Placement="Relative" VerticalOffset="2" PlacementTarget="{Binding PlacementTarget}" HorizontalOffset="{Binding HorizontalOffset}">
+        <Border>
+            <TextBox Name="RenameTextBox" Width="100" Foreground="{DynamicResource InputTextForeground}"
+                     BorderBrush="{DynamicResource InputTextBackground}"
+                     PreviewKeyDown="RenameTextBox_OnKeyDown" VerticalContentAlignment="Center"
+                     Style="{StaticResource NoBorder}" SelectionBrush="{DynamicResource KexSelectionBackground}" />
+        </Border>
+    </Popup>
+</UserControl>

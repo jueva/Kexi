@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="Kexi.UI.View.ListerView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:view="clr-namespace:Kexi.View"
+             xmlns:view1="clr-namespace:Kexi.View;assembly=Kexi"
+                 xmlns:multiSelection1="clr-namespace:Kexi.Common.MultiSelection;assembly=Kexi"
+                 xmlns:base="clr-namespace:Kexi.UI.Base"
+                 xmlns:converters="clr-namespace:Kexi.UI.Converters"
+                 x:Name="listerView"
+                 Margin="0"
+                 d:DesignHeight="300"
+                 d:DesignWidth="300"
+                 Background="{DynamicResource InputTextBackground}"
+                 BorderThickness="0"
+                 KeyDown="ListerView_OnKeyDown"
+                 mc:Ignorable="d">
+
+        <UserControl.Resources>
+            <converters:ViewTypeConverter x:Key="viewConverter" />
+        </UserControl.Resources>
+
+    <!--ItemContainerStyle="{Binding CurrentContainerStyle}"-->
+        <view1:KexiListView x:Name="_ListView"
+                       Background="{DynamicResource ListerBackground}"
+                       Foreground="{DynamicResource ListerForeground}"
+                       ItemsSource="{Binding ItemsView}"
+                       ItemContainerStyle="{Binding CurrentContainerStyle}"
+                       FocusVisualStyle="{x:Null}"
+                       Padding="0"
+                       Margin="0"
+                       x:FieldModifier="public"
+                       AllowDrop="True"
+                       BorderThickness="0"
+                       IsSynchronizedWithCurrentItem="True"
+                       SelectionMode="Extended"
+                       multiSelection1:MultiSelect.IsEnabled="True"
+                       Loaded="ListerView_Loaded"
+                       MouseMove="ListerView_MouseMove"
+                       SelectionChanged="ListView_OnSelectionChanged"
+                       base:ListBoxSelector.Enabled="True"
+                       VirtualizingPanel.IsVirtualizing="true"
+                       VirtualizingPanel.IsVirtualizingWhenGrouping="true"
+                       VirtualizingPanel.ScrollUnit="Pixel"
+                       VirtualizingPanel.VirtualizationMode="Recycling">
+                       
+        <!--<view1:KexiListView.Resources>
+            <ItemsPanelTemplate x:Key="ListPanelTemplate">
+                <base:MyVirtualizingStackPanel/>
+            </ItemsPanelTemplate>
+        </view1:KexiListView.Resources>-->
+        
+        <!--<view1:KexiListView.Style>
+            <Style TargetType="view1:KexiListView"         BasedOn="{StaticResource {x:Type ListBox}}">
+                <Style.Triggers>
+                    <DataTrigger Binding="CurrentViewMode" Value="0">
+                        --><!--<Setter Property="ItemsPanel" Value="{StaticResource ListPanelTemplate}"/>--><!--
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </view1:KexiListView.Style>-->
+
+        <view1:KexiListView.View>
+            <MultiBinding Converter="{StaticResource viewConverter}" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="CurrentViewMode" />
+                <Binding Path="."  />
+            </MultiBinding>
+        </view1:KexiListView.View>
+        
+        <view1:KexiListView.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Background="{DynamicResource ListerStatusbarBackground}"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource KexSelectionBackground}"
+                                   Padding="10 10 0 0"
+                                   Text="{Binding Name}" />
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+        </view1:KexiListView.GroupStyle>
+
+    </view1:KexiListView>
+</UserControl>

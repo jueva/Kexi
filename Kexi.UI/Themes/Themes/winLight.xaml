@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="BackColor">#FFFFFF</Color>
+    <Color x:Key="BackDisabledColor">#DDDDDD</Color>
+    <SolidColorBrush x:Key="ItemHighlightColor" Color="Goldenrod" />
+    <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
+
+    <SolidColorBrush x:Key="KexSelectionBackground" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+    <SolidColorBrush x:Key="KexSelectionForeground" Color="#000000" />
+    <SolidColorBrush x:Key="KexSelectionBorderBrush" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+
+    <SolidColorBrush x:Key="KexMouseSelectionBackground" Color="#4AC5F9" />
+    <SolidColorBrush x:Key="KexMouseSelectionForeground" Color="#000000" />
+
+    <SolidColorBrush x:Key="ListerBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ListerBackgroundDisabled" Color="#DDDDDD" />
+    <SolidColorBrush x:Key="ListerForeground" Color="#000000" />
+    <SolidColorBrush x:Key="ListerStatusbarForeground" Color="#000000" />
+    <SolidColorBrush x:Key="ListerStatusbarBackground" Color="#DDDDDD" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC" />
+
+    <SolidColorBrush x:Key="InputTextBackground" Color="#EEEEEE" />
+    <SolidColorBrush x:Key="InputTextForeground" Color="#000000" />
+
+    <!--  Ribbon  -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="RibbonBackgoundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="StatusBarBackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ActiveTabBackgroundBrush" Color="#41B1E1" />
+
+    <SolidColorBrush x:Key="AdressbarButtonBorderInnerBrush" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="AdressbarButtonBorderOuterBrush" Color="#EEEEEE" />
+
+    <LinearGradientBrush x:Key="adressbarBack" StartPoint="1,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="{DynamicResource BackColor}" />
+        <GradientStop Offset="1" Color="{DynamicResource BackDisabledColor}" />
+    </LinearGradientBrush>
+</ResourceDictionary>

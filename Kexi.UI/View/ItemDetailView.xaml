@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="Kexi.UI.View.ItemDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:Kexi.Common;assembly=Kexi"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lister="clr-namespace:Kexi.ViewModel.Lister;assembly=Kexi"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
+             xmlns:interfaces="clr-namespace:Kexi.Interfaces;assembly=Kexi"
+             xmlns:converters="clr-namespace:Kexi.UI.Converters"
+             d:DataContext="{d:DesignInstance d:Type=interfaces:IPropertyProvider}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             Background="{DynamicResource ListerBackground}"
+             Foreground="{DynamicResource ListerForeground}"
+             FontFamily="{Binding Workspace.Options.FontFamily}"
+             FontSize="{Binding Workspace.Options.FontSize}"
+             Width="{Binding ActualWidth}"
+
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:AnyToVisibilityConverter x:Key="anyToVisibility" />
+        <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer x:Name="scrollViewer"
+                      Grid.Row="0"
+                      Focusable="False"
+                      Background="{DynamicResource ListerBackground}"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="5 0 5 5"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ScrollViewer.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <ScrollContentPresenter CanContentScroll="True" Content="{TemplateBinding ScrollViewer.Content}" />
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   HorizontalAlignment="Right"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                                   Minimum="0"
+                                   Opacity="0.9"
+                                   Orientation="Vertical"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                                   Value="{TemplateBinding ScrollViewer.VerticalOffset}" />
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   VerticalAlignment="Bottom"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                                   Minimum="0"
+                                   Orientation="Horizontal"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                                   Value="{TemplateBinding ScrollViewer.HorizontalOffset}" />
+                    </Grid>
+                </ControlTemplate>
+            </ScrollViewer.Template>
+
+
+                <Grid HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <ItemsControl Grid.Row="0"
+                                  Margin="0"
+                                  ItemsSource="{Binding Path=PropertiesTop}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="SemiBold"
+                                           Padding="5 0 0 0 "
+                                           Text="{Binding Value}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <Image Grid.Row="1"
+                           Width="{Binding ElementName=scrollViewer,
+                                           Path=ActualWidth}"
+                           MaxHeight="{Binding ThumbMaxHeight}"
+                           Margin="7 2 2 2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Source="{Binding Thumbnail}"
+                           Visibility="{Binding Thumbnail, Converter={StaticResource NullToVisibilityConverter}}">
+                        <Image.LayoutTransform>
+                            <RotateTransform Angle="{Binding RotateThumb}" CenterX="0" />
+                        </Image.LayoutTransform>
+                    </Image>
+
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=PropertiesBottom}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Padding="7 0 0 0">
+                                        <TextBlock.Inlines>
+                                            <Run FontWeight="Normal" Text="{Binding Key}" />
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                    <TextBlock Padding="20 0 0 0 " Text="{Binding Value}">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
+                                                <TextBlock Text="{Binding Text}" />
+                                            </ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Grid>
+        </ScrollViewer>
+        <!--<StackPanel Grid.Row="1"
+                    Margin="0"
+                    Background="{DynamicResource ListerBackground}"
+                    Orientation="Vertical"
+                    Visibility="{Binding Lister.Options.StatusbarVisible,
+                                         Converter={StaticResource InvertBoolToVisibilityConverter}}">
+            <TextBlock Padding="5 0 0 0" Text="{Binding Lister.StatusString}" />
+            <StackPanel Background="{DynamicResource KexSelectionBackground}"
+                        Orientation="Horizontal"
+                        Visibility="{Binding Lister.Filter,
+                                             Converter={StaticResource anyToVisibility}}">
+                <TextBlock Foreground="White" Text=" Filter: " />
+                <TextBlock Foreground="White"
+                           Padding="2,0,2,0"
+                           Text="{Binding Lister.Filter}" />
+            </StackPanel>
+        </StackPanel>-->
+    </Grid>
+</UserControl>

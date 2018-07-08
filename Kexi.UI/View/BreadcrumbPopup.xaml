@@ -1,0 +1,106 @@
+﻿<base:BaseControl x:TypeArguments="viewModel:BreadcrumbViewModel" x:Class="Kexi.UI.View.BreadcrumbPopup"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+                  xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
+                  xmlns:base="clr-namespace:Kexi.UI.Base"
+                  xmlns:converters="clr-namespace:Kexi.UI.Converters"
+                  mc:Ignorable="d" x:Name="popupControl"
+                  d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Style x:Key="gridHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <converters:PopupHeightConverter x:Key="PopupHeightConverter" />
+
+        <LinearGradientBrush x:Key="BorderBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.2" Color="LightGray" />
+        </LinearGradientBrush>
+
+        <Style x:Key="{x:Type ListView}" TargetType="ListView">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Name="Border" BorderThickness="1">
+                            <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                                <ItemsPresenter />
+                                <ScrollViewer.Template>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <ScrollContentPresenter CanContentScroll="True"
+                                                                    Content="{TemplateBinding ScrollViewer.Content}" />
+                                            <ScrollBar Orientation="Vertical" HorizontalAlignment="Right" Minimum="0"
+                                                       Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                                                       Value="{TemplateBinding ScrollViewer.VerticalOffset}"
+                                                       ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                                                       Name="PART_VerticalScrollBar"
+                                                       Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}" />
+                                            <ScrollBar Orientation="Horizontal" VerticalAlignment="Bottom" Minimum="0"
+                                                       Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                                                       Value="{TemplateBinding ScrollViewer.HorizontalOffset}"
+                                                       ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                                       Name="PART_HorizontalScrollBar"
+                                                       Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Popup IsOpen="{Binding PopupVisible}" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding PopupTarget}"
+           HorizontalOffset="-24" VerticalOffset="7" x:Name="popup"
+           PopupAnimation="{Binding ElementName=popupControl, Path=ViewModel.Options.PopupAnimation}"
+           AllowsTransparency="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Background="Transparent" Grid.Row="0" Grid.ColumnSpan="3" Margin="3 2 3 4" />
+            <Border Padding="0" Grid.Row="1" Margin="4 0 4 4" BorderBrush="{DynamicResource KexSelectionBorderBrush}"
+                    BorderThickness="2 0 2 2" CornerRadius="0 0 6 6" Background="{DynamicResource InputTextBackground}"
+                    Opacity="0.95">
+                <Border Background="{DynamicResource ListerBackground}" Padding="2" CornerRadius="0 0 6 6">
+                    <ListView x:Name="listView" ItemsSource="{Binding Path=Items}"
+                              Background="{DynamicResource ListerBackground}"
+                              PreviewMouseLeftButtonUp="UIElement_OnMouseLeftButtonUp"
+                              Foreground="{DynamicResource ListerForeground}"
+                              ItemContainerStyle="{StaticResource ListViewItemTextInputStyle}"
+                              BorderThickness="0"
+                              PreviewKeyDown="Popup_OnPreviewKeyDown" FocusVisualStyle="{x:Null}"
+                              MaxHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Content.ActualHeight, Converter={StaticResource PopupHeightConverter}}"
+                              VirtualizingPanel.ScrollUnit="Pixel">
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource gridHeaderStyle}">
+                                <GridViewColumn Width="24">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Details.Thumbnail}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding DisplayName}" Width="200" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
+            </Border>
+        </Grid>
+    </Popup>
+</base:BaseControl>

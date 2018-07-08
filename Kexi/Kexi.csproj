@@ -1,0 +1,645 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4B251986-4DE5-4837-968C-C538FB3EB549}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kexi</RootNamespace>
+    <AssemblyName>Kexi</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
+    <NoWarn>CS0067</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>signed.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluent, Version=6.1.0.233, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluent.Ribbon.6.1.0.233\lib\net462\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=2.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.2.8.2\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=2.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.2.8.2\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Shell.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.10.0\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.10.0\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.10.0\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.10.0\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="NHotkey, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHotkey.1.2.1\lib\net20\NHotkey.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHotkey.Wpf, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHotkey.Wpf.1.2.1\lib\net35\NHotkey.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.FileVersionInfo, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.FileVersionInfo.4.3.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Instrumentation" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.4.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.1\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net462\System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XmlDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XPath.4.3.0\lib\net46\System.Xml.XPath.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XPath.XDocument.4.3.0\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="Ude">
+      <HintPath>..\packages\UDE.CSharp.1.1.0\lib\Ude.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AvalonDockingManager.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="CommandRepository.cs" />
+    <Compile Include="Common\BreadcrumbMode.cs" />
+    <Compile Include="Common\BrowsingHistory.cs" />
+    <Compile Include="Common\CommandArgument.cs" />
+    <Compile Include="Common\CommandExtensions.cs" />
+    <Compile Include="Common\ConfigurationDropdownValuesAttribute.cs" />
+    <Compile Include="Common\ConsoleAppManager.cs" />
+    <Compile Include="Common\CopyHelper.cs" />
+    <Compile Include="Common\PathPart.cs" />
+    <Compile Include="Common\ThreadHelper.cs" />
+    <Compile Include="Converter\LengthConverter.cs" />
+    <Compile Include="Converter\StringToXamlConverter.cs" />
+    <Compile Include="Property\BasePropertyProvider.cs" />
+    <Compile Include="Property\DefaultPropertyProvider.cs" />
+    <Compile Include="Composition\ExportContextMenuCommand.cs" />
+    <Compile Include="Composition\ExportItemDetails.cs" />
+    <Compile Include="Composition\ExportPropertyProvider.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Files\FileActionResult.cs" />
+    <Compile Include="Files\FilePropertyProvider.cs" />
+    <Compile Include="Files\FilesystemChangeWatcher.cs" />
+    <Compile Include="Common\FilterSorting.cs" />
+    <Compile Include="Common\GlobalHotkeyHandler.cs" />
+    <Compile Include="Interfaces\IBreadCrumbProvider.cs" />
+    <Compile Include="Interfaces\INotificationHost.cs" />
+    <Compile Include="Interfaces\IPropertyProvider.cs" />
+    <Compile Include="Interfaces\IRenameable.cs" />
+    <Compile Include="Common\ThumbnailProvider.cs" />
+    <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="ExtendedExtendedPropertyProvider.cs" />
+    <Compile Include="Interfaces\IExtendedPropertyProvider.cs" />
+    <Compile Include="Property\SearchPropertyProvider.cs" />
+    <Compile Include="ViewModel\Commands\AddTemporaryBookmarksCommand.cs" />
+    <Compile Include="ViewModel\Commands\AdjustColumnWidth.cs" />
+    <Compile Include="ViewModel\Commands\AdjustListerWidthCommand.cs" />
+    <Compile Include="ViewModel\Commands\AvalonDumpManagerCommand.cs" />
+    <Compile Include="ViewModel\Commands\BreakConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\ClearFilterCommand.cs" />
+    <Compile Include="ViewModel\Commands\ClearSortingCommand.cs" />
+    <Compile Include="ViewModel\Commands\ClearTemporaryBookmarkCommand.cs" />
+    <Compile Include="ViewModel\Commands\CommanderCopyCommand.cs" />
+    <Compile Include="ViewModel\Commands\CommanderMoveCommand.cs" />
+    <Compile Include="ViewModel\Commands\CreateShortcutInFavoritesCommand.cs" />
+    <Compile Include="ViewModel\Commands\CutCommand.cs" />
+    <Compile Include="ViewModel\Commands\CycleTabsBackwardsCommand.cs" />
+    <Compile Include="ViewModel\Commands\CycleThemeCommand.cs" />
+    <Compile Include="ViewModel\Commands\CycleTabsCommand.cs" />
+    <Compile Include="ViewModel\Commands\DecreaseFontSizeCommand.cs" />
+    <Compile Include="ViewModel\Commands\DeleteFilesCommand.cs" />
+    <Compile Include="ViewModel\Commands\DoActionCommand.cs" />
+    <Compile Include="ViewModel\Commands\DoSearchCommand.cs" />
+    <Compile Include="ViewModel\Commands\EditFileCommand.cs" />
+    <Compile Include="ViewModel\Commands\ExecuteConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\ExitApplicationCommand.cs" />
+    <Compile Include="ViewModel\Commands\FilterToCurrentExtensionCommand.cs" />
+    <Compile Include="ViewModel\Commands\FocusNextConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\FocusPreviousConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\IncreaseFontSizeCommand.cs" />
+    <Compile Include="ViewModel\Commands\LoadKeybindingsCommand.cs" />
+    <Compile Include="ViewModel\Commands\LoadLayoutCommand.cs" />
+    <Compile Include="ViewModel\Commands\MarkSelectedCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveToHistoryItemCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveToNextTabCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveToNextTemporaryBookmarkCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveToPreviousTabCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveToPreviousTemporaryBookmarkCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenDirectoryCommand.cs" />
+    <Compile Include="Common\MapiMailMessage.cs" />
+    <Compile Include="Common\MenuItemFilter.cs" />
+    <Compile Include="Common\MouseHandler.cs" />
+    <Compile Include="Common\EnumerableExtensions.cs" />
+    <Compile Include="Files\FileAction.cs" />
+    <Compile Include="Files\FileListerAction.cs" />
+    <Compile Include="Files\FilesystemAction.cs" />
+    <Compile Include="Common\FilterPart.cs" />
+    <Compile Include="Common\FontHelper.cs" />
+    <Compile Include="Interfaces\ICopyPasteHandler.cs" />
+    <Compile Include="Interfaces\IHistorisationProvider.cs" />
+    <Compile Include="Common\ItemFilter.cs" />
+    <Compile Include="Common\KeyHandling\KexBinding.cs" />
+    <Compile Include="Common\KeyHandling\KexDoubleBinding.cs" />
+    <Compile Include="Common\KeyHandling\KeyHandler.cs" />
+    <Compile Include="Common\ListViewSelector.cs" />
+    <Compile Include="Common\MultiSelection\IMultiSelectCollectionView.cs" />
+    <Compile Include="Common\MultiSelection\MultiSelect.cs" />
+    <Compile Include="Common\MultiSelection\MultiSelectCollectionView.cs" />
+    <Compile Include="Shell\NativeFileInfo.cs" />
+    <Compile Include="Shell\NetworkBrowser.cs" />
+    <Compile Include="Common\NotificationHost.cs" />
+    <Compile Include="Common\NotificationType.cs" />
+    <Compile Include="Common\Options.cs" />
+    <Compile Include="Common\OneKeyGesture.cs" />
+    <Compile Include="Common\PinvokeNetworking.cs" />
+    <Compile Include="Common\PopupAlignment.cs" />
+    <Compile Include="Common\PopupNotificationHost.cs" />
+    <Compile Include="Common\RangeObservableCollection.cs" />
+    <Compile Include="Shell\ShellContextMenu.cs" />
+    <Compile Include="Shell\ShellNative.cs" />
+    <Compile Include="Shell\ShellWrapper.cs" />
+    <Compile Include="Shell\Shortcut.cs" />
+    <Compile Include="Common\SortHandler.cs" />
+    <Compile Include="Composition\ExportMetaKey.cs" />
+    <Compile Include="Shell\SymbolicLink.cs" />
+    <Compile Include="Common\Syntaxhighlighting\SyntaxHighlighter.cs" />
+    <Compile Include="Common\TemporaryFavorites.cs" />
+    <Compile Include="Common\TextboxHelper.cs" />
+    <Compile Include="Common\UIExtensions.cs" />
+    <Compile Include="Common\ThemeHandler.cs" />
+    <Compile Include="Shell\UsbNotification.cs" />
+    <Compile Include="Shell\WinNotificationHandler.cs" />
+    <Compile Include="Common\Utils.cs" />
+    <Compile Include="Common\ViewType.cs" />
+    <Compile Include="Interfaces\IDockingManager.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Interfaces\IKexiCommand.cs" />
+    <Compile Include="Interfaces\ItemType.cs" />
+    <Compile Include="Common\LoadingStatus.cs" />
+    <Compile Include="ItemProvider\FileItemProvider.cs" />
+    <Compile Include="ItemProvider\ItemProviderResult.cs" />
+    <Compile Include="ItemProvider\SearchItemProvider.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModel\AdressbarViewModel.cs" />
+    <Compile Include="ViewModel\BreadcrumbViewModel.cs" />
+    <Compile Include="ViewModel\CommanderbarViewModel.cs" />
+    <Compile Include="ViewModel\Commands\CopyCommand.cs" />
+    <Compile Include="ViewModel\Commands\FocusAdressBarCommand.cs" />
+    <Compile Include="ViewModel\Commands\GotoParentContainerCommand.cs" />
+    <Compile Include="ViewModel\Commands\HistoryBackCommand.cs" />
+    <Compile Include="ViewModel\Commands\HistoryForwardCommand.cs" />
+    <Compile Include="ViewModel\Commands\InvertSelectionCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorBottomCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorDownCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorLeftCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorRightCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorTopCommand.cs" />
+    <Compile Include="ViewModel\Commands\MoveCursorUpCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenDirectorySplittedCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenNewWindowCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenPathInConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenPathInExplorerCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenPathInPowerShellCommand.cs" />
+    <Compile Include="ViewModel\Commands\PasteCommand.cs" />
+    <Compile Include="ViewModel\Commands\QuitCommand.cs" />
+    <Compile Include="ViewModel\Commands\RefreshListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\RenameFileItemCommand.cs" />
+    <Compile Include="ViewModel\Commands\RepeatLastCommandCommand.cs" />
+    <Compile Include="ViewModel\Commands\RestartAsAdminCommand.cs" />
+    <Compile Include="ViewModel\Commands\SaveKeybindingsCommand.cs" />
+    <Compile Include="ViewModel\Commands\SaveLayoutCommand.cs" />
+    <Compile Include="ViewModel\Commands\SelectAllCommand.cs" />
+    <Compile Include="ViewModel\Commands\SelectAllOfSameTypeCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowBrowsingPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowCommanderBarCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowCommandsPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowConsolePopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowContextMenuPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowCreateElementPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowDriveLister.cs" />
+    <Compile Include="ViewModel\Commands\ShowDrivesPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowFavoritesCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowFavoritesinNewTabCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowFilePropertiesCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowFilterPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowGroupByPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowKeyCommandListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowLatestItemsCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowListerContextMenuPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowNetworkListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowNotificationListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowProcessListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowPropertyListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowReferenceListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSearchPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSecurityListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSettingsListerCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSortPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSpecialPastePopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSpecialFoldersPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowSynchronizeFilenamesPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\ShowTemporaryFavoritesBookmarksCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleAdressbarVisibiblityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleFileDetailsVisibilityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleHiddenItemsCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleHighlightCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleMenuPopupCommand.cs" />
+    <Compile Include="ViewModel\Commands\TogglePreviewVisibilityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleRibbonVisibilityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleStatusbarVisibilityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleTreeViewVisibilityCommand.cs" />
+    <Compile Include="ViewModel\Commands\ToggleViewModeCommand.cs" />
+    <Compile Include="ViewModel\Commands\ViewDetailsCommand.cs" />
+    <Compile Include="ViewModel\Commands\ViewFileCommand.cs" />
+    <Compile Include="ViewModel\Commands\ViewIconsCommand.cs" />
+    <Compile Include="ViewModel\Commands\ViewThumbnailsCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowCenterCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowCloseCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowDockLeftCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowDockRightCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowFullHeightCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowMaximizeCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowMinimizeCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowNextMonitorCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowRestoreCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowSplitHorizontalCommand.cs" />
+    <Compile Include="ViewModel\Commands\WindowSplitVerticalCommand.cs" />
+    <Compile Include="Property\DrivePropertyProvider.cs" />
+    <Compile Include="ViewModel\Dock\DockViewModel.cs" />
+    <Compile Include="ViewModel\Dock\DocumentViewModel.cs" />
+    <Compile Include="ViewModel\Dock\ToolDetailViewModel.cs" />
+    <Compile Include="ViewModel\Dock\ToolExplorerViewModel.cs" />
+    <Compile Include="ViewModel\Dock\ToolPreviewViewModel.cs" />
+    <Compile Include="ViewModel\ExplorerContentView.cs" />
+    <Compile Include="Property\FilePropertyProvider.cs" />
+    <Compile Include="ViewModel\Item\BaseItem.cs" />
+    <Compile Include="ViewModel\Item\CommandBoundItem.cs" />
+    <Compile Include="ViewModel\Item\ConnectionItem.cs" />
+    <Compile Include="ViewModel\Item\ConsoleCommandItem.cs" />
+    <Compile Include="ViewModel\Item\ConsoleItem.cs" />
+    <Compile Include="ViewModel\Item\FileDetailItem.cs" />
+    <Compile Include="ViewModel\Item\KexBindingItem.cs" />
+    <Compile Include="ViewModel\Item\LineItem.cs" />
+    <Compile Include="ViewModel\Item\NotificationItem.cs" />
+    <Compile Include="ViewModel\Item\ObjectPropertyItem.cs" />
+    <Compile Include="ViewModel\Item\ProcessDetailItem.cs" />
+    <Compile Include="ViewModel\Item\ProcessItem.cs" />
+    <Compile Include="ViewModel\Item\PropertyEditorItem.cs" />
+    <Compile Include="ViewModel\Item\PropertyItem.cs" />
+    <Compile Include="ViewModel\Item\ReferenceItem.cs" />
+    <Compile Include="ViewModel\Item\SecurityItem.cs" />
+    <Compile Include="ViewModel\Item\ServiceItem.cs" />
+    <Compile Include="ViewModel\Item\SettingItem.cs" />
+    <Compile Include="ViewModel\Lister\BaseLister.cs" />
+    <Compile Include="ViewModel\Item\DriveItem.cs" />
+    <Compile Include="ViewModel\Lister\DriveLister.cs" />
+    <Compile Include="ViewModel\Lister\KeyCommandsLister.cs" />
+    <Compile Include="ViewModel\Lister\ConnectionLister.cs" />
+    <Compile Include="ViewModel\Lister\ConsoleLister.cs" />
+    <Compile Include="ViewModel\Item\FileItem.cs" />
+    <Compile Include="Files\FileItemTargetResolver.cs" />
+    <Compile Include="ViewModel\Lister\FileLister.cs" />
+    <Compile Include="ViewModel\Item\IItem.cs" />
+    <Compile Include="ViewModel\Lister\FileListerCommands.cs" />
+    <Compile Include="ViewModel\Lister\ILister.cs" />
+    <Compile Include="RelayCommand.cs" />
+    <Compile Include="ViewModel\Lister\NetworkLister.cs" />
+    <Compile Include="ViewModel\Lister\NotificationLister.cs" />
+    <Compile Include="ViewModel\Dock\PaneViewModel.cs" />
+    <Compile Include="ViewModel\Lister\ProcessLister.cs" />
+    <Compile Include="ViewModel\Lister\PropertyLister.cs" />
+    <Compile Include="ViewModel\Lister\ReferenceLister.cs" />
+    <Compile Include="ViewModel\Lister\SearchLister.cs" />
+    <Compile Include="ViewModel\Lister\SecurityLister.cs" />
+    <Compile Include="ViewModel\Lister\SettingsLister.cs" />
+    <Compile Include="ViewModel\Lister\TextLister.cs" />
+    <Compile Include="ViewModel\Lister\ViewFileLister.cs" />
+    <Compile Include="ViewModel\Item\MenuCommandBoundItem.cs" />
+    <Compile Include="ViewModel\MainwindowViewModel.cs" />
+    <Compile Include="ViewModel\NotifyTaskCompletion.cs" />
+    <Compile Include="ViewModel\Popup\BrowsingPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\CommandBoundPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\CommandsPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\ConsoleCommandPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\ContextMenuPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\DrivePopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SpecialPastePopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\CreateElementPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\DialogPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\FileFilterPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\FilterPopupViewModel.cs" />
+    <Compile Include="ViewModel\PopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\GroupByPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\MenuPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\PropertyEditorPopupViewModel.cs" />
+    <Compile Include="ViewModel\RenamePopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SearchPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SortPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SpecialFolderPopupViewModel.cs" />
+    <Compile Include="ViewModel\Dock\ToolViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SynchronizeFilenamesPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\TemporaryBookmarksPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\TextInputPopupViewmodel.cs" />
+    <Compile Include="ViewModel\Popup\ViewPopupViewModel.cs" />
+    <Compile Include="ViewModel\PreviewContentView.cs" />
+    <Compile Include="Property\ProcessPropertyProvider.cs" />
+    <Compile Include="ViewModel\RecentLocationPopupViewModel.cs" />
+    <Compile Include="Property\ReferencePropertyProvider.cs" />
+    <Compile Include="ViewModel\RibbonViewModel.cs" />
+    <Compile Include="Property\ServicePropertyProvider.cs" />
+    <Compile Include="ViewModel\ServiceLister.cs" />
+    <Compile Include="ViewModel\ShowLastLocationsViewModel.cs" />
+    <Compile Include="ViewModel\StatusbarViewModel.cs" />
+    <Compile Include="ViewModel\TreeView\RootViewModel.cs" />
+    <Compile Include="ViewModel\TreeView\TreeViewItem.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\Workspace.cs" />
+    <Compile Include="KexContainer.cs" />
+    <Compile Include="Interfaces\IListerView.cs" />
+    <Compile Include="View\BindableRichTextBox.cs" />
+    <Compile Include="View\KexiListView.cs" />
+    <Compile Include="View\KexiListViewItem.cs" />
+    <Compile Include="View\SortAdorner.cs" />
+    <Compile Include="View\TextBlockExtensions.cs" />
+    <Compile Include="View\ViewHandler.cs" />
+    <Compile Include="View\VisibilityAnimation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="signed.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.2-beta1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.2-beta1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

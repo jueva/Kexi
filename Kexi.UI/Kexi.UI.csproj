@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C9E91925-41BB-4E7C-9E9E-530B28179D4A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kexi.UI</RootNamespace>
+    <AssemblyName>Kexi.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Media\Icon1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluent, Version=6.1.0.233, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluent.Ribbon.6.1.0.233\lib\net462\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=2.3.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.2.3.0\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Windows10">
+      <HintPath>..\Xceed.Wpf.AvalonDock.Themes.Windows10.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.4.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Base\BaseControl.cs" />
+    <Compile Include="Base\ListBoxSelector.cs" />
+    <Compile Include="Base\ListerViewTemplateSelector.cs" />
+    <Compile Include="Base\MyVirtualizingStackpanel.cs" />
+    <Compile Include="Base\VirtualizingWrapPanel.cs" />
+    <Compile Include="Converters\ActiveDocumentConverter.cs" />
+    <Compile Include="Converters\AnyToBoolConverter.cs" />
+    <Compile Include="Converters\AnyToVisibilityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\ElementCountConverter.cs" />
+    <Compile Include="Converters\FullPathToNameConverter.cs" />
+    <Compile Include="Converters\GridColumnConverter.cs" />
+    <Compile Include="Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="Converters\InvertBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\IsBreadcrumbConverter.cs" />
+    <Compile Include="Converters\NameToCommandConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullToWidthConverter.cs" />
+    <Compile Include="Converters\PathPartConverter.cs" />
+    <Compile Include="Converters\PopupHeightConverter.cs" />
+    <Compile Include="Converters\RibbonMarginConverter.cs" />
+    <Compile Include="Converters\StringNullOrEmptyToVisibilityConverter.cs" />
+    <Compile Include="Converters\SubDirectoriesToVisibilityConverter.cs" />
+    <Compile Include="Converters\UniquePathConverter.cs" />
+    <Compile Include="Converters\ViewTypeBackgroundConverter.cs" />
+    <Compile Include="Converters\ViewTypeConverter.cs" />
+    <Compile Include="Converters\WindowTitleConverter.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="View\AdressBar.xaml.cs">
+      <DependentUpon>AdressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BreadCrumb.xaml.cs">
+      <DependentUpon>BreadCrumb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BreadcrumbPopup.xaml.cs">
+      <DependentUpon>BreadcrumbPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CommanderBar.xaml.cs">
+      <DependentUpon>CommanderBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DockManager.xaml.cs">
+      <DependentUpon>DockManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExplorerTreeView.xaml.cs">
+      <DependentUpon>ExplorerTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ItemDetailView.xaml.cs">
+      <DependentUpon>ItemDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ImageControl.cs" />
+    <Compile Include="Base\LayoutUpdater.cs" />
+    <Compile Include="View\ListerView.xaml.cs">
+      <DependentUpon>ListerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NotificationBar.xaml.cs">
+      <DependentUpon>NotificationBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Base\PaneStyleSelector.cs" />
+    <Compile Include="Base\PaneTemplateSelector.cs" />
+    <Compile Include="Base\PlainView.cs" />
+    <Compile Include="View\PopupView.xaml.cs">
+      <DependentUpon>PopupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PreviewControl.xaml.cs">
+      <DependentUpon>PreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PreviewHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\RecentLocationsPopup.xaml.cs">
+      <DependentUpon>RecentLocationsPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RenamePopup.xaml.cs">
+      <DependentUpon>RenamePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RibbonBar.xaml.cs">
+      <DependentUpon>RibbonBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StatusBarView.xaml.cs">
+      <DependentUpon>StatusBarView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="app.manifest" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Entypo.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\DefaultColors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Gradients.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\IconPacks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Popup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Scrollbar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Themes\winDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Themes\solarizedDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Themes\solarizedLight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Themes\winLight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\AdressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\BreadCrumb.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\BreadcrumbPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CommanderBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DockManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ExplorerTreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ItemDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ListerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\NotificationBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PopupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PreviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\RecentLocationsPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\RenamePopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\RibbonBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\StatusBarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AvalonDock.Themes.KexiMetro\AvalonDock.Themes.KexiMetro.csproj">
+      <Project>{6daf2688-fa70-424d-9260-f79405875829}</Project>
+      <Name>AvalonDock.Themes.KexiMetro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kexi.Extensions\Kexi.Extensions.csproj">
+      <Project>{043d5b9b-87e6-4c65-87b7-86a493903588}</Project>
+      <Name>Kexi.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kexi\Kexi.csproj">
+      <Project>{4b251986-4de5-4837-968c-c538fb3eb549}</Project>
+      <Name>Kexi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_blue_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_left_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_right_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\arrow_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\go_back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\go_forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\go_next_black .png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\go_prev_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\loader.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\process.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\service.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\sub_blue_next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\sub_blue_prev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\view_detail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\view_thumbnail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\window_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="keyBindings.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
+copy $(ProjectDir)keyBindings.xml $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

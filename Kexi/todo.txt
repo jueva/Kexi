@@ -1,0 +1,9 @@
+Activate Kexi Window by Windows global Shortcut
+Iconview/thumbview wrap filenames
+Property Lister
+Key Binding to Windows Property Dialog
+Opacity of "Cut" Items
+Lasso Selection
+filelister apicodepack only
+Copy mit mehreren Items: Focus auf Workspace erst nachletztem copy
+Adressbar bei manueller Eingabe Filename Completition

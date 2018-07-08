@@ -1,0 +1,118 @@
+﻿<base:BaseControl x:Class="Kexi.UI.View.BreadCrumb"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:view1="clr-namespace:Kexi.View;assembly=Kexi"
+                   xmlns:view2="clr-namespace:Kexi.UI.View"
+                   xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+                   xmlns:ui="clr-namespace:Kexi.UI"
+                   xmlns:base="clr-namespace:Kexi.UI.Base"
+                   xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                   xmlns:converters="clr-namespace:Kexi.UI.Converters"
+                   x:Name="breadControl"
+                   d:DataContext="{d:DesignInstance d:Type=viewModel:BreadcrumbViewModel}"
+                   d:DesignHeight="300"
+                   d:DesignWidth="300"
+                   x:TypeArguments="viewModel:BreadcrumbViewModel"
+                   mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:PathPartConverter x:Key="PathConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
+        <converters:SubDirectoriesToVisibilityConverter x:Key="SubDirectoriesToVisibility" />
+
+        <SolidColorBrush x:Key="BackGroundBrush" Color="#DDDDDD" />
+
+        <converters:IsBreadcrumbConverter x:Key="BreadcrumbEditable" />
+        <Style TargetType="Button" BasedOn="{StaticResource BreadcrumbButtonStyle}" x:Key="LastButton"/>
+    </UserControl.Resources>
+    <Grid>
+        <Border
+                Background="{DynamicResource adressbarBack}"
+                BorderBrush="{DynamicResource InputTextBackground}"
+                BorderThickness="1 0 1 1"
+                CornerRadius="3"
+                MouseLeftButtonDown="UIElement_OnMouseDown"
+                Opacity="0.95">
+            <Grid MinHeight="25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0" />
+                </Grid.ColumnDefinitions>
+                <view2:BreadcrumbPopup />
+                <ItemsControl Grid.Column="0"
+                              Margin="0"
+                              IsTabStop="False"
+                              Visibility="{Binding BreadcrumbVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ItemsControl.ItemsSource>
+                        <MultiBinding Converter="{StaticResource PathConverter}">
+                            <Binding Path="Workspace.ActiveLister.Path" />
+                            <Binding Path="Workspace.ActiveLister" />
+                        </MultiBinding>
+                    </ItemsControl.ItemsSource>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0 0 0 0"
+                                        Command="{Binding Path=ViewModel.PathPartSelectedCommand,
+                                                          ElementName=breadControl}"
+                                        CommandParameter="{Binding Path}"
+                                        Content="{Binding Path=Name}"
+                                        Foreground="{DynamicResource InputTextForeground}"
+                                        MouseRightButtonUp="UIElement_OnMouseRightButtonUp"
+                                        Style="{DynamicResource BreadcrumbButtonStyle}"
+                                        Visibility="{Binding Path=Highlighted, Converter={StaticResource InvertBoolToVisibilityConverter}}" 
+                                        />
+                                <Button Margin="1 0 0 0"
+                                        Background="{DynamicResource KexSelectionBackground}"
+                                        Command="{Binding Path=ViewModel.PathPartSelectedCommand,
+                                                          ElementName=breadControl}"
+                                        CommandParameter="{Binding Path}"
+                                        Content="{Binding Path=Name}"
+                                        Foreground="{DynamicResource KexSelectionForeground}"
+                                        MouseRightButtonUp="UIElement_OnMouseRightButtonUp"
+                                        Style="{DynamicResource BreadcrumbLastButtonStyle}"
+                                        Visibility="{Binding Path=Highlighted, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        >
+                                </Button>
+                                <Button VerticalContentAlignment="Bottom"
+                                        Command="{Binding Path=ViewModel.PathSeparatorSelectedCommand,
+                                                          ElementName=breadControl}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                                        Style="{StaticResource BreadcrumbButtonStyle}"
+                                        Visibility="{Binding Converter={StaticResource SubDirectoriesToVisibility}}">
+                                            <iconPacks:FontAwesome Kind="ChevronRightSolid" Width="7" Height="8" />
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <TextBox x:Name="text"
+                         Margin="1 0 1 0"
+                         VerticalAlignment="Center"
+                         Background="{DynamicResource InputTextBackground}"
+                         BorderBrush="{DynamicResource BackGroundBrush}"
+                         Foreground="{DynamicResource InputTextForeground}"
+                         KeyDown="Text_OnKeyDown"
+                         LostFocus="Text_OnLostFocus"
+                         SelectionBrush="{DynamicResource KexSelectionBackground}"
+                         Style="{DynamicResource TextboxRounded}"
+                         Text="{Binding Path=Workspace.ActiveLister.Path}"
+                         Visibility="{Binding AdressVisible,
+                                              Converter={StaticResource BoolToVisibilityConverter}}" />
+            </Grid>
+        </Border>
+    </Grid>
+</base:BaseControl>
+
+
+
+

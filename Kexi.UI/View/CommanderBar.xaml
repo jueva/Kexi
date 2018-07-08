@@ -1,0 +1,42 @@
+﻿<base:BaseControl x:Class="Kexi.UI.View.CommanderBar"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
+                  xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+                  xmlns:base="clr-namespace:Kexi.UI.Base"
+                  xmlns:converters="clr-namespace:Kexi.UI.Converters"
+                  d:DesignHeight="300"
+                  d:DesignWidth="300"
+                  x:TypeArguments="viewModel:CommanderbarViewModel"
+                  mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolTovisibitlityConverter" />
+    </UserControl.Resources>
+
+    <Grid
+          HorizontalAlignment="Stretch"
+          Margin="3"
+          KeyDown="_commanderBar_OnKeyDown"
+          Visibility="{Binding Workspace.CommanderMode, Converter={StaticResource BoolTovisibitlityConverter}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" Style="{DynamicResource CommandButtonStyle}">F3 View</Button>
+        <Button Grid.Column="1" Style="{DynamicResource CommandButtonStyle}">F4 Edit</Button>
+        <Button Grid.Column="2" Style="{DynamicResource CommandButtonStyle}">F5 Copy</Button>
+        <Button Grid.Column="3" Style="{DynamicResource CommandButtonStyle}">F6 Move</Button>
+        <Button Grid.Column="4" Style="{DynamicResource CommandButtonStyle}">F7 New Folder</Button>
+        <Button Grid.Column="5" Style="{DynamicResource CommandButtonStyle}">F8 Delete</Button>
+        <Button Grid.Column="6" Style="{DynamicResource CommandButtonStyle}">Alt + F4 Exit</Button>
+    </Grid>
+</base:BaseControl>

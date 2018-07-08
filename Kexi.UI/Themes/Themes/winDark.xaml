@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="SelectionBack">#93C763</Color>
+    <Color x:Key="ControlBack">#FFFFFF</Color>
+    <Color x:Key="BackColor">#404040</Color>
+    <Color x:Key="BackDisabledColor">#555555</Color>
+    <SolidColorBrush x:Key="ItemHighlightColor" Color="#FF158782" />
+    <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
+
+    <SolidColorBrush x:Key="KexSelectionBackground" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+    <SolidColorBrush x:Key="KexSelectionForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="KexSelectionBorderBrush" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+
+    <SolidColorBrush x:Key="KexMouseSelectionBackground" Color="#AAAAAA" />
+    <SolidColorBrush x:Key="KexMouseSelectionForeground" Color="#000000" />
+
+    <SolidColorBrush x:Key="ListerBackground" Color="{DynamicResource BackColor}" />
+    <SolidColorBrush x:Key="ListerBackgroundDisabled" Color="{DynamicResource BackColor}" />
+    <SolidColorBrush x:Key="ListerForeground" Color="White" />
+    <SolidColorBrush x:Key="ListerStatusbarForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ListerStatusbarBackground" Color="#555555" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC" />
+
+    <SolidColorBrush x:Key="InputTextBackground" Color="#303030" />
+    <SolidColorBrush x:Key="InputTextForeground" Color="#FFFFFF" />
+
+    <!--  Ribbon  -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#444444" />
+    <SolidColorBrush x:Key="RibbonBackgoundBrush" Color="#444444" />
+    <SolidColorBrush x:Key="StatusBarBackgroundBrush" Color="#333333" />
+    <SolidColorBrush x:Key="ActiveTabBackgroundBrush" Color="#93C763" />
+
+    <SolidColorBrush x:Key="AdressbarButtonBorderInnerBrush" Color="#404040" />
+    <SolidColorBrush x:Key="AdressbarButtonBorderOuterBrush" Color="#555555" />
+
+    <LinearGradientBrush x:Key="adressbarBack" StartPoint="1,1" EndPoint="1,0">
+        <GradientStop Offset="0" Color="{DynamicResource BackColor}" />
+        <GradientStop Offset="0.3" Color="{DynamicResource BackColor}" />
+        <GradientStop Offset="1" Color="{DynamicResource BackDisabledColor}" />
+    </LinearGradientBrush>
+
+
+</ResourceDictionary>

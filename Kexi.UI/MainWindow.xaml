@@ -1,0 +1,153 @@
+﻿<controls:MetroWindow x:Class="Kexi.UI.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:common="clr-namespace:Kexi.Common;assembly=Kexi"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:fluent="urn:fluent-ribbon"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:view1="clr-namespace:Kexi.UI.View"
+                      xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+                      xmlns:view="clr-namespace:Kexi.View"
+                      x:Name="mainWindow"
+                      Width="1200"
+                      Height="600"
+                      d:DataContext="{d:DesignInstance d:Type=viewModel1:Workspace}"
+                      AllowDrop="True"
+                      Background="{DynamicResource InputTextBackground}"
+                      BorderThickness="1"
+                      BorderBrush="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"
+                      Foreground="{DynamicResource ListerForeground}"
+                      ResizeMode="CanResizeWithGrip"
+                      TitleForeground="{DynamicResource ListerForeground}"
+                      WindowStartupLocation="CenterScreen"
+                      WindowTitleBrush="{DynamicResource ListerBackground}"
+                      KeyDown="MainWindow_OnKeyDown"
+                      Loaded="MainWindow_Loaded"
+                      Unloaded="MainWindow_Unloaded"
+                      SourceInitialized="RegisterNotification"
+                      FontSize="{Binding Options.FontSize}"
+                      FontFamily="{Binding Options.FontFamily}"
+                      mc:Ignorable="d">
+
+    <controls:MetroWindow.Title>
+        <MultiBinding Converter="{StaticResource WindowTitleConverter}">
+            <Binding Path="ActiveLister.Path" />
+            <Binding Path="ActiveLister.Workspace" />
+            <Binding Path="ActiveLister.Options.AdressbarVisible" /> <!-- needed for propchanged -->
+        </MultiBinding>
+    </controls:MetroWindow.Title>
+
+    <controls:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <StackPanel Margin="5 2 2 2" Orientation="Horizontal">
+                <Button Background="{DynamicResource ListerBackground}" BorderThickness="0" Focusable="False">
+                    <Image
+                        Source="{Binding Path=DataContext.ActiveLister.Thumbnail, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                </Button>
+                <TextBlock Margin="10 2 2 2"
+                           VerticalAlignment="Center"
+                           FontSize="16"
+                           Foreground="{DynamicResource ListerForeground}"
+                           Text="{TemplateBinding Content}" />
+            </StackPanel>
+        </DataTemplate>
+    </controls:MetroWindow.TitleTemplate>
+
+    <controls:MetroWindow.WindowButtonCommands>
+        <controls:WindowButtonCommands Style="{StaticResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
+    </controls:MetroWindow.WindowButtonCommands>
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <StackPanel Orientation="Horizontal">
+                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 3 0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="TitleText" MinWidth="130"
+                                 TextWrapping="WrapWithOverflow"
+                                 Margin="4 0 0 0"
+                                 VerticalAlignment="Center"
+                                 Background="{DynamicResource InputTextBackground}"
+                                 Foreground="{DynamicResource InputTextForeground}"
+                                 CaretBrush="{DynamicResource InputTextForeground}"
+                                 SelectionBrush="{DynamicResource KexSelectionBackground}"
+                                 Style="{StaticResource TextboxRounded}">
+                            <Binding Path="PopupViewModel.Text" UpdateSourceTrigger="PropertyChanged" />
+                        </TextBox>
+                    </StackPanel>
+                </Border>
+                <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" Focusable="False"
+                        Margin="0 2 3 3"
+                        Style="{StaticResource CommandButtonStyle}">
+
+                    <Rectangle Width="12" Height="12" Fill="{DynamicResource ListerForeground}">
+                        <Rectangle.Style>
+                            <Style>
+                                <Setter Property="Rectangle.OpacityMask">
+                                    <Setter.Value>
+                                        <VisualBrush Visual="{StaticResource appbar_lines_horizontal_4}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PopupViewModel.IsOpen}" Value="true">
+                                        <Setter Property="Rectangle.OpacityMask">
+                                            <Setter.Value>
+                                                <VisualBrush
+                                                    Visual="{Binding DataContext.PopupViewModel.HeaderIcon, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                </Button>
+            </StackPanel>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!--  Ribbon  -->
+            <RowDefinition Height="Auto" /> <!--  Adressbar  -->
+            <RowDefinition Height="*" /> <!--  Dockbar  -->
+            <RowDefinition Height="Auto" /> <!--  Statusbar  -->
+            <RowDefinition Height="Auto" /> <!--  CommanderBar  -->
+            <RowDefinition Height="0" /> <!-- Popup -->
+            <RowDefinition Height="0" /> <!-- RenamePopup -->
+        </Grid.RowDefinitions>
+
+        <view1:RibbonBar x:Name="RibbonBar"
+                         Grid.Row="0"
+                         Margin="0,0,0,0"
+                         DataContext="{Binding RibbonViewModel}"
+                         Visibility="{Binding RibbonVisible,
+                         Converter={StaticResource BoolToVisibilityConverter}}" />
+        <view1:AdressBar x:Name="AdressBar"
+                         Grid.Row="1"
+                         x:FieldModifier="public"
+                         Margin="0"
+                         DataContext="{Binding AdressbarViewModel}"/>
+        <view1:DockManager x:Name="DockManager"
+                           Grid.Row="2"
+                           Margin="0"
+                           DataContext="{Binding Docking}"
+                           Style="{StaticResource dockmanagerStyle}" />
+        <view1:StatusBarView x:Name="StatusBar"
+                             Grid.Row="3"
+                             DataContext="{Binding ActiveLister}" />
+        <view1:CommanderBar x:Name="CommanderBar"
+                            Grid.Row="4"
+                            DataContext="{Binding CommanderbarViewModel}" />
+        <view1:PopupView x:Name="Popup"
+                         Grid.Row="5"
+                         DataContext="{Binding PopupViewModel}"
+                         Visibility="Hidden" />
+        <view1:RenamePopup x:Name="RenamePopup"
+                          Grid.Row="6"
+                          DataContext="{Binding RenamePopupViewModel}"
+                          Visibility="Hidden" />
+    </Grid>
+
+</controls:MetroWindow>

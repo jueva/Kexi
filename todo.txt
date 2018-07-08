@@ -1,0 +1,16 @@
+Listerview Itemcontainerstyle über xaml, nicht converter
+Searchlister no Context Menü
+IFileExtendedPropertyProvider
+Check Sorting with many files (virtualisation, not all details are loaded)
+ViewFileLister ohne Details (HasDetailView in ILister)
+Treeview Selection Change -> Path im Lister wird angepasst (z.B. ViewFileLister), ILister AcceptsFilePath?, IFileHandler
+Selection Tests
+Undo within Application
+Camelhump resharperlike filters
+xaml designer design time fix
+e+e macht detailfenster größer und Brows/Filterbar
+DetailsView: Strg + E/mehrmals E: Detailsview verbreitert sich bis namenspalte, 
+RegistryLister
+Fileactionlog, (create, copy, move, delete)
+processitem implements ifilepathprovider
+resharper like camel hump popup selection

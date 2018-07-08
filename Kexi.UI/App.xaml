@@ -1,0 +1,32 @@
+﻿<Application x:Class="Kexi.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Startup="App_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Fluent;Component/themes/generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/themes/generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/colors/basedark.xaml" />
+                <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/themes/windowbuttoncommands.xaml" />
+                <!--  Accent and AppTheme setting  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Orange.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary Source="Themes/DefaultColors.xaml" />
+                <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="Themes/Gradients.xaml" />
+                <ResourceDictionary Source="Themes/Scrollbar.xaml" />
+                <ResourceDictionary Source="Themes/IconPacks.xaml" />
+                <ResourceDictionary Source="Themes/Popup.xaml" />
+                <!-- IconPacks MahApps.Metro Iconpacks -->
+                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro.IconPacks;component/Themes/IconPacks.xaml" />-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

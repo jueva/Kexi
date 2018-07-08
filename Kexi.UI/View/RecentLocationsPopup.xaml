@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Kexi.UI.View.RecentLocationsPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:kexi="clr-namespace:Kexi"
+             xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
+             xmlns:view1="clr-namespace:Kexi.View;assembly=Kexi"
+             xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+             xmlns:ui="clr-namespace:Kexi.UI"
+             xmlns:converters="clr-namespace:Kexi.UI.Converters"
+             mc:Ignorable="d" x:Name="rlPopup"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance viewModel1:RecentLocationPopupViewModel}">
+
+    <UserControl.Resources>
+        <converters:PopupHeightConverter x:Key="PopupHeightConverter" />
+
+        <LinearGradientBrush x:Key="BorderBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.2" Color="LightGray" />
+        </LinearGradientBrush>
+
+    </UserControl.Resources>
+
+    <Popup IsOpen="{Binding PopupVisible}" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding PopupTarget}" 
+           HorizontalOffset="{Binding HorizontalOffset}" VerticalOffset="{Binding VerticalOffset}" x:Name="popup" 
+           PopupAnimation="{Binding Path=Workspace.Options.PopupAnimation}" AllowsTransparency="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Background="#41B1E1" Grid.Row="0" Grid.ColumnSpan="3" Margin="3 3 3 0" />
+            <Border Padding="0" Grid.Row="1" Margin="4 0 4 4" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="2 0 2 2" CornerRadius="0 0 6 6" Background="{DynamicResource InputTextBackground}"
+                    Opacity="0.95">
+                <Border Background="{DynamicResource ListerBackground}" Padding="2" CornerRadius="0 0 6 6">
+                    <ListView x:Name="listView" ItemsSource="{Binding Path=ItemsView}"
+                              Background="{DynamicResource ListerBackground}"
+                              PreviewMouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"
+                              Foreground="{DynamicResource ListerForeground}"
+                              ItemContainerStyle="{StaticResource ListViewItemTextInputStyle}"
+                              BorderThickness="0" BorderBrush="{DynamicResource InputTextBackground}"
+                              PreviewKeyDown="Popup_OnPreviewKeyDown" FocusVisualStyle="{x:Null}"
+                              MaxHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ui:MainWindow}}, Path=Content.ActualHeight, Converter={StaticResource PopupHeightConverter}}">
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource gridHeaderStyle}">
+                                <GridViewColumn Width="24">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Thumbnail}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding DisplayName}" Width="200" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
+            </Border>
+        </Grid>
+    </Popup>
+</UserControl>

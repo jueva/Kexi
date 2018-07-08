@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Kexi.UI.View.RibbonBar"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:fluent="urn:fluent-ribbon"
+                 xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
+                 xmlns:view1="clr-namespace:Kexi.View;assembly=Kexi"
+                 xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+                xmlns:iconPacks="using:MahApps.Metro.IconPacks"
+             xmlns:iconPacks1="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:converters="clr-namespace:Kexi.UI.Converters"
+             mc:Ignorable="d" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}"
+                 d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance viewModel1:RibbonViewModel}"
+             >
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:NameToCommandConverter x:Key="NameToCommandConverter"/>
+        <Style TargetType="fluent:Button">
+            <Setter Property="Foreground" Value="{DynamicResource ListerForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ListerBackground}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <fluent:Ribbon Foreground="{DynamicResource ListerForeground}" Background="{DynamicResource ListerBackground}"  IsQuickAccessToolBarVisible="False" >
+        <fluent:Ribbon.Menu>
+            <fluent:ApplicationMenu Header="File" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:MenuItem Header="Open New Window" Command="{Binding CommandRepository.OpenNewWindow}"/>
+                <fluent:MenuItem Header="Open Command Prompt" Command="{Binding CommandRepository.OpenPathInConsole}"/>
+                <fluent:MenuItem Header="Open Power Shell" Command="{Binding CommandRepository.OpenPathInPowerShell}"/>
+                <fluent:MenuItem Header="Quit" Command="{Binding CommandRepository.Quit}"  />
+            </fluent:ApplicationMenu>
+        </fluent:Ribbon.Menu>
+
+        <fluent:RibbonTabItem Header="Home" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+            <fluent:RibbonGroupBox Header="Clipboard" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:Button Command="{Binding CommandRepository.Copy}" LargeIcon="{iconPacks1:FontAwesome CopySolid}"> Copy </fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Cut}" LargeIcon="{iconPacks1:FontAwesome CutSolid}"> Cut </fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Paste}" LargeIcon="{iconPacks1:FontAwesome PasteSolid}"> Paste </fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Delete}" LargeIcon="{iconPacks1:FontAwesome TrashSolid}">Delete</fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Header="Organzie" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:Button Command="{Binding CommandRepository.Rename}" LargeIcon="{iconPacks1:FontAwesome RecycleSolid}">Rename</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Favorites}" LargeIcon="{iconPacks1:FontAwesome BookmarkSolid}">Favorites</fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Header="New" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:Button Command="{Binding CommandRepository.CreateDirectory}" LargeIcon="{iconPacks1:FontAwesome FolderSolid}">Directory</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.CreateFile}" LargeIcon="{iconPacks1:FontAwesome FileAltSolid}">File</fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Header="Open" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:Button Command="{Binding CommandRepository.ShowProperties}" LargeIcon="{iconPacks1:FontAwesome InfoSolid}">Properties</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Open}" LargeIcon="{iconPacks1:FontAwesome BoxOpenSolid}">Open</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.Edit}" LargeIcon="{iconPacks1:FontAwesome EditSolid}">Edit</fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Header="Selection" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+                <fluent:Button Command="{Binding CommandRepository.SelectAll}" LargeIcon="{iconPacks1:FontAwesome ReplyAllSolid}">All</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.SelectNone}" LargeIcon="{iconPacks1:FontAwesome NodeBrands}">None</fluent:Button>
+                <fluent:Button Command="{Binding CommandRepository.InvertSelection}" LargeIcon="{iconPacks1:FontAwesome IndentSolid}">Invert</fluent:Button>
+            </fluent:RibbonGroupBox>
+        </fluent:RibbonTabItem>
+
+    </fluent:Ribbon>
+</UserControl>

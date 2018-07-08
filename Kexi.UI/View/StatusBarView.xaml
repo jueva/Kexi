@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Kexi.UI.View.StatusBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:view1="clr-namespace:Kexi.View;assembly=Kexi"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
+             xmlns:converters="clr-namespace:Kexi.UI.Converters"
+             x:Name="statusbar"
+             d:DataContext="{d:DesignInstance d:Type=viewModel:Workspace}" 
+             Margin="0"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:NullToVisibilityConverter x:Key="nullToVisibility" />
+        <converters:AnyToVisibilityConverter x:Key="anyToVisibility" />
+        <SolidColorBrush x:Key="BackGroundBrush" Color="#DDDDDD" />
+        <Style x:Key="ButtonBorder" TargetType="Border">
+            <Setter Property="Border.Background" Value="{StaticResource BackGroundBrush}" />
+            <Setter Property="Border.BorderBrush" Value="{StaticResource BackGroundBrush}" />
+            <Style.Triggers>
+                <Trigger Property="Border.IsMouseOver" Value="True">
+                    <Setter Property="Border.Background" Value="{DynamicResource KexMouseSelectionBackground}" />
+                    <Setter Property="Border.BorderBrush" Value="{DynamicResource KexMouseSelectionBackground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:ViewTypeBackgroundConverter x:Key="ViewTypeBackgroundConverter"/>
+    </UserControl.Resources>
+
+    <StatusBar x:Name="statusBar"
+               Margin="0"
+               Background="{DynamicResource ListerBackground}"
+               FontFamily="{Binding Options.FontFamily}"
+               FontSize="{Binding Options.FontSize}"
+               Foreground="{DynamicResource ListerForeground}"
+               Padding="5 0 12 0"
+               Style="{DynamicResource StatusbarStyle1}"
+               view1:VisibilityAnimation.AnimationType="Fade"
+               view1:VisibilityAnimation.SlideType="Bottom"
+               Visibility="{Binding Path=Options.StatusbarVisible,
+                                    Converter={StaticResource BoolToVisibilityConverter}}">
+        <StatusBarItem VerticalAlignment="Center" Padding="0 0 3 1">
+            <TextBlock Text="{Binding StatusString}" />
+        </StatusBarItem>
+        <StatusBarItem Padding="0 0 3 1">
+            <Border CornerRadius="3" BorderThickness="1" Background="{DynamicResource KexSelectionBackground}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="White"
+                               Padding="2,0,2,0"
+                               Text="Filter:"
+                               Visibility="{Binding Filter, Converter={StaticResource anyToVisibility}}" />
+                    <TextBlock Foreground="White"
+                               Padding="2,0,2,0"
+                               Text="{Binding Filter}"
+                               Visibility="{Binding Filter, Converter={StaticResource anyToVisibility}}" />
+                </StackPanel>
+            </Border>
+        </StatusBarItem>
+        <StatusBarItem HorizontalAlignment="Right" Padding="0 0 5 1">
+            <StackPanel Orientation="Horizontal">
+                <ContentControl Visibility="{Binding LoadingSpinnerVisibility}"
+                                Margin="3 0 0 0" 
+                                Foreground="{DynamicResource ListerForeground}"
+                                Style="{StaticResource spinnerStyle}">
+                    <iconPacks:FontAwesome Kind="SpinnerSolid" Width="15" Height="15" Spin="True" x:Name="LoadingSpinner" />
+                </ContentControl>
+                <Grid Visibility="{Binding SupportsMultiview, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Margin=" 0 0 0 0"
+                                BorderBrush="{StaticResource BackGroundBrush}"
+                                BorderThickness="0"
+                                Command="{Binding CommandRepository.ViewThumbnails}"
+                                Focusable="False"
+                                Background="{Binding CurrentViewMode, Converter={StaticResource ViewTypeBackgroundConverter}, ConverterParameter=Thumbnail}"
+                                Style="{StaticResource CommandButtonStyle}"
+                                >
+                            <iconPacks:FontAwesome Kind="ImagesSolid" Width="15" Height="15" />
+                        </Button>
+                        <Button Grid.Column="1"
+                                Margin="0 0 0 0"
+                                BorderBrush="{StaticResource BackGroundBrush}"
+                                BorderThickness="0"
+                                Command="{Binding CommandRepository.ViewDetails}"
+                                Focusable="False"
+                                Background="{Binding CurrentViewMode, Converter={StaticResource ViewTypeBackgroundConverter}, ConverterParameter=Detail}"
+                                Style="{StaticResource CommandButtonStyle}"
+                                >
+                            <iconPacks:FontAwesome Kind="ListAltSolid" Width="15" Height="15" />
+                        </Button>
+                </Grid>
+            </StackPanel>
+        </StatusBarItem>
+    </StatusBar>
+</UserControl>
