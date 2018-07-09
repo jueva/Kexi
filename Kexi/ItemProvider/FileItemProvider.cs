@@ -64,7 +64,6 @@ namespace Kexi.ItemProvider
                     }
                 }
 
-
                 if (items.Any())
                     return Workspace.Options.ShowHiddenItems ? items : items.Where(i => !i.IsSystemOrHidden);
 
@@ -128,8 +127,7 @@ namespace Kexi.ItemProvider
             };
         }
 
-
-        public static async void Rename(FileItem fileItem, string newName)
+        public static void Rename(FileItem fileItem, string newName)
         {
             if (fileItem != null)
                 if (fileItem.ItemType == ItemType.Container)
@@ -149,7 +147,7 @@ namespace Kexi.ItemProvider
                     var parent = di.Directory;
                     if (parent != null)
                     {
-                        var dest                               = Path.Combine(parent.FullName, $"{newName}");
+                        var dest = Path.Combine(parent.FullName, $"{newName}");
                         if (fileItem.Path.Equals(dest, StringComparison.OrdinalIgnoreCase))
                             return;
                         di.MoveTo(dest);
@@ -159,14 +157,14 @@ namespace Kexi.ItemProvider
                 }
         }
 
-        public static (int, int) GetRenameSelectionBorder(FileItem _targetItem)
+        public static (int, int) GetRenameSelectionBorder(FileItem targetItem)
         {
             var isDirectory                      = false;
-            if (_targetItem != null) isDirectory = _targetItem.ItemType == ItemType.Container;
+            if (targetItem != null) isDirectory = targetItem.ItemType == ItemType.Container;
 
-            var endIndex = _targetItem.Name.LastIndexOf('.');
+            var endIndex = targetItem.Name.LastIndexOf('.');
             if (endIndex == -1 || isDirectory)
-                endIndex = _targetItem.Name.Length;
+                endIndex = targetItem.Name.Length;
 
             return (0, endIndex);
         }
