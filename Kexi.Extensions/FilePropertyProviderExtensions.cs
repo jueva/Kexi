@@ -8,8 +8,8 @@ using Kexi.ViewModel.Item;
 
 namespace Kexi.Extensions
 {
-    [Export(typeof(IExtendedPropertyProvider))]
-    [ExportPropertyProvider(typeof(FileItem), "TestPropertyProvider")]
+    //[Export(typeof(IExtendedPropertyProvider))]
+    //[ExportPropertyProvider(typeof(FileItem), "TestPropertyProvider")]
     public class TestPropertyExtension : IExtendedPropertyProvider
     {
         public string Description => "Just a test";

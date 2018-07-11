@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF66CB2C-C81C-4BBE-BDA1-5A34556F769B}"
 	ProjectSection(SolutionItems) = preProject
 		Settings.StyleCop = Settings.StyleCop
-		todo.txt = todo.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D0617BC5-BF60-4BF9-87C3-CB9498C87081}"

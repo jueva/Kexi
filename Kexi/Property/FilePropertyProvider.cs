@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Kexi.Common;
 using Kexi.Composition;
 using Kexi.Files;
 using Kexi.ViewModel;
@@ -65,7 +66,13 @@ namespace Kexi.Property
 
         protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
-            if (Item.IsNetwork()) return await GetNetworkTopItems();
+            if (Item.IsFileShare)
+            {
+                var nameOnly = new ObservableCollection<PropertyItem> {new PropertyItem("Name", Item.DisplayName)};
+                return await Task.FromResult(nameOnly);
+            }
+            if (Item.IsNetwork()) 
+                return await GetNetworkTopItems();
 
             var tempProp = new ObservableCollection<PropertyItem>();
             if ((CancellationTokenSource?.IsCancellationRequested ?? true) || Item == null)
@@ -82,6 +89,11 @@ namespace Kexi.Property
 
         protected override async Task<BitmapSource> GetThumbnail()
         {
+            if (Item.IsFileShare)
+            {
+                return Utils.GetImageFromRessource("share.png");
+            }
+
             if (Item.IsNetwork())
             {
                 ThumbMaxHeight = 80;
@@ -98,7 +110,11 @@ namespace Kexi.Property
             if (CancellationTokenSource?.IsCancellationRequested ?? Item == null)
                 return new ObservableCollection<PropertyItem>();
 
-            if (Item.IsNetwork()) return await GetNetworkBottomItems();
+            if (Item.IsFileShare)
+                return new ObservableCollection<PropertyItem>();
+
+            if (Item.IsNetwork()) 
+                return await GetNetworkBottomItems();
 
             async Task<ObservableCollection<PropertyItem>> FetchProperties()
             {

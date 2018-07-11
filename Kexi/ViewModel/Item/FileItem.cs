@@ -38,7 +38,7 @@ namespace Kexi.ViewModel.Item
                     SetDetails();
                 return _details;
             }
-            private set
+            internal set
             {
                 _details = value;
                 OnPropertyChanged();
@@ -96,7 +96,7 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-
+        public  bool IsFileShare { get; set; }
         public string AttributeString => _attributeString ?? (_attributeString = GetAttributeString());
 
         public string Name => System.IO.Path.GetFileName(Path);

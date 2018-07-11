@@ -40,9 +40,11 @@ namespace Kexi.UI.Converters
                 foreach (var p in path.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     if (string.IsNullOrEmpty(currentPath) && path.StartsWith(@"\\"))
+                    {
+                        parts.Add(new PathPart("Network", null));
                         currentPath = @"\\";
+                    }
                     currentPath += p + "\\";
-                    ;
                     var part = new PathPart(p, currentPath);
                     parts.Add(part);
                 }

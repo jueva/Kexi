@@ -445,6 +445,9 @@
   <ItemGroup>
     <Resource Include="keyBindings.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\share.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\

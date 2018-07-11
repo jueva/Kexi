@@ -1,14 +1,26 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Kexi.Common
 {
     public static class Utils
     {
+
+        public static BitmapImage GetImageFromRessource(string file)
+        {
+            return new BitmapImage(GetMediaUrl(file));
+        }
+        public static Uri GetMediaUrl(string file)
+        {
+            return new Uri($"pack://application:,,,/Kexi.UI;Component/Media/{file}");
+        }
+
         public static T FindParent<T>(DependencyObject current) where T : class
         {
             var parent = VisualTreeHelper.GetParent(current);

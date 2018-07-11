@@ -15,6 +15,7 @@ using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
 using Kexi.ViewModel.Item;
+using Microsoft.WindowsAPICodePack.Shell;
 using Clipboard = System.Windows.Clipboard;
 
 namespace Kexi.ViewModel.Lister
@@ -69,7 +70,12 @@ namespace Kexi.ViewModel.Lister
                 Path = path;
                 Refresh();
             }
-            else if (!breadPath.StartsWith(@"\\"))
+            else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
+            {
+                Path = breadPath;
+                Refresh();
+            }
+            else
             {
                 NotificationHost.AddError(breadPath + " could not be found.");
                 return false;

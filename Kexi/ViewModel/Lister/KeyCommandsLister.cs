@@ -20,7 +20,6 @@ namespace Kexi.ViewModel.Lister
         public KeyCommandsLister(Workspace       workspace,     INotificationHost                      notificationHost, Options options, CommandRepository commandRepository,
             [ImportMany] IEnumerable<KeyHandler> keyHandlerses, [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
         {
-            _keyHandlers = keyHandlerses;
             _commands    = commands;
             Title        = PathName = "Key Bindings";
         }
@@ -36,11 +35,10 @@ namespace Kexi.ViewModel.Lister
 
         public override  string                    ProtocolPrefix => "Keybindings";
         private readonly IEnumerable<IKexiCommand> _commands;
-        private readonly IEnumerable<KeyHandler>   _keyHandlers;
 
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
-            var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "-")).ToList();
+            var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "")).ToList();
             foreach (var c in allCommands.ToImmutableArray())
             foreach (var b in KeyHandler.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
             {

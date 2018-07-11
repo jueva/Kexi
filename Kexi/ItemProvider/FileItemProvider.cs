@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
@@ -78,14 +81,51 @@ namespace Kexi.ItemProvider
         {
             if (path.StartsWith(@"\\") && !Regex.IsMatch(path, @"^\\\\.+\\.+$"))
             {
-                var folder = ShellObject.FromParsingName(path) as ShellFolder;
-                return folder?.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)).ToList();
+                return GetShares(path);
             }
 
             return Directory.EnumerateDirectories(path).Select(p => new FileItem(p, ItemType.Container, itemProvider: this))
                 .Concat(
                     Directory.EnumerateFiles(path).Select(p => new FileItem(p, ItemType.Item, itemProvider: this))
                 );
+        }
+
+        private IEnumerable<FileItem> GetShares(string path)
+        {
+            var folder = ShellObject.FromParsingName(path) as ShellFolder;
+            if (folder == null)
+                yield break;
+            
+            var thumb = Utils.GetImageFromRessource("share.png");
+
+            ImmutableArray<FileItem> items;
+            try
+            {
+                items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
+                {
+                    Thumbnail = thumb,
+                    IsFileShare = true
+                }).ToImmutableArray();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                PinvokeWindowsNetworking.ConnectToRemote(path, "", "", true);
+                items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
+                {
+                    IsFileShare = true,
+                    Thumbnail = thumb
+                }).ToImmutableArray();
+            }
+
+            foreach (var fi in items)
+            {
+                fi.Details = new FileDetailItem(fi, CancellationToken.None)
+                {
+                    Type = "Share"
+                };
+                yield return fi;
+            }
+
         }
 
         public static string GetParentContainer(string path)

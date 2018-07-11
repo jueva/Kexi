@@ -1,3 +1,4 @@
+Dont show details for share (like Windows Explorer)
 Listerview Itemcontainerstyle über xaml, nicht converter
 Searchlister no Context Menü
 IFileExtendedPropertyProvider

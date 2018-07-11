@@ -37,9 +37,6 @@ namespace Kexi.ViewModel.Lister
             return Task.FromResult(temp);
         }
 
-        public override void DoAction(ConnectionItem item)
-        {
-        }
     }
 }
 
