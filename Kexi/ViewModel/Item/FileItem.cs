@@ -119,12 +119,12 @@ namespace Kexi.ViewModel.Item
 
         public void Rename(string newName)
         {
-            FileItemProvider.Rename(this, newName);
+            FileHelper.Rename(this, newName);
         }
 
         public (int, int) GetRenameSelectonBorder()
         {
-            return FileItemProvider.GetRenameSelectionBorder(this);
+            return FileHelper.GetRenameSelectionBorder(this);
         }
 
         private readonly FileItemProvider _itemProvider;

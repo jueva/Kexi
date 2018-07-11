@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -9,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
@@ -27,17 +25,20 @@ namespace Kexi.ItemProvider
         public FileItemProvider(Workspace workspace)
         {
             CancellationTokenSource = new CancellationTokenSource();
-            Workspace = workspace;
+            Workspace               = workspace;
         }
 
         public Workspace Workspace { get; }
 
         public CancellationTokenSource CancellationTokenSource { get; private set; }
-        public CancellationTokenSource OldCancellationTokenSource { get; private set; }
+
+        public void Dispose()
+        {
+            CancellationTokenSource?.Dispose();
+        }
 
         public void CancelCurrentTasks()
         {
-            OldCancellationTokenSource = CancellationTokenSource;
             CancellationTokenSource.Cancel();
             CancellationTokenSource = new CancellationTokenSource();
         }
@@ -70,19 +71,21 @@ namespace Kexi.ItemProvider
                 if (items.Any())
                     return Workspace.Options.ShowHiddenItems ? items : items.Where(i => !i.IsSystemOrHidden);
 
-                var parent = Directory.GetParent(path);
-                var item = new FileItem(parent?.FullName, ItemType.Container, "..");
-                items = new[] {item};
-                return items;
+                return GetEmptyDirectoryItems(path);
             });
+        }
+
+        private static IEnumerable<FileItem> GetEmptyDirectoryItems(string path)
+        {
+            var parent = Directory.GetParent(path);
+            var item   = new FileItem(parent?.FullName, ItemType.Container, "..");
+            var items  = new[] {item};
+            return items;
         }
 
         private IEnumerable<FileItem> GetItemsInternal(string path, bool showHidden = true)
         {
-            if (path.StartsWith(@"\\") && !Regex.IsMatch(path, @"^\\\\.+\\.+$"))
-            {
-                return GetShares(path);
-            }
+            if (path.StartsWith(@"\\") && !Regex.IsMatch(path, @"^\\\\.+\\.+$")) return GetShares(path);
 
             return Directory.EnumerateDirectories(path).Select(p => new FileItem(p, ItemType.Container, itemProvider: this))
                 .Concat(
@@ -95,7 +98,7 @@ namespace Kexi.ItemProvider
             var folder = ShellObject.FromParsingName(path) as ShellFolder;
             if (folder == null)
                 yield break;
-            
+
             var thumb = Utils.GetImageFromRessource("share.png");
 
             ImmutableArray<FileItem> items;
@@ -103,7 +106,7 @@ namespace Kexi.ItemProvider
             {
                 items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
                 {
-                    Thumbnail = thumb,
+                    Thumbnail   = thumb,
                     IsFileShare = true
                 }).ToImmutableArray();
             }
@@ -113,7 +116,7 @@ namespace Kexi.ItemProvider
                 items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
                 {
                     IsFileShare = true,
-                    Thumbnail = thumb
+                    Thumbnail   = thumb
                 }).ToImmutableArray();
             }
 
@@ -125,7 +128,6 @@ namespace Kexi.ItemProvider
                 };
                 yield return fi;
             }
-
         }
 
         public static string GetParentContainer(string path)
@@ -137,6 +139,7 @@ namespace Kexi.ItemProvider
                 var index = path.LastIndexOf(@"\", StringComparison.Ordinal);
                 return index < 0 ? null : path.Substring(0, index);
             }
+
             var parent = Directory.GetParent(path);
             return parent?.FullName;
         }
@@ -144,7 +147,7 @@ namespace Kexi.ItemProvider
         private static ItemProviderResult<FileItem> GetRootItems()
         {
             IEnumerable<FileItem> rootItems = null;
-            string path = null;
+            string                path      = null;
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var compi = new Shell32.Shell().NameSpace(ShellSpecialFolderConstants.ssfDRIVES);
@@ -155,64 +158,16 @@ namespace Kexi.ItemProvider
 
                 return new ItemProviderResult<FileItem>
                 {
-                    Items = rootItems,
+                    Items    = rootItems,
                     PathName = path
                 };
             });
 
             return new ItemProviderResult<FileItem>
             {
-                Items = rootItems,
+                Items    = rootItems,
                 PathName = path
             };
-        }
-
-        public static void Rename(FileItem fileItem, string newName)
-        {
-            if (fileItem != null)
-                if (fileItem.ItemType == ItemType.Container)
-                {
-                    var di     = new DirectoryInfo(fileItem.Path);
-                    var parent = di.Parent ?? di.Root;
-                    var dest   = Path.Combine(parent.FullName, newName);
-                    if (fileItem.Path.Equals(dest, StringComparison.OrdinalIgnoreCase))
-                        return;
-                    di.MoveTo(dest);
-                    fileItem.Path = dest;
-                    fileItem.DisplayName = newName;
-                }
-                else
-                {
-                    var di     = new FileInfo(fileItem.Path);
-                    var parent = di.Directory;
-                    if (parent != null)
-                    {
-                        var dest = Path.Combine(parent.FullName, $"{newName}");
-                        if (fileItem.Path.Equals(dest, StringComparison.OrdinalIgnoreCase))
-                            return;
-                        di.MoveTo(dest);
-                        fileItem.Path = dest;
-                        fileItem.DisplayName = newName;
-                    }
-                }
-        }
-
-        public static (int, int) GetRenameSelectionBorder(FileItem targetItem)
-        {
-            var isDirectory                      = false;
-            if (targetItem != null) isDirectory = targetItem.ItemType == ItemType.Container;
-
-            var endIndex = targetItem.Name.LastIndexOf('.');
-            if (endIndex == -1 || isDirectory)
-                endIndex = targetItem.Name.Length;
-
-            return (0, endIndex);
-        }
-
-        public void Dispose()
-        {
-            CancellationTokenSource?.Dispose();
-            OldCancellationTokenSource?.Dispose();
         }
     }
 }
