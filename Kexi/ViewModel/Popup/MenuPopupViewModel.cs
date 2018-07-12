@@ -25,7 +25,6 @@ namespace Kexi.ViewModel.Popup
         private MenuCommandBoundItem[]            _allItems;
         private IEnumerable<MenuCommandBoundItem> _level0Items;
         private bool                              _selected;
-
         public override void Open()
         {
             var menuImg = Utils.GetImageFromRessource("menu.png");

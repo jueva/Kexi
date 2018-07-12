@@ -4,12 +4,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Kexi.Common;
-using Kexi.UI.Base;
 using Kexi.ViewModel;
 
 namespace Kexi.UI.View
 {
-    public partial class PopupView : BaseControl<PopupViewModel>
+    public partial class PopupView
     {
         public PopupView()
         {
@@ -23,21 +22,24 @@ namespace Kexi.UI.View
             get { return new RelayCommand(c => { ViewModel.IsOpen = false; }); }
         }
 
+        private FrameworkElement _adressbar;
+        private FrameworkElement _dockManager;
+
         private TextBox          _input;
-        private FrameworkElement adressbar;
-        private FrameworkElement dockManager;
-        private Border           InputBorder;
-        private FrameworkElement ribbonbar;
+        private Border           _inputBorder;
+        private FrameworkElement _ribbonbar;
 
         private CustomPopupPlacement[] GetPopupPlacement(Size popupSize, Size targetSize, Point offset)
         {
             {
                 var x = targetSize.Width - popupSize.Width - 4;
-                if (ViewModel.Options.CenterPopup)
-                    x = x / 2;
+                var y = offset.Y - 3;
+                if (ViewModel.Options.CenterPopup && !ViewModel.MenuButtonPlacement)
+                    x                                                                      =  x / 2;
+                else if (ViewModel.MenuButtonPlacement && ViewModel.Options.CenterPopup) y += 26;
                 return new[]
                 {
-                    new CustomPopupPlacement(new Point(x, offset.Y - 3), PopupPrimaryAxis.Horizontal)
+                    new CustomPopupPlacement(new Point(x, y), PopupPrimaryAxis.Horizontal)
                 };
             }
         }
@@ -49,7 +51,7 @@ namespace Kexi.UI.View
                 ViewModel.Workspace.TitleTextBox    = TitleText;
                 ViewModel.Workspace.TitleTextBorder = TitleTextBorder;
                 _input                              = ViewModel.Workspace.TitleTextBox;
-                InputBorder                         = ViewModel.Workspace.TitleTextBorder;
+                _inputBorder                        = ViewModel.Workspace.TitleTextBorder;
             }
             else
             {
@@ -67,10 +69,13 @@ namespace Kexi.UI.View
 
         private void SetPlacement()
         {
+            if (Application.Current.MainWindow == null) //the warnings..
+                return;
+
             popup.Placement = ViewModel.MousePlacement ? PlacementMode.Mouse : PlacementMode.Custom;
-            dockManager     = ((FrameworkElement) VisualParent).FindName("DockManager") as FrameworkElement;
-            adressbar       = ((FrameworkElement) VisualParent).FindName("AdressBar") as FrameworkElement;
-            ribbonbar       = ((FrameworkElement) VisualParent).FindName("RibbonBar") as FrameworkElement;
+            _dockManager    = ((FrameworkElement) VisualParent).FindName("DockManager") as FrameworkElement;
+            _adressbar      = ((FrameworkElement) VisualParent).FindName("AdressBar") as FrameworkElement;
+            _ribbonbar      = ((FrameworkElement) VisualParent).FindName("RibbonBar") as FrameworkElement;
             if (ViewModel.Workspace.Options.CenterPopup && ViewModel.Workspace.Options.GlobalAdressbarVisible)
             {
                 popup.PlacementTarget = Application.Current.MainWindow;
@@ -78,7 +83,7 @@ namespace Kexi.UI.View
             }
             else
             {
-                popup.PlacementTarget = ribbonbar != null && ribbonbar.Visibility == Visibility.Visible ? ribbonbar : adressbar != null && adressbar.Visibility == Visibility.Visible ? adressbar : dockManager;
+                popup.PlacementTarget = _ribbonbar != null && _ribbonbar.Visibility == Visibility.Visible ? _ribbonbar : _adressbar != null && _adressbar.Visibility == Visibility.Visible ? _adressbar : _dockManager;
                 popup.MaxHeight       = Application.Current.MainWindow.ActualHeight - 23;
             }
         }
@@ -96,17 +101,16 @@ namespace Kexi.UI.View
                 if (model?.IsOpen ?? false)
                 {
                     SetPlacement();
-                    InputBorder.Visibility = Visibility.Visible;
+                    _inputBorder.Visibility = Visibility.Visible;
                     RegisterKeyHandlers(model);
                     _input.Focus();
-                    ShowInput();
                 }
                 else
                 {
                     ViewModel?.Workspace?.FocusListView(false);
                     UnregisterKeyHandlers(model);
                     model?.Close();
-                    InputBorder.Visibility = Visibility.Collapsed;
+                    _inputBorder.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -147,11 +151,6 @@ namespace Kexi.UI.View
 
         private void _listView_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ItemSelected(sender, e);
-        }
-
-        private void ItemSelected(object sender, MouseButtonEventArgs e)
-        {
             if (Utils.FindParent<GridViewColumnHeader>(e.OriginalSource as DependencyObject) != null)
                 return;
 
@@ -160,28 +159,6 @@ namespace Kexi.UI.View
                 ViewModel.MouseSelection(((FrameworkElement) e.OriginalSource).DataContext);
                 e.Handled = true;
             }
-        }
-
-        protected void ShowInput()
-        {
-            //if (ViewModel.Options.PopupAnimation != PopupAnimation.None)
-            //{
-            //    var storyboard = new Storyboard();
-            //    var duration = TimeSpan.FromMilliseconds(500);
-
-            //    var fadeAnimation = new DoubleAnimation
-            //    {
-            //        From = 0.0,
-            //        To = 1.0,
-            //        Duration = new Duration(duration)
-            //    };
-            //    Storyboard.SetTarget(fadeAnimation, InputBorder);
-            //    Storyboard.SetTargetProperty(fadeAnimation, new PropertyPath(OpacityProperty));
-            //    storyboard.Children.Add(fadeAnimation);
-            //    storyboard.Begin(this);
-            //}
-
-            InputBorder.Visibility = Visibility.Visible;
         }
     }
 }

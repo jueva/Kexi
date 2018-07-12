@@ -27,7 +27,7 @@ namespace Kexi.ViewModel
 
         protected PopupViewModel()
         {
-            KexContainer.Container.Compose(this); //Change
+            //KexContainer.Container.Compose(this); //Change
             TitleVisible        = Options.PopupTitleVisible;
             _hideInputAtStartup = true;
         }
@@ -154,6 +154,18 @@ namespace Kexi.ViewModel
             }
         }
 
+        public bool MenuButtonPlacement
+        {
+            get => _menuButtonPlacement;
+            set
+            {
+                if (value == _menuButtonPlacement)
+                    return;
+                _menuButtonPlacement = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool   _handlerRegistered;
         private Visual _headerIcon;
         private bool   _hideInputAtStartup;
@@ -164,6 +176,7 @@ namespace Kexi.ViewModel
         private string          _text;
         private string          _title;
         private bool            _titleVisible;
+        private bool _menuButtonPlacement;
 
         protected void SetHeaderIconByKey(string key)
         {
@@ -376,7 +389,7 @@ namespace Kexi.ViewModel
             ItemSelected(o as T);
         }
 
-        public void FocusInput()
+        protected void FocusInput()
         {
             FocusTextbox?.Invoke();
         }

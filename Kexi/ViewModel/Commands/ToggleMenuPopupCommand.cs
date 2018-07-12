@@ -26,6 +26,15 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
+            if (parameter is string p && p == "FromButton")
+            {
+                _menuPopup.MenuButtonPlacement = true;
+            }
+            else
+            {
+                _menuPopup.MenuButtonPlacement = false;
+            }
+
             if (_workspace.PopupViewModel is MenuPopupViewModel && _workspace.PopupViewModel.IsOpen)
             {
                 _workspace.PopupViewModel.IsOpen = false;

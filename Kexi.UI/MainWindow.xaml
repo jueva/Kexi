@@ -77,7 +77,7 @@
                         </TextBox>
                     </StackPanel>
                 </Border>
-                <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" Focusable="False"
+                <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" CommandParameter="FromButton" Focusable="False"
                         Margin="0 2 3 3"
                         Style="{StaticResource CommandButtonStyle}">
 
