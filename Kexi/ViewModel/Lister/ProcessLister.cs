@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Lister
         public ProcessLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
             : base(workspace, notificationHost, options, commandRepository)
         {
-            Title     = PathName = "Processes";
+            Title     = PathName = Path = "Processes";
             Thumbnail = _thumb.Value;
         }
 
@@ -80,7 +80,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        private readonly Lazy<BitmapImage> _thumb = new Lazy<BitmapImage>(() => new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/process.png")));
+        private readonly Lazy<BitmapImage> _thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("process.png"));
 
         private ProcessItem _processItem;
 

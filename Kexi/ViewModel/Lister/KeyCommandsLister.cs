@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Lister
             [ImportMany] IEnumerable<KeyHandler> keyHandlerses, [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
         {
             _commands    = commands;
-            Title        = PathName = "Key Bindings";
+            Title        = PathName = Path ="Key Bindings";
         }
 
         public override bool ShowInMenu => true;

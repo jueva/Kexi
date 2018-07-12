@@ -28,7 +28,7 @@ namespace Kexi.ViewModel.Popup
 
         public override void Open()
         {
-            var menuImg = new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/menu.png"));
+            var menuImg = Utils.GetImageFromRessource("menu.png");
             _allItems    = Traverse(MenuCommandBoundItems(menuImg), i => i.Items).ToArray();
             _level0Items = _allItems.Where(i => i.Level == 0);
             SetHeaderIconByKey("appbar_lines_horizontal_4");

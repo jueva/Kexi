@@ -14,6 +14,7 @@ namespace Kexi.ViewModel.Popup
         public ConsoleCommandPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler) : base(workspace, options, mouseHandler)
         {
             Title              = "Command";
+            TitleVisible = true;
             HideInputAtStartup = false;
         }
 
@@ -28,9 +29,9 @@ namespace Kexi.ViewModel.Popup
         public override void ItemSelected(ConsoleCommandItem selectedItem)
         {
             CommandRepository.GetCommandByName(nameof(ExecuteConsoleCommand)).Execute(ItemSelectedFromListView
-                ? selectedItem.Command
+                ? selectedItem?.Command
                 : Text);
-            IsOpen = false;
+            Text = "";
             base.ItemSelected(selectedItem);
         }
 

@@ -43,7 +43,7 @@ namespace Kexi.ViewModel.Lister
                     SearchFinished?.Invoke();
                 };
             Items = new ObservableCollection<FileItem>();
-            Thumbnail = new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/search.png"));
+            Thumbnail = Utils.GetImageFromRessource("search.png");
         }
 
         protected override void GotTheView(ILister obj)

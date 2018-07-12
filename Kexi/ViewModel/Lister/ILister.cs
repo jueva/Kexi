@@ -53,6 +53,7 @@ namespace Kexi.ViewModel.Lister
         event EventHandler GotItems;
 
         void SetSelection(IItem item, bool selected);
+        void ClearSelection();
     }
 
     public interface ILister<T> : ILister

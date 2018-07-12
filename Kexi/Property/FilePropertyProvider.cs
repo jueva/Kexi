@@ -89,6 +89,7 @@ namespace Kexi.Property
 
         protected override async Task<BitmapSource> GetThumbnail()
         {
+            ThumbMaxHeight = 80;
             if (Item.IsFileShare)
             {
                 return Utils.GetImageFromRessource("share.png");
@@ -96,11 +97,11 @@ namespace Kexi.Property
 
             if (Item.IsNetwork())
             {
-                ThumbMaxHeight = 80;
                 return Item.Details.Thumbnail;
             }
 
-            ThumbMaxHeight = IsPicture ? 120 : 80;
+            if (IsPicture)
+                ThumbMaxHeight = 120;
             await Item.Details.SetLargeThumbAsync();
             return Item.Details.LargeThumbnail;
         }

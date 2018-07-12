@@ -71,7 +71,7 @@ namespace Kexi.View
                     if (col.Type == ColumnType.Image)
                     {
                         gc.CellTemplate = GetImageDataTemplate(col);
-                        if (col.BindingExpression == "Thumbnail")
+                        if (col.BindingExpression == "Thumbnail" || col.BindingExpression == "Details.Thumbnail")
                         {
                             gc.Width = lister.Workspace.Options.FontSize * 2;
                         }

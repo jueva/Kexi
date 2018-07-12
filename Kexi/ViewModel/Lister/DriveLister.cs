@@ -22,7 +22,7 @@ namespace Kexi.ViewModel.Lister
         [ImportingConstructor]
         public DriveLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository) : base(workspace, notificationHost, options, commandRepository)
         {
-            Title = PathName = "Drives";
+            Title = PathName = Path = "Drives";
         }
 
         public override IEnumerable<Column> Columns { get; } =

@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Kexi.Common;
 using Kexi.Composition;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
@@ -28,19 +30,25 @@ namespace Kexi.Property
 
         protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
+            if (Item.Details == null)
+                return Task.FromResult(new ObservableCollection<PropertyItem>());
+
             var props = new ObservableCollection<PropertyItem>(new[]
             {
-                new PropertyItem("Memory", Item.Details?.Memory),
-                new PropertyItem("Cpu", Item.Details?.Cpu),
-                new PropertyItem("Pid", Item.Details?.Pid),
-                new PropertyItem("Description", Item.Details?.Description)
+                new PropertyItem("Memory", Item.Details.Memory),
+                new PropertyItem("Cpu", Item.Details.Cpu),
+                new PropertyItem("Pid", Item.Details.Pid),
+                new PropertyItem("Description", Item.Details.Description)
             });
             return Task.FromResult(props);
         }
 
-        protected override Task<BitmapSource> GetThumbnail()
+        protected override async Task<BitmapSource> GetThumbnail()
         {
-            return Task.FromResult(Item.Thumbnail);
+            if (string.IsNullOrEmpty(Item?.FileName))
+                return default;
+
+            return await ThreadHelper.StartTaskWithSingleThreadAffinity(()=>ThumbnailProvider.GetThumbnailSource(Item.FileName, 256, 256, ThumbnailOptions.None, CancellationToken.None));
         }
     }
 }

@@ -9,7 +9,6 @@ using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Composition;
 using Kexi.Interfaces;
-using Kexi.Property;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 
@@ -20,20 +19,15 @@ namespace Kexi.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ServiceLister : BaseLister<ServiceItem>
     {
-        private static readonly Lazy<BitmapImage> Thumb = new Lazy<BitmapImage>(() => new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/service.png")));
+        private static readonly Lazy<BitmapImage> Thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("service.png"));
 
         [ImportingConstructor]
         public ServiceLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandrepository)
             : base(workspace, notificationHost, options, commandrepository)
         {
-            Title = PathName = Path = "Services";
-            Thumbnail = Thumb.Value;
-            GotItems += ServiceLister_GotItems;
-        }
-
-        private void ServiceLister_GotItems(object sender, EventArgs e)
-        {
-            ItemsView.CurrentChanged += ItemsView_CurrentChanged;
+            Title     =  PathName = Path = "Services";
+            Thumbnail =  Thumb.Value;
+            GotItems  += ServiceLister_GotItems;
         }
 
         [ExportContextMenuCommand(typeof(ServiceLister), "Stop Service")]
@@ -67,12 +61,17 @@ namespace Kexi.ViewModel
         public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("", "Thumbnail", ColumnType.Image),
-            new Column("Name", "DisplayName") {Width = 300},
+            new Column("Name", "DisplayName") {Width        = 300},
             new Column("Description", "Description") {Width = 300},
-            new Column("Status", "Status") {Width = 300}
+            new Column("Status", "Status") {Width           = 300}
         };
 
         public override string ProtocolPrefix => "services";
+
+        private void ServiceLister_GotItems(object sender, EventArgs e)
+        {
+            ItemsView.CurrentChanged += ItemsView_CurrentChanged;
+        }
 
 
         private async void startService(ServiceItem item)
@@ -107,7 +106,7 @@ namespace Kexi.ViewModel
 
         protected override async Task<IEnumerable<ServiceItem>> GetItems()
         {
-            var services =  await GetServices();
+            var services = await GetServices();
             return services;
         }
 
@@ -126,6 +125,5 @@ namespace Kexi.ViewModel
             var services = await Task.Run(() => ServiceController.GetServices());
             return services.Select(s => new ServiceItem(s));
         }
-
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
@@ -22,8 +20,8 @@ namespace Kexi.ViewModel.Lister
             : base(workspace, notificationHost, options, commandRepository)
         {
             _propertyEditorPopup = propertyEditorPopup;
-            Title                = PathName = "Settings";
-            Thumbnail            = new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/process.png"));
+            Title                = PathName = Path = "Settings";
+            Thumbnail            = Utils.GetImageFromRessource("process.png");
         }
 
         public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>

@@ -336,6 +336,11 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
+        public void ClearSelection()
+        {
+            Workspace.ActiveLister.SelectedItems.ToArray().Foreach(i => Workspace.ActiveLister.SetSelection(i, false));
+        }
+
         public void SetSelection(IItem item, bool selected)
         {
             if (item == null || View == null)

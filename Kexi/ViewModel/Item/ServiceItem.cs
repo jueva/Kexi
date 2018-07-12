@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
+using Kexi.Common;
 
 namespace Kexi.ViewModel.Item
 {
@@ -58,6 +59,6 @@ namespace Kexi.ViewModel.Item
 
         public ServiceController ServiceController { get; }
 
-        private readonly Lazy<BitmapImage> thumb = new Lazy<BitmapImage>(() => new BitmapImage(new Uri("pack://application:,,,/Kexi.UI;Component/Media/service.png"))); 
+        private readonly Lazy<BitmapImage> thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("service.png")); 
     }
 }

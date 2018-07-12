@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Linq;
 using Kexi.Common;
 using Kexi.Interfaces;
@@ -13,28 +12,28 @@ namespace Kexi.ViewModel.Popup
         [ImportingConstructor]
         public SortPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler) : base(workspace, options, mouseHandler)
         {
-            Title = "Sort";
+            Title        = "Sort";
             TitleVisible = true;
         }
 
         public override void Open()
         {
-            _allColumns = Workspace.ActiveLister.Columns.Where(co => !string.IsNullOrEmpty(co.Header))
+            var allColumns = Workspace.ActiveLister.Columns.Where(co => !string.IsNullOrEmpty(co.Header))
                 .ToDictionary(co => co.Header, co => co.BindingExpression);
 
             SetHeaderIconByKey("appbar_sort");
-            BaseItems = _allColumns.Select(s => new BaseItem(s.Key));
+            BaseItems = allColumns.Select(s => new BaseItem(s.Key));
             base.Open();
         }
 
-        protected Dictionary<string, string> _allColumns;
 
         public override void ItemSelected(BaseItem selectedItem)
         {
             var position = Workspace.ActiveLister.View.ListView.SelectedIndex;
             new SortHandler(Workspace.ActiveLister).HandleSorting(selectedItem);
-            var item  = Workspace.ActiveLister.View.ListView.Items.GetItemAt(position) as IItem;
-            Workspace.ActiveLister.View.FocusItem(item);
+            var item = Workspace.ActiveLister.View.ListView.Items.GetItemAt(position) as IItem;
+            Workspace.ActiveLister.ClearSelection();
+            Workspace.ActiveLister.SetSelection(item, true);
             Text   = "";
             IsOpen = false;
         }

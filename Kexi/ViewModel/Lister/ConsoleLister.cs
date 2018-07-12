@@ -5,15 +5,18 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Kexi.Common;
-using Kexi.Common.KeyHandling;
 using Kexi.Composition;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Item;
+using Kexi.ViewModel.Popup;
+using ThreadState = System.Diagnostics.ThreadState;
 
 namespace Kexi.ViewModel.Lister
 {
@@ -22,21 +25,13 @@ namespace Kexi.ViewModel.Lister
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ConsoleLister : BaseLister<ConsoleItem>
     {
-        private readonly object locker = new object();
-
-        private string _workingDirectory;
-
-        private Process currentProcess;
-
-        private bool firstFocus;
-
         [ImportingConstructor]
         public ConsoleLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
             : base(workspace, notificationHost, options, commandRepository)
         {
-            Title =  PathName = "Console";
+            Title = PathName = Path = "Console";
             Items = new ObservableCollection<ConsoleItem>();
-            BindingOperations.EnableCollectionSynchronization(Items, locker);
+            BindingOperations.EnableCollectionSynchronization(Items, _locker);
             CommandHistory = new Stack<ConsoleCommandItem>();
         }
 
@@ -51,11 +46,11 @@ namespace Kexi.ViewModel.Lister
                     if (!(args?.Lister is ConsoleLister lister))
                         return;
 
-                    if (currentProcess != null)
+                    if (_currentProcess != null)
                     {
-                        currentProcess.CancelOutputRead();
-                        currentProcess.CancelErrorRead();
-                        currentProcess.Close();
+                        _currentProcess.CancelOutputRead();
+                        _currentProcess.CancelErrorRead();
+                        _currentProcess.Close();
                         lister.Items.Add(new ConsoleItem("Break by User") {Highlighted = true});
                     }
                 });
@@ -73,7 +68,7 @@ namespace Kexi.ViewModel.Lister
                     if (!(args?.Lister is ConsoleLister lister))
                         return;
 
-                    var maxIndex = lister.Items.Count() - 1;
+                    var maxIndex     = lister.Items.Count() - 1;
                     var currentIndex = lister.ItemsView.CurrentPosition + 1;
                     while (currentIndex <= maxIndex)
                     {
@@ -83,7 +78,7 @@ namespace Kexi.ViewModel.Lister
                     }
 
                     var focusIndex = currentIndex < maxIndex ? currentIndex : currentIndex - 1;
-                    var item = lister.Items[focusIndex];
+                    var item       = lister.Items[focusIndex];
                     lister.View.FocusItem(item);
                     lister.View.ListView.ScrollIntoView(item);
                 });
@@ -108,6 +103,7 @@ namespace Kexi.ViewModel.Lister
                             break;
                         currentIndex--;
                     }
+
                     if (currentIndex >= 0)
                     {
                         var item = lister.Items[currentIndex];
@@ -128,18 +124,14 @@ namespace Kexi.ViewModel.Lister
                         var args = c as CommandArgument;
                         if (!(args?.Lister is ConsoleLister lister))
                             return;
-                        ;
-                        if (lister != null)
-                        {
-                            lister.Items.Clear();
-                            lister.Items.Add(new ConsoleItem("")); //no key-events on empty list
-                        }
+                        lister.Items.Clear();
+                        lister.Items.Add(new ConsoleItem("")); //no key-events on empty list
                     }
                 );
             }
         }
 
-        public string Command { get; set; }
+        public string                Command   { get; set; }
         public IEnumerable<FileItem> Selection { get; set; }
 
         public Stack<ConsoleCommandItem> CommandHistory { get; }
@@ -163,14 +155,16 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        //private Task userInputTask;
-        //private CancellationTokenSource userInputCanceled;
+        private readonly object                  _locker = new object();
+        private          Process                 _currentProcess;
+        private          string                  _workingDirectory;
+
         public override void Refresh()
         {
             if (View == null || string.IsNullOrEmpty(Command))
                 return;
 
-            var commandString = string.Format("{0} - {1}> {2}", DateTime.Now.ToShortTimeString(), WorkingDirectory ?? "", Command);
+            var commandString = $"{DateTime.Now.ToShortTimeString()} - {WorkingDirectory ?? ""}> {Command}";
             Items.Add(new ConsoleItem(commandString, Command) {Highlighted = true});
             View.FocusCurrentOrFirst();
             var item = new ConsoleCommandItem(Command, WorkingDirectory);
@@ -181,57 +175,26 @@ namespace Kexi.ViewModel.Lister
             var p = new Process {StartInfo = start};
 
             p.OutputDataReceived += Process_OutputDataReceived;
-            p.ErrorDataReceived += P_ErrorDataReceived;
+            p.ErrorDataReceived  += P_ErrorDataReceived;
 
-            //userInputCanceled = new CancellationTokenSource();
-            //userInputTask = new Task(CheckForInput, userInputCanceled.Token, TaskCreationOptions.AttachedToParent);
-            //userInputTask.Start();
             p.Start();
 
-            p.EnableRaisingEvents = true;
-            p.Exited += P_Exited;
+            p.EnableRaisingEvents =  true;
+            p.Exited              += P_Exited;
             p.BeginOutputReadLine();
             p.BeginErrorReadLine();
-            currentProcess = p;
+            _currentProcess = p;
         }
 
-        protected override Task<IEnumerable<ConsoleItem>> GetItems() => null;
-
-
-        //private void CheckForInput()
-        //{
-        //    while (true)
-        //    {
-        //        if (userInputCanceled.IsCancellationRequested)
-        //            return;
-
-        //        Thread.Sleep(200);
-        //        if (currentProcess != null && currentProcess.Threads.Cast<ProcessThread>().Any(
-        //            t => t.ThreadState == ThreadState.Wait
-        //                 && (t.WaitReason == ThreadWaitReason.UserRequest)))
-        //        {
-        //            var vm = new TextInputPopupViewmodel("Input: ", currentProcess);
-        //            Workspace.PopupViewModel = vm;
-        //            vm.IsOpen = true;
-        //            userInputCanceled.Cancel(false);
-        //        }
-        //    }
-        //}
-
-        private void WriteInput(string text)
+        protected override Task<IEnumerable<ConsoleItem>> GetItems()
         {
-            if (currentProcess != null)
-            {
-                currentProcess.StandardInput.WriteLine(text);
-                currentProcess.StandardInput.Flush();
-                currentProcess.StandardInput.WriteLine();
-            }
+            return null;
         }
 
         private void P_Exited(object sender, EventArgs e)
         {
             LoadingStatus = LoadingStatus.Loaded;
-            currentProcess = null;
+            _currentProcess = null;
         }
 
         private void SetupEnviroment(ProcessStartInfo start)
@@ -240,42 +203,45 @@ namespace Kexi.ViewModel.Lister
             if (!tempPath.EndsWith(";"))
                 tempPath += ";";
             start.EnvironmentVariables["PATH"] = tempPath;
-            start.FileName = @"cmd.exe";
-            start.Arguments = "/c " + Command;
+            start.FileName                     = @"cmd.exe";
+            start.Arguments                    = "/c " + Command;
             if (Selection != null && Selection.Any())
                 start.Arguments = start.Arguments.Replace("%%", string.Join(" ", Selection.Select(i => i.Path)));
 
             start.StandardOutputEncoding = Encoding.GetEncoding(Options.ConsoleEncoding);
-            start.StandardErrorEncoding = Encoding.GetEncoding(Options.ConsoleEncoding);
-            start.WorkingDirectory = WorkingDirectory;
-            start.UseShellExecute = false;
+            start.StandardErrorEncoding  = Encoding.GetEncoding(Options.ConsoleEncoding);
+            start.WorkingDirectory       = WorkingDirectory;
+            start.UseShellExecute        = false;
             start.RedirectStandardOutput = true;
-            start.RedirectStandardError = true;
-            start.RedirectStandardInput = true;
-            start.CreateNoWindow = true;
-            start.ErrorDialog = false;
+            start.RedirectStandardError  = true;
+            start.RedirectStandardInput  = true;
+            start.CreateNoWindow         = true;
+            start.ErrorDialog            = false;
         }
 
         private void P_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if (e.Data != null)
+            if (e.Data != null) Application.Current.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() => { Items.Add(new ConsoleItem(e.Data) {HasError = true, Enabled = false}); });
-            }
+                Items.Add(new ConsoleItem(e.Data) {HasError = true, Enabled = false});
+            });
         }
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
+            {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Items.Add(new ConsoleItem(e.Data));
-                    if (!firstFocus)
-                    {
-                        Workspace.FocusCurrentOrFirst();
-                        firstFocus = true;
-                    }
+                    var item = new ConsoleItem(e.Data);
+                    Items.Add(item);
+
+                    Workspace.ActiveLister.View.ListView.SelectionMode = SelectionMode.Single;
+                    Workspace.FocusItem(item);
+                    Workspace.ActiveLister.View.ListView.SelectionMode = SelectionMode.Extended;
                 });
+                
+            }
         }
 
         public override void DoAction(ConsoleItem item)
