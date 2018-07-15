@@ -81,7 +81,7 @@ namespace Kexi.ViewModel.Popup
             FocusInput();
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             IgnoreTextChanged = true;
             Text = "";

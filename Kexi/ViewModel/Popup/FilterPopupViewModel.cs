@@ -55,6 +55,31 @@ namespace Kexi.ViewModel.Popup
             Workspace.ActiveLister.ItemsView.MoveCurrentToFirst();
         }
 
+        public override void PreviewKeyDown(object sender, KeyEventArgs ea)
+        {
+            var v = Workspace.ActiveLister?.ItemsView;
+            if (ea.Key == Key.Tab && v != null)
+            {
+                if ((ea.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                {
+                    v.MoveCurrentToPrevious();
+                    if (v.IsCurrentBeforeFirst)
+                        v.MoveCurrentToLast();
+                }
+                else
+                {
+                    v.MoveCurrentToNext();
+                    if (v.IsCurrentAfterLast)
+                        v.MoveCurrentToFirst();
+                }
+                ea.Handled = true;
+            }
+            else
+            {
+                base.PreviewKeyDown(sender, ea);
+            }
+        }
+
         private async void SetFilter(string filter)
         {
             Workspace.ActiveLister.Filter = filter;
@@ -69,11 +94,10 @@ namespace Kexi.ViewModel.Popup
             return item => new ItemFilter<IItem>(item as IItem, filter).Any();
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
-            Workspace.ActiveLister.Filter = null;
-            Workspace.ActiveLister.DoAction(selectedItem);
             IsOpen = false;
+            Workspace.ActiveLister.DoAction(Workspace.ActiveLister.CurrentItem);
         }
     }
 }

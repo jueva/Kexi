@@ -45,7 +45,7 @@ namespace Kexi.ViewModel.Lister
         private async void DriveLister_GotItems(object sender, System.EventArgs e)
         {
             await Initialize(Items);
-            Thumbnail =  Items.FirstOrDefault()?.Thumbnail;
+            Thumbnail =  Items?.FirstOrDefault()?.Thumbnail;
             GotItems  -= DriveLister_GotItems;
         }
 

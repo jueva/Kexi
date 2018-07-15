@@ -26,8 +26,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             var position = Workspace.ActiveLister.View.ListView.SelectedIndex;
             new SortHandler(Workspace.ActiveLister).HandleSorting(selectedItem);

@@ -39,7 +39,7 @@ namespace Kexi.ViewModel.Popup
             //Dont Filter List Items
         }
 
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             var itemName = Text;
             try

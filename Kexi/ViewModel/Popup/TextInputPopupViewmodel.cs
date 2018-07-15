@@ -30,7 +30,7 @@ namespace Kexi.ViewModel.Popup
         {
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             var param = selectedItem != null ? selectedItem.DisplayName : Text;
             _completeAction(param);

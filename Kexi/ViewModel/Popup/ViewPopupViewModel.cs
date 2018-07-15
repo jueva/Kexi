@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Popup
 
         private readonly ViewHandler _viewHandler;
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             base.ItemSelected(selectedItem);
             SetView(selectedItem.DisplayName);

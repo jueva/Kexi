@@ -21,6 +21,9 @@ namespace Kexi.Property
 
         protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
+            if (Item == null)
+                return default;
+
             return await Task.Run(() => new ObservableCollection<PropertyItem>(new[]
             {
                 new PropertyItem("Name", Item.DisplayName)
@@ -29,6 +32,9 @@ namespace Kexi.Property
 
         protected override async Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
+            if (Item == null)
+                return default;
+
             return await Task.Run(() =>
             {
                 var info = new DriveInfo(Item.DriveLetter);

@@ -54,7 +54,7 @@ namespace Kexi.ViewModel.Popup
             });
         }
 
-        public override void ItemSelected(DriveItem selectedItem)
+        protected override void ItemSelected(DriveItem selectedItem)
         {
             if (selectedItem == null)
                 return;

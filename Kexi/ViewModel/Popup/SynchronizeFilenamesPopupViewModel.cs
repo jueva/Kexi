@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Popup
         }
 
 
-        public override void ItemSelected(FileItem selected)
+        protected override void ItemSelected(FileItem selected)
         {
             try
             {

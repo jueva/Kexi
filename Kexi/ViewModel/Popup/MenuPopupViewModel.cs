@@ -77,7 +77,7 @@ namespace Kexi.ViewModel.Popup
             base.PreviewKeyDown(sender, ea);
         }
 
-        public override void ItemSelected(MenuCommandBoundItem commandItem)
+        protected override void ItemSelected(MenuCommandBoundItem commandItem)
         {
             if (commandItem == null)
                 return;

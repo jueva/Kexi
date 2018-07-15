@@ -57,12 +57,16 @@ namespace Kexi.UI.View
             if (CurrentItem == null || lister == null)
                 return;
 
-            lister.StatusString = lister.GetStatusString(CurrentItem);
+            lister.StatusString = lister.GetStatusString();
 
             if (Workspace.Docking.DetailViewModel.IsVisible)
             {
                 var provider = lister.PropertyProvider;
-                if (provider != null && !Equals(provider.Item, CurrentItem))
+                if (provider != null && lister.SelectedItems.Count() > 1)
+                {
+                    await provider.SetSelection(lister.SelectedItems);
+                }
+                else if (provider != null && !Equals(provider.Item, CurrentItem))
                     try
                     {
                         if (provider.Item != null)

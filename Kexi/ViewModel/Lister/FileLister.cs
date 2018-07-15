@@ -201,7 +201,7 @@ namespace Kexi.ViewModel.Lister
             return await _itemProvider.GetItems(Path);
         }
 
-        public override string GetStatusString(IItem item)
+        public override string GetStatusString()
         {
             if (View == null || Items == null || ItemsView == null)
                 return null;

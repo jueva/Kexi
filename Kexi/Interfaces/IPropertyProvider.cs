@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -11,6 +12,9 @@ namespace Kexi.Interfaces
     {
         new T Item { get; }
         Task SetItem(T item);
+
+        Task SetSelection(IEnumerable<T> selection);
+
     }
 
     public interface IPropertyProvider : IPropertyItemContainer
@@ -20,6 +24,7 @@ namespace Kexi.Interfaces
         int                                RotateThumb             { get; }
         CancellationTokenSource            CancellationTokenSource { get; set; }
         Task SetItem(IItem item);
+        Task SetSelection(IEnumerable<IItem> selection);
     }
 
     public interface IPropertyItemContainer

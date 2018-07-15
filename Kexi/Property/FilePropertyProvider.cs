@@ -27,7 +27,6 @@ namespace Kexi.Property
             Width = 100;
         }
 
-
         private bool IsMusic    => "music".Equals(GetKind());
         private bool IsPicture  => "picture".Equals(GetKind());
         private bool IsExeOrDll => Item?.Extension == ".exe" || Item?.Extension == ".dll";

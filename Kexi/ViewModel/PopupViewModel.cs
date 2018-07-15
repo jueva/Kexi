@@ -269,7 +269,7 @@ namespace Kexi.ViewModel
 
         protected bool IgnoreTextChanged;
 
-        public virtual void ItemSelected(T selectedItem)
+        protected virtual void ItemSelected(T selectedItem)
         {
         }
 

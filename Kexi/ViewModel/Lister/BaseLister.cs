@@ -417,7 +417,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public virtual string GetStatusString(IItem item)
+        public virtual string GetStatusString()
         {
             if (View == null || Items == null || ItemsView == null)
                 return null;

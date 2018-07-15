@@ -22,7 +22,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(CommandBoundItem item)
+        protected override void ItemSelected(CommandBoundItem item)
         {
             IsOpen = false;
             if (item != null)

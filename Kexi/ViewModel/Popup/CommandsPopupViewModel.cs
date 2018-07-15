@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             var command = CommandRepository.GetCommandByName(selectedItem.DisplayName);
             IsOpen = false;

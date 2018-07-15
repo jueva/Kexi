@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -67,6 +68,23 @@ namespace Kexi.Property
             }
         }
 
+        public Task SetSelection(IEnumerable<IItem> selection)
+        {
+            return SetSelection(selection.Cast<T>());
+        }
+
+        public Task SetSelection(IEnumerable<T> selection)
+        {
+            var items = new[]
+            {
+                new PropertyItem("", Workspace.ActiveLister.GetStatusString()),
+            };
+            PropertiesTop = new ObservableCollection<PropertyItem>(items);
+            PropertiesBottom = new ObservableCollection<PropertyItem>();
+            Thumbnail = null;
+            return Task.CompletedTask;
+        }
+
         public async Task SetItem(IItem item)
         {
             await SetItem(item as T);
@@ -90,6 +108,8 @@ namespace Kexi.Property
                     PropertiesBottom.Add(i);
             }
         }
+
+
 
         public BitmapSource Thumbnail
         {

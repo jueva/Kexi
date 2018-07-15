@@ -42,7 +42,7 @@ namespace Kexi.ViewModel.Popup
         private  PropertyInfo _propertyInfo;
         private  SettingItem  _settingItem;
 
-        public override void ItemSelected(PropertyEditorItem selectedItem)
+        protected override void ItemSelected(PropertyEditorItem selectedItem)
         {
             var value = selectedItem?.Value ?? Text;
             var converter = TypeDescriptor.GetConverter(_propertyInfo.PropertyType);

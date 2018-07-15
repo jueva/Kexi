@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Popup
         [Import]
         private TemporaryFavorites<IItem> TemporaryFavorites { get; set; }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             if (selectedItem is FileItem fileItem)
             {

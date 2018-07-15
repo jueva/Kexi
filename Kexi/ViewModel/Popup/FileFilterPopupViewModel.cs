@@ -106,7 +106,7 @@ namespace Kexi.ViewModel.Popup
             return item => new ItemFilter<IItem>(item as IItem, filter).Any();
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             Workspace.ActiveLister.Filter = null;
             CommandRepository.GetCommandByName(nameof(DoActionCommand)).Execute();

@@ -27,7 +27,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             _completeAction(selectedItem.DisplayName);
             IsOpen = false;

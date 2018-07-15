@@ -26,7 +26,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(ConsoleCommandItem selectedItem)
+        protected override void ItemSelected(ConsoleCommandItem selectedItem)
         {
             CommandRepository.GetCommandByName(nameof(ExecuteConsoleCommand)).Execute(ItemSelectedFromListView
                 ? selectedItem?.Command

@@ -37,7 +37,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             short flags = ShellNative.FOF_ALLOWUNDO;
             switch (selectedItem.DisplayName)

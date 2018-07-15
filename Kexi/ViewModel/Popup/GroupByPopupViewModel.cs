@@ -27,7 +27,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             Workspace.ActiveLister.GroupBy = string.IsNullOrEmpty(selectedItem.Path)
                 ? null

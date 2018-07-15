@@ -48,7 +48,7 @@ namespace Kexi.ViewModel.Popup
             }
         }
 
-        public override void ItemSelected(BaseItem selectedItem)
+        protected override void ItemSelected(BaseItem selectedItem)
         {
             var enumValue =
                 (Environment.SpecialFolder) Enum.Parse(typeof(Environment.SpecialFolder), selectedItem.DisplayName);

@@ -38,7 +38,7 @@ namespace Kexi.ViewModel.Popup
             base.Open();
         }
 
-        public override void ItemSelected(IItem selectedItem)
+        protected override void ItemSelected(IItem selectedItem)
         {
             var current = Workspace.CurrentItem;
             var verb = _verbs.First(v => v.Name == selectedItem.Path);

@@ -294,7 +294,7 @@ namespace Kexi.ViewModel
             if (sender is ILister lister)
             {
                 lister.GotItems -= Lister_GotItems;
-                lister.View.ListView.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action) (() => lister.View.FocusCurrentOrFirst()));
+                lister.View?.ListView?.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action) (() => lister.View.FocusCurrentOrFirst()));
             }
         }
 

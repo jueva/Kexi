@@ -40,6 +40,7 @@ namespace Kexi.Common
         private bool _statusbarVisible;
         private string _theme;
         private string _viewClipboardHotKey;
+        private KeyboardMode _keyboardMode;
 
         public Options()
         {
@@ -351,6 +352,17 @@ namespace Kexi.Common
             {
                 if (value == _centerPopup) return;
                 _centerPopup = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public KeyboardMode KeyboardMode
+        {
+            get => _keyboardMode;
+            set
+            {
+                if (value == _keyboardMode) return;
+                _keyboardMode = value;
                 OnPropertyChanged();
             }
         }

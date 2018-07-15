@@ -48,7 +48,7 @@ namespace Kexi.ViewModel.Lister
         event Action<string> PathChanged;
         void ShowContextMenu(bool atMousePosition);
         event Action<ILister> GotView;
-        string GetStatusString(IItem item);
+        string GetStatusString();
 
         event EventHandler GotItems;
 
