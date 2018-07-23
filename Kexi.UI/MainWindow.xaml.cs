@@ -38,7 +38,6 @@ namespace Kexi.UI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            KexContainer.Resolve<LoadKeybindingsCommand>().Execute();
             var options = Workspace.Options;
             if (options.LoadLastLayout && File.Exists(LayoutConfig) && new FileInfo(LayoutConfig).Length > 0)
                 Workspace.DockingMananger.DeserializeLayout(LayoutConfig);

@@ -69,6 +69,15 @@ namespace Kexi.Files
             var   from                  = string.Join("\0", it) + "\0";
             var   to                    = target + "\0";
 
+            if (items.Count == 1)
+            {
+                var info = new FileInfo(items[0]);
+                if (info.Directory.FullName.ToLower() == target.ToLower())
+                {
+                    flags = (short) (flags | ShellNative.FOF_RENAMEONCOLLISION);
+                }
+            }
+
             var fileop = new ShellNative.SHFILEOPSTRUCT
             {
                 wFunc  = action == FileAction.Copy ? ShellNative.FO_COPY : ShellNative.FO_MOVE,

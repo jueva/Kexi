@@ -152,10 +152,10 @@ namespace Kexi.ViewModel
         {
             get
             {
-                if (Docking.ActiveLayoutContent == null)
-                    return Manager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+                
+                var layoutElement = Manager.Layout.LastFocusedDocument;
 
-                var documentPane = ActiveLayoutDocument.FindParent<LayoutDocumentPane>();
+                var documentPane = layoutElement?.FindParent<LayoutDocumentPane>();
                 return documentPane;
             }
         }
@@ -182,18 +182,19 @@ namespace Kexi.ViewModel
             }
         }
 
-        public LayoutContent CommanderTargetLayoutDocument
+        public DocumentViewModel CommanderTargetLayoutDocument
         {
             get
             {
                 if (CurrentDocumentPaneGroup.Children.Count <= 1)
-                    return ActiveLayoutDocument;
+                    return ActiveDocumentView;
 
                 var pindex  = CurrentDocumentPaneGroup.Children.IndexOf(CurrentDocumentPane);
                 var index   = pindex == 0 ? 1 : 0;
                 var docPane = CurrentDocumentPaneGroup.Children.ElementAt(index);
                 var doc     = ((LayoutDocumentPane) docPane).SelectedContent;
-                return doc?.Content as LayoutContent;
+                var view = doc?.Content as DocumentViewModel;
+                return view;
             }
         }
 
@@ -223,6 +224,7 @@ namespace Kexi.ViewModel
         public  TextBox                      TitleTextBox    { get; set; }
         public  Border                       TitleTextBorder { get; set; }
         public  IDockingManager              DockingMananger { get; set; }
+
         private object                       _activeLayoutContent;
         private ILister                      _activeLister;
         private RecentLocationPopupViewModel _adressbarHistoryDatasource;

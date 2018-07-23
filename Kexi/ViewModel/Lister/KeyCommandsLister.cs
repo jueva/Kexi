@@ -39,12 +39,13 @@ namespace Kexi.ViewModel.Lister
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
             var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "")).ToList();
-            foreach (var c in allCommands.ToImmutableArray())
-            foreach (var b in KeyHandler.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
-            {
-                allCommands.Remove(c);
-                allCommands.Add(new KexBindingItem(b, b.Group));
-            }
+            //TODO: Keymode....
+            //foreach (var c in allCommands.ToImmutableArray())
+            //foreach (var b in KeyHandler.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
+            //{
+            //    allCommands.Remove(c);
+            //    allCommands.Add(new KexBindingItem(b, b.Group));
+            //}
 
             return Task.FromResult(allCommands.OrderBy(k => k.CommandName).AsEnumerable());
         }

@@ -134,10 +134,10 @@ namespace Kexi.ViewModel.Lister
             var items = Clipboard.GetFileDropList();
             await Task.Factory.StartNew(() => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
             if (action == FileAction.Move)
+            {
                 Clipboard.Clear();
-
-            SelectedItems
-                .Foreach(i => i.IsMarkedForMove = false);
+                SelectedItems .Foreach(i => i.IsMarkedForMove = false);
+            }
         }
 
         public override void DoAction(FileItem selection)

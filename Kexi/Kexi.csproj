@@ -266,6 +266,9 @@
     <Compile Include="Common\ConsoleAppManager.cs" />
     <Compile Include="Common\CopyHelper.cs" />
     <Compile Include="Common\FileHelper.cs" />
+    <Compile Include="Common\KeyHandling\ClassicKeyHandler.cs" />
+    <Compile Include="Common\KeyHandling\LiveFilterKeyHandler.cs" />
+    <Compile Include="Common\KeyHandling\ViStyleKeyHandler.cs" />
     <Compile Include="Common\PathPart.cs" />
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />

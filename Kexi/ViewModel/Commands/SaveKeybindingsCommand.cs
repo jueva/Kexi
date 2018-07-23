@@ -37,13 +37,14 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var allcommands = KeyHandler.Bindings;
-            var serializer = new XmlSerializer(allcommands.GetType());
-            using (var file = new FileStream(@".\keyBindings.xml", FileMode.Create))
-            {
-                serializer.Serialize(file, allcommands);
-                file.Flush();
-            }
+            //TODO: Keymode...
+            //var allcommands = KeyHandler.Bindings;
+            //var serializer = new XmlSerializer(allcommands.GetType());
+            //using (var file = new FileStream(@".\keyBindings.xml", FileMode.Create))
+            //{
+            //    serializer.Serialize(file, allcommands);
+            //    file.Flush();
+            //}
 
         }
 
