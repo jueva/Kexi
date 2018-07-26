@@ -4,6 +4,7 @@
     <Color x:Key="BackDisabledColor">#DDDDDD</Color>
     <SolidColorBrush x:Key="ItemHighlightColor" Color="Goldenrod" />
     <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
+    <SolidColorBrush x:Key="ActiveTabDecorator">#555555</SolidColorBrush>
 
     <SolidColorBrush x:Key="KexSelectionBackground" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
     <SolidColorBrush x:Key="KexSelectionForeground" Color="#000000" />

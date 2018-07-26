@@ -122,7 +122,7 @@
                         <DataTrigger Binding="{Binding Path=IsActive}" Value="true">
                             <Setter TargetName="DocumentCloseButton" Property="UIElement.Visibility" Value="Visible" />
                             <Setter TargetName="PART_ImgPinClose" Property="Image.Source" Value="Images/PinClose_Dark.png" />
-                            <Setter TargetName="tabiOuterBorder" Property="BorderBrush" Value="{DynamicResource KexSelectionForeground}" />
+                            <Setter TargetName="tabiOuterBorder" Property="BorderBrush" Value="{DynamicResource ActiveTabDecorator}" />
                             <Setter TargetName="tabiOuterBorder" Property="BorderThickness" Value="0 2 0 0" />
                         </DataTrigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="true">

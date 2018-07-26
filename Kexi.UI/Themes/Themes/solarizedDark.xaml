@@ -4,6 +4,7 @@
     <Color x:Key="BackDisabledColor">#555555</Color>
     <Color x:Key="SelectionBack">#93C763</Color>
     <Color x:Key="ControlBack">#073642</Color>
+    <SolidColorBrush x:Key="ActiveTabDecorator">#555555</SolidColorBrush>
     <SolidColorBrush x:Key="ItemHighlightColor" Color="Goldenrod" />
     <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
 

@@ -53,6 +53,7 @@ namespace Kexi.Common
             _listView.DragEnter += DropList_DragEnter;
             _listView.QueryContinueDrag += _listView_QueryContinueDrag;
             _listView.PreviewMouseLeftButtonDown += List_PreviewMouseLeftButtonDown;
+            _listView.PreviewMouseLeftButtonUp += _listView_PreviewMouseLeftButtonUp;
             _listView.PreviewMouseMove += List_MouseMove;
             _listView.MouseUp += _listView_MouseUp;
 
@@ -65,9 +66,28 @@ namespace Kexi.Common
             _clickTimer.Stop();
         }
 
+        private void _listView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is Visual visual)
+            {
+                var header =  visual as GridViewColumnHeader ?? Utils.FindParent<GridViewColumnHeader>(visual);
+                if (header != null)
+                {
+                    var clickPos = e.GetPosition(header).X;
+                    var offset   = header.ActualWidth - clickPos;
+                    if (offset > 6 && clickPos > 6)
+                    {
+                        _sortHandler.HandleSorting(header);
+                        _workspace.FocusListView();
+                    }
+                }
+            }
+        }
 
         private void _listView_MouseUp(object sender, MouseButtonEventArgs e)
         {
+
+
             var item = Utils.GetDataContextFromOriginalSource(e.OriginalSource) as IItem;
             if (item == null && e.ChangedButton == MouseButton.Left)
                 return;
@@ -151,14 +171,7 @@ namespace Kexi.Common
                 var header = Utils.FindParent<GridViewColumnHeader>(visual);
                 if (header != null)
                 {
-                    var clickPos = e.GetPosition(header).X;
-                    var offset = header.ActualWidth - clickPos;
-                    if (offset > 6 && clickPos > 6)
-                    {
-                        _sortHandler.HandleSorting(header);
-                        _workspace.FocusListView();
-                        e.Handled = true;
-                    }
+                    e.Handled = false;
                     return;
                 }
             }

@@ -148,25 +148,7 @@ namespace Kexi.Property
                         tempProp.Add(new PropertyItem(key.Substring(13), props.GetValue(key)));
                 }
 
-                if (IsExeOrDll && IsNetAssembly(await PathResolved()))
-                    try
-                    {
-                        var assembly = AssemblyDefinition.ReadAssembly(Item.Path);
-                        tempProp.Add(new PropertyItem("Product Name", props.GetValue("System.Software.ProductName")));
-                        tempProp.Add(new PropertyItem("Product Version", props.GetValue("System.Software.ProductVersion")));
-                        tempProp.Add(new PropertyItem("Assembly Version", assembly.Name.Version));
-                        var debugModes = GetDebugInfo(assembly).ToList();
-                        if (debugModes.Any())
-                            tempProp.Add(new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes)));
-                        tempProp.Add(new PropertyItem("Runtime Version", assembly.MainModule.RuntimeVersion));
-                        tempProp.Add(new PropertyItem("References", string.Join(Environment.NewLine, assembly.MainModule.AssemblyReferences)));
-                        tempProp.Add(new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value))));
-                    }
-                    catch
-                    {
-                        //Probably no .net assembly
-                        //TODO: is there a way to check before read?
-                    }
+                
 
                 return tempProp;
             }
@@ -174,37 +156,11 @@ namespace Kexi.Property
             return await Task.Run(FetchProperties);
         }
 
-        private static IEnumerable<string> GetDebugInfo(AssemblyDefinition assembly)
-        {
-            var debugAttribute = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.FullName == "System.Diagnostics.DebuggableAttribute");
-            if (debugAttribute != null)
-            {
-                var debugModes = (int) debugAttribute.ConstructorArguments.FirstOrDefault().Value;
-                if ((debugModes & 1) > 0)
-                    yield return "Default";
-                if ((debugModes & 2) > 0)
-                    yield return "IgnoreSymbolStoreSequencePoints";
-                if ((debugModes & 4) > 0)
-                    yield return "EnableEditAndContinue";
-                if ((debugModes & 256) > 0)
-                    yield return "DisableOptimizations";
-            }
-        }
+     
 
-        private async Task<string> PathResolved()
-        {
-            return await Task.Run(() => Item.GetPathResolved());
-        }
+      
 
-        private static bool IsNetAssembly(string path)
-        {
-            var sb = new StringBuilder(256);
-            var hr = GetFileVersion(path, sb, sb.Capacity, out _);
-            return hr == 0;
-        }
-
-        [DllImport("mscoree.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetFileVersion(string path, StringBuilder buffer, int buflen, out int written);
+       
 
         private async Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
         {
