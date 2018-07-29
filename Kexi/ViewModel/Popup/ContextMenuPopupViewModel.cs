@@ -43,8 +43,6 @@ namespace Kexi.ViewModel.Popup
             var current = Workspace.CurrentItem;
             var verb = _verbs.First(v => v.Name == selectedItem.Path);
             verb.DoIt();
-            Workspace.ActiveLister.Refresh();
-
             var currentItem = Workspace.CurrentItems.FirstOrDefault(i => i.Path == current.Path);
             Workspace.FocusItem(currentItem);
             IsOpen = false;
