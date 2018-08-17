@@ -48,8 +48,10 @@ namespace Kexi.ViewModel
             get => Docking.ActiveLayoutContent;
             set => Docking.ActiveLayoutContent = value;
         }
+        [Import]
+        public Options Options { get; private set; }
 
-        public KeyHandler KeyHandler { get; }
+        public IKeyHandler KeyHandler { get; set; }
 
         public CommanderbarViewModel CommanderbarViewModel { get; }
 
@@ -64,9 +66,6 @@ namespace Kexi.ViewModel
 
         [Import]
         public CommandRepository CommandRepository { get; private set; }
-
-        [Import]
-        public Options Options { get; private set; }
 
         [Import]
         public AdressbarViewModel AdressbarViewModel { get; private set; }

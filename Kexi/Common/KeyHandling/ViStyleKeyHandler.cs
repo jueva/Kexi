@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.Common.KeyHandling
 {
-    public class ViStyleKeyHandler
+    public class ViStyleKeyHandler : IKeyHandler
     {
         private readonly Workspace _workspace;
         private Key?          firstKey;

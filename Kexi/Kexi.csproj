@@ -273,6 +273,7 @@
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />
     <Compile Include="Converter\StringToXamlConverter.cs" />
+    <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="KeyboardMode.cs" />
     <Compile Include="Property\BasePropertyProvider.cs" />
     <Compile Include="Property\DefaultPropertyProvider.cs" />

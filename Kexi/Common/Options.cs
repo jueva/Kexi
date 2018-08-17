@@ -73,6 +73,7 @@ namespace Kexi.Common
             Highlights = (bool) settings.GetValue("Highlights", typeof(bool));
         }
 
+
         public bool LoadLastLayout
         {
             get => _loadLastLayout;
@@ -361,12 +362,13 @@ namespace Kexi.Common
             get => _keyboardMode;
             set
             {
-                if (value == _keyboardMode) return;
+                if (value == _keyboardMode) 
+                    return;
+
                 _keyboardMode = value;
                 OnPropertyChanged();
             }
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

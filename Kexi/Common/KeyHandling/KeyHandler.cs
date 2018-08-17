@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.Common.KeyHandling
 {
     [Serializable]
-    public class KeyHandler
+    public class KeyHandler : IKeyHandler
     {
         public const  Key AlternateEscape = Key.Oem102;
         public static Key MoveDownKey     = Key.J;

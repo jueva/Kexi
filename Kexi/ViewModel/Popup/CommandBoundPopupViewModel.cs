@@ -16,8 +16,8 @@ namespace Kexi.ViewModel.Popup
 
         public override void Open()
         {
-            BaseItems = Workspace.ActiveLister.ContextMenuItems;
             SetHeaderIconByKey("appbar_console");
+            BaseItems = Workspace.ActiveLister.ContextMenuItems;
             foreach (var command in BaseItems) command.Enabled = command.Command.CanExecute(null);
             base.Open();
         }

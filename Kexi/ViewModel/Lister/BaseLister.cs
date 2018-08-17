@@ -40,8 +40,7 @@ namespace Kexi.ViewModel.Lister
 
             PropertyProvider = GetPropertyProvider();
 
-            loadingSpinnerTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1)
-            };
+            loadingSpinnerTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
         }
 

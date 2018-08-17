@@ -23,7 +23,7 @@ namespace Kexi.Extensions
         public ICommand ZipSelection => new RelayCommand(c =>
         {
             var files = _workspace.GetSelection<FileItem>().ToArray();
-            if (!files.Any())
+            if (files.Length == 0)
                 return;
 
             var rootPath = _workspace.ActiveLister.Path;
@@ -35,7 +35,7 @@ namespace Kexi.Extensions
                 {
                     foreach (var fi in files)
                         if (fi.ItemType == ItemType.Container)
-                            CompressFolder(fi.Path, archive, rootPath);
+                            CompressFolder(fi.Path, archive, rootPath.Length+1);
                         else
                             archive.CreateEntryFromFile(fi.Path, fi.FileInfo.Name);
                 }
@@ -44,16 +44,16 @@ namespace Kexi.Extensions
 
         private readonly Workspace _workspace;
 
-        private static void CompressFolder(string path, ZipArchive archive, string rootPath)
+        private static void CompressFolder(string path, ZipArchive archive, int rootPathLength)
         {
             foreach (var file in Directory.GetFiles(path))
             {
-                var filename = file.Substring(rootPath.Length+1); //+1 = Separator (\)
-                archive.CreateEntryFromFile(file, filename);
+                var folderAndFilename = file.Substring(rootPathLength); 
+                archive.CreateEntryFromFile(file, folderAndFilename);
             }
 
             foreach (var directory in Directory.GetDirectories(path))
-                CompressFolder(directory, archive, rootPath);
+                CompressFolder(directory, archive, rootPathLength);
         }
     }
 }
