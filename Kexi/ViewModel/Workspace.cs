@@ -28,7 +28,7 @@ namespace Kexi.ViewModel
             Container             = KexContainer.Container;
             _renamePopupViewModel = new RenamePopupViewModel(this);
             Docking               = new DockViewModel(this);
-            KeyHandler            = new KeyHandler(this);
+            KeyDispatcher            = new KeyDispatcher(this);
             CommanderbarViewModel = new CommanderbarViewModel(this);
             PopupViewModel = new FilterPopupViewModel(this, new Options(), null);
         }
@@ -51,7 +51,7 @@ namespace Kexi.ViewModel
         [Import]
         public Options Options { get; private set; }
 
-        public IKeyHandler KeyHandler { get; set; }
+        public KeyDispatcher KeyDispatcher { get; set; }
 
         public CommanderbarViewModel CommanderbarViewModel { get; }
 

@@ -11,5 +11,6 @@ namespace Kexi.Interfaces
     public interface IKeyHandler
     {
         bool Execute(KeyEventArgs args, ILister lister, string group = null);
+        string SearchString { get; set; }
     }
 }

@@ -192,7 +192,7 @@ namespace Kexi.UI.View
 
         private void ListerView_OnKeyDown(object sender, KeyEventArgs e)
         {
-            Workspace.KeyHandler.Execute(e, ViewModel);
+            Workspace.KeyDispatcher.Execute(e, ViewModel);
             if (!KeyIsModifier(e.Key))
                 MouseMoving = false;
         }

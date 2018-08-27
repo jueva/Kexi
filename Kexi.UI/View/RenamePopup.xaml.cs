@@ -80,7 +80,7 @@ namespace Kexi.UI.View
                 case Key.Return:
                     ViewModel.IsOpen = false;
                     break;
-                case KeyHandler.AlternateEscape:
+                case KeyDispatcher.AlternateEscape:
                 case Key.Escape:
                     _cancelRename    = true;
                     ViewModel.IsOpen = false;

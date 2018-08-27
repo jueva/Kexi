@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
-using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.Common.KeyHandling
 {
-    [Serializable]
-    public class KeyHandler : IKeyHandler
+    public class KeyDispatcher
     {
         public const  Key AlternateEscape = Key.Oem102;
         public static Key MoveDownKey     = Key.J;
@@ -16,12 +15,13 @@ namespace Kexi.Common.KeyHandling
         public static Key MoveLeftKey     = Key.H;
         public static Key MoveRightKey    = Key.L;
 
-        public KeyHandler(Workspace workspace)
+        public KeyDispatcher(Workspace workspace)
         {
-            Workspace             = workspace;
-            _classicKeyHandler    = new ClassicKeyHandler(workspace);
-            _liveFilterKeyHandler = new LiveFilterKeyHandler(workspace);
-            _viStyleKeyHandler    = new ViStyleKeyHandler(workspace);
+            Workspace                 =  workspace;
+            Workspace.PropertyChanged += Workspace_PropertyChanged;
+            _classicKeyHandler        =  new ClassicKeyHandler(workspace);
+            _liveFilterKeyHandler     =  new LiveFilterKeyHandler(workspace);
+            _viStyleKeyHandler        =  new ViStyleKeyHandler(workspace);
         }
 
         public List<KexBinding> Bindings
@@ -40,6 +40,16 @@ namespace Kexi.Common.KeyHandling
             }
         }
 
+        private          Workspace            Workspace { get; }
+        private readonly ClassicKeyHandler    _classicKeyHandler;
+        private readonly LiveFilterKeyHandler _liveFilterKeyHandler;
+        private readonly ViStyleKeyHandler    _viStyleKeyHandler;
+
+        private void Workspace_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Workspace.ActiveLister)) _classicKeyHandler.ClearSearchString();
+        }
+
         public bool Execute(KeyEventArgs args, ILister lister, string group = null)
         {
             switch (Workspace.Options.KeyboardMode)
@@ -52,11 +62,5 @@ namespace Kexi.Common.KeyHandling
                     return _viStyleKeyHandler.Execute(args, lister, group);
             }
         }
-
-        private Workspace            Workspace { get; set; }
-        private readonly ClassicKeyHandler    _classicKeyHandler;
-        private readonly LiveFilterKeyHandler _liveFilterKeyHandler;
-        private readonly ViStyleKeyHandler    _viStyleKeyHandler;
-
     }
 }

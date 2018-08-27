@@ -297,7 +297,7 @@ namespace Kexi.ViewModel
 
         public override void KeyDown(object sender, KeyEventArgs ea)
         {
-            if (ea.Key == Key.Escape || ea.Key == KeyHandler.AlternateEscape)
+            if (ea.Key == Key.Escape || ea.Key == KeyDispatcher.AlternateEscape)
             {
                 ea.Handled = true;
                 IsOpen     = false;
@@ -317,7 +317,7 @@ namespace Kexi.ViewModel
             var ctrl  = (ea.KeyboardDevice.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
             var shift = (ea.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
-            if (ea.Key == KeyHandler.MoveDownKey)
+            if (ea.Key == KeyDispatcher.MoveDownKey)
             {
                 if (ctrl)
                 {
@@ -325,7 +325,7 @@ namespace Kexi.ViewModel
                     ea.Handled = true;
                 }
             }
-            else if (ea.Key == KeyHandler.MoveUpKey)
+            else if (ea.Key == KeyDispatcher.MoveUpKey)
             {
                 if (ctrl)
                 {

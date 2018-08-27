@@ -22,7 +22,7 @@ namespace Kexi.UI.View
 
         private void _commanderBar_OnKeyDown(object sender, KeyEventArgs e)
         {
-            ViewModel.Workspace.KeyHandler.Execute(e, null, "Commandbar");
+            ViewModel.Workspace.KeyDispatcher.Execute(e, null, "Commandbar");
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Kexi.ViewModel.Lister
     {
         [ImportingConstructor]
         public KeyCommandsLister(Workspace       workspace,     INotificationHost                      notificationHost, Options options, CommandRepository commandRepository,
-            [ImportMany] IEnumerable<KeyHandler> keyHandlerses, [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
+            [ImportMany] IEnumerable<KeyDispatcher> keyHandlerses, [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
         {
             _commands    = commands;
             Title        = PathName = Path ="Key Bindings";

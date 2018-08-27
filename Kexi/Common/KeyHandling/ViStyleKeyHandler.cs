@@ -126,6 +126,8 @@ namespace Kexi.Common.KeyHandling
             return false;
         }
 
+        public string SearchString { get; set; }
+
         private bool IsModifier(Key key)
         {
             switch (key)

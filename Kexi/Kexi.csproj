@@ -344,7 +344,7 @@
     <Compile Include="Common\ItemFilter.cs" />
     <Compile Include="Common\KeyHandling\KexBinding.cs" />
     <Compile Include="Common\KeyHandling\KexDoubleBinding.cs" />
-    <Compile Include="Common\KeyHandling\KeyHandler.cs" />
+    <Compile Include="Common\KeyHandling\KeyDispatcher.cs" />
     <Compile Include="Common\ListViewSelector.cs" />
     <Compile Include="Common\MultiSelection\IMultiSelectCollectionView.cs" />
     <Compile Include="Common\MultiSelection\MultiSelect.cs" />

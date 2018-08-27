@@ -70,7 +70,7 @@ namespace Kexi.UI
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (!(e.OriginalSource is TextBox))
-                Workspace.KeyHandler.Execute(e, Workspace.ActiveLister);
+                Workspace.KeyDispatcher.Execute(e, Workspace.ActiveLister);
         }
     }
 }

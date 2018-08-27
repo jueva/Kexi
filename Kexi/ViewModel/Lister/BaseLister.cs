@@ -435,7 +435,7 @@ namespace Kexi.ViewModel.Lister
         private            string                       _highlightString;
         private            ObservableCollection<T>      _items;
         private            MultiSelectCollectionView<T> _ItemsView;
-        private            KeyHandler                   _keyHandler;
+        private            KeyDispatcher                   _keyDispatcher;
         private            Visibility                   _loadingSpinnerVisibility = Visibility.Collapsed;
         private            LoadingStatus                _loadingStatus;
         private            NotificationItem             _notification;

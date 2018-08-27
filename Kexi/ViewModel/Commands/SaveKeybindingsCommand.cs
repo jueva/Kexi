@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Commands
         private readonly Workspace _workspace;
 
         [ImportMany]
-        public IEnumerable<KeyHandler> keyhandlers { get; private set; }
+        public IEnumerable<KeyDispatcher> keyhandlers { get; private set; }
 
 
         [ImportingConstructor]

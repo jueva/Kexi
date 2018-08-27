@@ -44,7 +44,7 @@ namespace Kexi.UI.View
             {
                     
                 case Key.Escape :
-                case KeyHandler.AlternateEscape:
+                case KeyDispatcher.AlternateEscape:
                     popup.IsOpen = false;
                     ViewModel.Workspace.FocusCurrentOrFirst();
                     break;

@@ -21,5 +21,7 @@ namespace Kexi.Common.KeyHandling
         {
             return false;
         }
+
+        public string SearchString { get; set; }
     }
 }

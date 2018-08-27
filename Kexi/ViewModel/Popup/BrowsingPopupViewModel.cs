@@ -55,14 +55,14 @@ namespace Kexi.ViewModel.Popup
             var ctrl = (ea.KeyboardDevice.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
             if (ctrl)
             {
-                if (ea.Key == KeyHandler.MoveLeftKey)
+                if (ea.Key == KeyDispatcher.MoveLeftKey)
                 {
                     CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
                     BaseItems = Items = Workspace.CurrentItems;
                     Text = "";
                     ea.Handled = true;
                 }
-                else if (ea.Key == KeyHandler.MoveRightKey)
+                else if (ea.Key == KeyDispatcher.MoveRightKey)
                 {
                     CommandRepository.GetCommandByName(nameof(HistoryForwardCommand)).Execute();
                     BaseItems = Items = Workspace.CurrentItems;
