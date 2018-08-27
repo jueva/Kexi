@@ -21,7 +21,6 @@ namespace Kexi.Common.KeyHandling
         }
 
         public List<KexBinding> Bindings { get; set; }
-        private char lastKey;
 
         public string SearchString
         {
@@ -29,10 +28,7 @@ namespace Kexi.Common.KeyHandling
             set
             {
                 _searchString = value;
-                if (!string.IsNullOrEmpty(_searchString))
-                {
-                    FocusItemMatchingSearchString();
-                }
+                if (!string.IsNullOrEmpty(_searchString)) FocusItemMatchingSearchString();
             }
         }
 
@@ -66,7 +62,7 @@ namespace Kexi.Common.KeyHandling
                     ClearSearchString();
                     break;
                 default:
-                    var k                                  = args.Key.ToString().ToLower()[0];
+                    var k = args.Key.ToString().ToLower()[0];
                     if (k >= 'a' && k <= 'z')
                     {
                         if (SearchString.Length == 1 && lastKey == k || SearchString.Length == 0 && lastKey == k)
@@ -76,9 +72,10 @@ namespace Kexi.Common.KeyHandling
                         else
                         {
                             SearchString += k;
-                            lastKey = k;
+                            lastKey      =  k;
                         }
                     }
+
                     break;
             }
 
@@ -86,14 +83,16 @@ namespace Kexi.Common.KeyHandling
             return false;
         }
 
+        private readonly DispatcherTimer _timer;
+        private readonly Workspace       _workspace;
+        private          string          _searchString;
+        private          char            lastKey;
+
         private void FocusItemMatchingSearchString()
         {
             var filter    = new ItemFilter<IItem>(_workspace.CurrentItems, SearchString);
             var selection = filter.Matches.FirstOrDefault();
-            if (selection != null)
-            {
-                _workspace.FocusItem(selection);
-            }
+            if (selection != null) _workspace.FocusItem(selection);
 
             _timer.Start();
         }
@@ -101,19 +100,12 @@ namespace Kexi.Common.KeyHandling
         private void FocusNextItemWithSameStartLetter()
         {
             var baseItems = _workspace.CurrentItems.SkipWhile(i => i.Path != _workspace.CurrentItem.Path).Skip(1);
-            var filter = new ItemFilter<IItem>(baseItems, SearchString);
+            var filter    = new ItemFilter<IItem>(baseItems, SearchString);
             var selection = filter.MatchesBeginning.FirstOrDefault();
-            if (selection != null)
-            {
-                _workspace.FocusItem(selection);
-            }
+            if (selection != null) _workspace.FocusItem(selection);
 
             _timer.Start();
         }
-
-        private readonly DispatcherTimer _timer;
-        private readonly Workspace       _workspace;
-        private          string          _searchString;
 
         private void _timer_Tick(object sender, EventArgs e)
         {
