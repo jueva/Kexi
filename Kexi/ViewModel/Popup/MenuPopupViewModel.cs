@@ -28,7 +28,7 @@ namespace Kexi.ViewModel.Popup
         public override void Open()
         {
             var menuImg = Utils.GetImageFromRessource("menu.png");
-            _allItems    = Traverse(MenuCommandBoundItems(menuImg), i => i.Items).ToArray();
+            _allItems = Traverse(MenuCommandBoundItems(menuImg), i => i.Items).Reverse().ToArray();
             _level0Items = _allItems.Where(i => i.Level == 0);
             SetHeaderIconByKey("appbar_lines_horizontal_4");
             BaseItems = _level0Items.OrderByDescending(i => i.Items.Any());
@@ -199,15 +199,15 @@ namespace Kexi.ViewModel.Popup
                 },
                 new MenuCommandBoundItem("GroupBy", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowGroupByPopupCommand)).Execute())),
                 new MenuCommandBoundItem("Sort", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowSortPopupCommand)).Execute())),
-                new MenuCommandBoundItem("Quit", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(QuitCommand)).Execute())),
-                new MenuCommandBoundItem("Restart as Admin", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(RestartAsAdminCommand)).Execute())),
                 new MenuCommandBoundItem("Toggle Hidden Items", new RelayCommand(c =>
                 {
                     new ToggleHiddenItemsCommand(Workspace).Execute();
                     Workspace.ActiveLister.Refresh();
                 })),
                 new MenuCommandBoundItem("Refresh", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(RefreshListerCommand)).Execute())),
-                new MenuCommandBoundItem("Console Command", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowConsolePopupCommand)).Execute()))
+                new MenuCommandBoundItem("Console Command", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowConsolePopupCommand)).Execute())),
+                new MenuCommandBoundItem("Restart as Admin", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(RestartAsAdminCommand)).Execute())),
+                new MenuCommandBoundItem("Quit", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(QuitCommand)).Execute())),
             };
             return items;
         }

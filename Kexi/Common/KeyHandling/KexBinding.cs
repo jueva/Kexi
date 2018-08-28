@@ -75,11 +75,10 @@ namespace Kexi.Common.KeyHandling
                 OnPropertyChanged();
             }
         }
+        public string Group { get; set; }
 
         [XmlIgnore]
         public IKexiCommand Command { get; set; }
-
-        public string Group { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

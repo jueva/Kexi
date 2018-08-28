@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Kexi.Annotations;
+using Kexi.Common.KeyHandling;
 
 namespace Kexi.Common
 {
@@ -40,7 +41,7 @@ namespace Kexi.Common
         private bool _statusbarVisible;
         private string _theme;
         private string _viewClipboardHotKey;
-        private KeyboardMode _keyboardMode;
+        private KeyMode _keyMode;
 
         public Options()
         {
@@ -357,15 +358,15 @@ namespace Kexi.Common
             }
         }
 
-        public KeyboardMode KeyboardMode
+        public KeyMode KeyMode
         {
-            get => _keyboardMode;
+            get => _keyMode;
             set
             {
-                if (value == _keyboardMode) 
+                if (value == _keyMode) 
                     return;
 
-                _keyboardMode = value;
+                _keyMode = value;
                 OnPropertyChanged();
             }
         }

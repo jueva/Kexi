@@ -5,22 +5,22 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
-using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Lister;
-using Kexi.ViewModel.Popup;
 
 namespace Kexi.Common.KeyHandling
 {
     public class ClassicKeyHandler : IKeyHandler
     {
-        public ClassicKeyHandler(Workspace workspace)
+        public ClassicKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
-            _workspace  =  workspace;
-            _timer      =  new DispatcherTimer {Interval = TimeSpan.FromSeconds(2)};
-            _timer.Tick += _timer_Tick;
+            _workspace      =  workspace;
+            Bindings        =  bindings;
+            _bindingHandler =  new BindingHandler(workspace, bindings);
+            _timer          =  new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(1500)};
+            _timer.Tick     += _timer_Tick;
         }
 
-        public List<KexBinding> Bindings { get; set; }
+        public List<KexBinding> Bindings { get; }
 
         public string SearchString
         {
@@ -28,65 +28,49 @@ namespace Kexi.Common.KeyHandling
             set
             {
                 _searchString = value;
-                if (!string.IsNullOrEmpty(_searchString)) FocusItemMatchingSearchString();
+                _workspace.NotificationHost.AddInfo(_searchString);
+                if (!string.IsNullOrEmpty(_searchString))
+                {
+                    FocusItemMatchingSearchString();
+                }
             }
         }
 
         public bool Execute(KeyEventArgs args, ILister lister, string group)
         {
             _timer.Stop();
-            var modifierKeys = args.KeyboardDevice.Modifiers;
-            switch (args.Key)
+            if (args.Key == Key.Return || args.Key == Key.Escape)
             {
-                case Key.Escape:
-                    ClearSearchString();
-                    break;
-                case Key.F1:
-                    new ShowCommandsPopupCommand(_workspace, new CommandsPopupViewModel(_workspace, _workspace.Options, new MouseHandler(_workspace))).Execute();
-                    break;
-                case Key.F4:
-                    if ((modifierKeys & ModifierKeys.Control) != 0)
-                        new WindowCloseCommand(_workspace).Execute();
-                    break;
-                case Key.Back:
-                    new HistoryBackCommand(_workspace).Execute();
-                    break;
-                case Key.Tab:
-                    if ((modifierKeys & ModifierKeys.Shift) != 0)
-                        new CycleTabsBackwardsCommand(_workspace).Execute();
-                    else
-                        new CycleTabsCommand(_workspace).Execute();
-                    break;
-                case Key.Return:
-                    new DoActionCommand(_workspace).Execute();
-                    ClearSearchString();
-                    break;
-                default:
-                    var k = args.Key.ToString().ToLower()[0];
-                    if (k >= 'a' && k <= 'z')
-                    {
-                        if (SearchString.Length == 1 && lastKey == k || SearchString.Length == 0 && lastKey == k)
-                        {
-                            FocusNextItemWithSameStartLetter();
-                        }
-                        else
-                        {
-                            SearchString += k;
-                            lastKey      =  k;
-                        }
-                    }
+                ClearSearchString();
+            }
+            if (_bindingHandler.Handle(args, lister, group))
+                return false;
 
-                    break;
+            if (args.Key >= Key.A && args.Key <= Key.Z)
+            {
+                var k = args.Key.ToString().ToLower()[0];
+                if (SearchString.Length == 1 && lastKey == args.Key || SearchString.Length == 0 && lastKey == args.Key)
+                {
+                    FocusNextItemWithSameStartLetter();
+                }
+                else
+                {
+                    SearchString += k;
+                    lastKey      =  args.Key;
+                }
+                args.Handled = true;
+                return false;
             }
 
-            args.Handled = true;
             return false;
         }
+
+        private readonly BindingHandler _bindingHandler;
 
         private readonly DispatcherTimer _timer;
         private readonly Workspace       _workspace;
         private          string          _searchString;
-        private          char            lastKey;
+        private          Key            lastKey;
 
         private void FocusItemMatchingSearchString()
         {

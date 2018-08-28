@@ -10,65 +10,42 @@ namespace Kexi.Common.KeyHandling
 {
     public class LiveFilterKeyHandler : IKeyHandler
     {
-        private readonly Workspace _workspace;
-        private  FileFilterPopupViewModel _fileFilterPopupView;
-        private  FilterPopupViewModel _filterPopupView;
-
-
-        public LiveFilterKeyHandler(Workspace workspace)
+        public LiveFilterKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
-            _workspace = workspace;
-
+            _workspace      = workspace;
+            Bindings        = bindings;
+            _bindingHandler = new BindingHandler(workspace, bindings);
         }
 
-        public List<KexBinding> Bindings { get; set; }
+        public List<KexBinding> Bindings { get; }
 
         public bool Execute(KeyEventArgs args, ILister lister, string group)
         {
-            var modifierKeys = args.KeyboardDevice.Modifiers;
-            switch (args.Key)
+            if (_bindingHandler.Handle(args, lister, group))
+                return true;
+
+            if (args.Key == Key.Return || args.Key == Key.Escape)
             {
-                case Key.Escape:
-                    new ClearFilterCommand(_workspace).Execute();
-                    _workspace.PopupViewModel.Close();
-                    break;
-                case Key.F1:
-                    new ShowCommandsPopupCommand(_workspace, new CommandsPopupViewModel(_workspace, _workspace.Options, new MouseHandler(_workspace))).Execute();
-                    break;
-                case Key.F4:
-                    if ((modifierKeys & ModifierKeys.Control) != 0)
-                        new WindowCloseCommand(_workspace).Execute();
-                    break;
-                case Key.Back:
-                    new HistoryBackCommand(_workspace).Execute();
-                    break;
-                case Key.Tab:
-                    if ((modifierKeys & ModifierKeys.Shift) != 0)
-                        new CycleTabsBackwardsCommand(_workspace).Execute();
-                    else
-                        new CycleTabsCommand(_workspace).Execute();
-                    break;
-                case Key.Return:
-                    new DoActionCommand(_workspace).Execute();
-                    _workspace.PopupViewModel.Close();
-                    break;
-                default:
-                    var k = args.Key.ToString().ToLower()[0];
-                    if (modifierKeys == ModifierKeys.None && k >= 'a' && k <= 'z')
-                    {
-                        _fileFilterPopupView = new FileFilterPopupViewModel(_workspace, _workspace.Options, null);
-                        _filterPopupView     = new FilterPopupViewModel(_workspace, _workspace.Options, null);
-                        new ShowFilterPopupCommand(_workspace, _fileFilterPopupView, _filterPopupView).Execute();
-                        args.Handled = false;
-                        return true;
-                    }
-                    break;
+                _workspace.PopupViewModel.Close();
             }
 
-            args.Handled = true;
+            var modifierKeys = args.KeyboardDevice.Modifiers;
+            if (modifierKeys == ModifierKeys.None && args.Key >= Key.A && args.Key <= Key.Z)
+            {
+                var k = args.Key.ToString().ToLower()[0];
+                _fileFilterPopupView = new FileFilterPopupViewModel(_workspace, _workspace.Options, null);
+                _filterPopupView     = new FilterPopupViewModel(_workspace, _workspace.Options, null);
+                new ShowFilterPopupCommand(_workspace, _fileFilterPopupView, _filterPopupView).Execute();
+                args.Handled = false;
+                return true;
+            }
             return false;
         }
 
-        public string SearchString { get; set; }
+        public           string                   SearchString { get; set; }
+        private readonly BindingHandler           _bindingHandler;
+        private readonly Workspace                _workspace;
+        private          FileFilterPopupViewModel _fileFilterPopupView;
+        private          FilterPopupViewModel     _filterPopupView;
     }
 }

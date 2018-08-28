@@ -1,645 +1,706 @@
 <?xml version="1.0"?>
-<ArrayOfKexBinding xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <KexBinding>
-    <CommandName>ViewFileCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F3</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>EditFileCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F4</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CommanderCopyCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F5</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CommanderMoveCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F6</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCreateElementPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F7</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>DeleteFilesCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F8</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ExitApplicationCommand</CommandName>
-    <Modifier>Alt</Modifier>
-    <Key>F4</Key>
-    <Group>Commandbar</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ViewFileCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>B</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>EditFileCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>B</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowFavoritesinNewTabCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>F</Key>
-    <Group/>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowFavoritesCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCreateElementPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>N</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RenameFileItemCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>R</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>AddTemporaryBookmarksCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>T</Key>
-    <Group>FileLister</Group>
-    <SecondKey>T</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>MoveToNextTemporaryBookmarkCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>T</Key>
-    <Group>FileLister</Group>
-    <SecondKey>J</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>MoveToPreviousTemporaryBookmarkCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>T</Key>
-    <Group>FileLister</Group>
-    <SecondKey>K</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ClearTemporaryBookmarkCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>T</Key>
-    <Group>FileLister</Group>
-    <SecondKey>Oem7</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ShowTemporaryFavoritesBookmarksCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>T</Key>
-    <Group>FileLister</Group>
-    <SecondKey>L</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RenameFileItemCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F2</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>DeleteFilesCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Delete</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCommanderBarCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F11</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSpecialFoldersPopupCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>Y</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowFilePropertiesCommand</CommandName>
-    <Modifier>Alt Shift</Modifier>
-    <Key>Return</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSpecialPastePopupCommand</CommandName>
-    <Modifier>Control Shift</Modifier>
-    <Key>V</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>GotoParentContainerCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>U</Key>
-    <Group></Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>SelectAllOfSameType</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Q</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FilterToCurrentExtensionCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>Q</Key>
-    <Group>FileLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>GotoParentContainerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Back</Key>
-    <Group></Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>BreakConsoleCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>B</Key>
-    <Group>ConsoleLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FocusPreviousConsoleCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>H</Key>
-    <Group>ConsoleLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FocusNextConsoleCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>L</Key>
-    <Group>ConsoleLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>SelectAllCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>A</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>InvertSelectionCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>A</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CopyCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>C</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCommandsPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>C</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowConsolePopupCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>C</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowDriveListerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>D</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowNetworkListerCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>D</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowListerContextMenuPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>E</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSearchPopupCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>F</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSearchPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F3</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RefreshListerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F5</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>HistoryBackCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>U</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>HistoryForwardCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>U</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorBottomCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>G</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>MoveCursorTopCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>G</Key>
-    <Group />
-    <SecondKey>G</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ShowGroupByPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>G</Key>
-    <Group />
-    <SecondKey>R</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowBrowsingPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>I</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FocusAdressBarCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>L</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorDownCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>J</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorDownCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>J</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorDownCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>J</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorUpCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>K</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorUpCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>K</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorUpCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>K</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorLeftCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>H</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MoveCursorRightCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>L</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ToggleMenuPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>M</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowContextMenuPopupCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>M</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowNotificationListerCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>N</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>OpenDirectoryCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>O</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>OpenDirectorySplittedCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>O</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CycleThemeCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>P</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSortPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>S</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ClearSortingCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>S</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleViewModeCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>V</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleFileDetailsVisibilityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>E</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleHighlightCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>H</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleTreeViewVisibilityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>T</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleAdressbarVisibiblityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>A</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleStatusbarVisibilityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>S</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>ToggleRibbonVisibilityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>R</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding xsi:type="KexDoubleBinding">
-    <CommandName>TogglePreviewVisibilityCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>V</Key>
-    <Group />
-    <SecondKey>P</SecondKey>
-    <SecondModifier>None</SecondModifier>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>PasteCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>V</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowFilterPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>W</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ClearFilterCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>W</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FilterToCurrentExtensionCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>W</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CutCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>X</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>DoActionCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Return</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CycleTabsCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Tab</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>CycleTabsBackwardsCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>Tab</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>MarkSelectedCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Space</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>WindowCloseCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Oem3</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RepeatLastCommandCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>OemPeriod</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>AvalonDumpManagerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F12</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>IncreaseFontSizeCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>Add</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>DecreaseFontSizeCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>Subtract</Key>
-    <Group />
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ViewFileCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>B</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>EditFileCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>B</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowDrivesPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>D</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowSpecialFoldersPopupCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>F</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCreateElementPopupCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>N</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RenameFileItemCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>R</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RenameFileItemCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F2</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>DeleteFilesCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Delete</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowCommanderBarCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F11</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>RefreshListerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>F5</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>SelectAllOfSameType</CommandName>
-    <Modifier>None</Modifier>
-    <Key>Q</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FilterToCurrentExtensionCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>W</Key>
-    <Group>Control</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>FilterToCurrentExtensionCommand</CommandName>
-    <Modifier>Control</Modifier>
-    <Key>W</Key>
-    <Group>SearchLister</Group>
-  </KexBinding>
-  <KexBinding>
-    <CommandName>ShowKeyCommandListerCommand</CommandName>
-    <Modifier>Shift</Modifier>
-    <Key>Oem4</Key>
-    <Group />
-  </KexBinding>
-   <KexBinding>
-    <CommandName>ShowSettingsListerCommand</CommandName>
-    <Modifier>None</Modifier>
-    <Key>P</Key>
-    <Group />
-  </KexBinding>
-</ArrayOfKexBinding>
+  <KeyConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Bindings>
+      <KeyModeBindings>
+        <KeyMode>ViStyle</KeyMode>
+        <KeyBindings>
+
+          <KexBinding>
+            <CommandName>ViewFileCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F3</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>EditFileCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F4</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CommanderCopyCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F5</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CommanderMoveCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F6</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCreateElementPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F7</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DeleteFilesCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F8</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ExitApplicationCommand</CommandName>
+            <Modifier>Alt</Modifier>
+            <Key>F4</Key>
+            <Group>Commandbar</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ViewFileCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>B</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>EditFileCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>B</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowFavoritesinNewTabCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>F</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowFavoritesCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCreateElementPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>N</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RenameFileItemCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>R</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>AddTemporaryBookmarksCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>T</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>MoveToNextTemporaryBookmarkCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>J</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>MoveToPreviousTemporaryBookmarkCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>K</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ClearTemporaryBookmarkCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>Oem7</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ShowTemporaryFavoritesBookmarksCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>L</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RenameFileItemCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F2</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DeleteFilesCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Delete</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCommanderBarCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F11</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSpecialFoldersPopupCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Y</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowFilePropertiesCommand</CommandName>
+            <Modifier>Alt Shift</Modifier>
+            <Key>Return</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSpecialPastePopupCommand</CommandName>
+            <Modifier>Control Shift</Modifier>
+            <Key>V</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>GotoParentContainerCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>U</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>SelectAllOfSameType</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Q</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FilterToCurrentExtensionCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Q</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>GotoParentContainerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Back</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>BreakConsoleCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>B</Key>
+            <Group>ConsoleLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FocusPreviousConsoleCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>H</Key>
+            <Group>ConsoleLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FocusNextConsoleCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>L</Key>
+            <Group>ConsoleLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>SelectAllCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>A</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>InvertSelectionCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>A</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CopyCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>C</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCommandsPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>C</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowConsolePopupCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>C</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowDriveListerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>D</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowNetworkListerCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>D</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowListerContextMenuPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>E</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSearchPopupCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>F</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSearchPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F3</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RefreshListerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F5</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>HistoryBackCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>U</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>HistoryForwardCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>U</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorBottomCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>G</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>MoveCursorTopCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>G</Key>
+            <Group />
+            <SecondKey>G</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ShowGroupByPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>G</Key>
+            <Group />
+            <SecondKey>R</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowBrowsingPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>I</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FocusAdressBarCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>L</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorDownCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>J</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorDownCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>J</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorDownCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>J</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorUpCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>K</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorUpCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>K</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorUpCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>K</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorLeftCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>H</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MoveCursorRightCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>L</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ToggleMenuPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>M</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowContextMenuPopupCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>M</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowNotificationListerCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>N</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>OpenDirectoryCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>O</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>OpenDirectorySplittedCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>O</Key>
+            <Group />
+          </KexBinding>
+		 <KexBinding>
+            <CommandName>ShowSettingsPopupCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>O</Key>
+            <Group/>
+          </KexBinding>		  
+          <KexBinding>
+            <CommandName>CycleThemeCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>P</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSortPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>S</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ClearSortingCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>S</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleViewModeCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>V</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleFileDetailsVisibilityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>E</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleHighlightCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>H</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleTreeViewVisibilityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>T</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleAdressbarVisibiblityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>A</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleStatusbarVisibilityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>S</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ToggleRibbonVisibilityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>R</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>TogglePreviewVisibilityCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group />
+            <SecondKey>P</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>PasteCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>V</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowFilterPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>W</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ClearFilterCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>W</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FilterToCurrentExtensionCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>W</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CutCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>X</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DoActionCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Return</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CycleTabsCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Tab</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CycleTabsBackwardsCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Tab</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>MarkSelectedCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Space</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>WindowCloseCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Oem3</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RepeatLastCommandCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>OemPeriod</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>AvalonDumpManagerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F12</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>IncreaseFontSizeCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>Add</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DecreaseFontSizeCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>Subtract</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ViewFileCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>B</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>EditFileCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>B</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowDrivesPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>D</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSpecialFoldersPopupCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>F</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCreateElementPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>N</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RenameFileItemCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>R</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RenameFileItemCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F2</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DeleteFilesCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Delete</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCommanderBarCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F11</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>RefreshListerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F5</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>SelectAllOfSameType</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Q</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FilterToCurrentExtensionCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>W</Key>
+            <Group>Control</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>FilterToCurrentExtensionCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>W</Key>
+            <Group>SearchLister</Group>
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowKeyCommandListerCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Oem4</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowSettingsListerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>P</Key>
+            <Group />
+          </KexBinding>
+        </KeyBindings>
+      </KeyModeBindings>
+      <KeyModeBindings>
+        <KeyMode>Classic</KeyMode>
+        <KeyBindings>
+          <KexBinding>
+            <CommandName>ClearFilterCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Escape</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>ShowCommandsPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F1</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>WindowCloseCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>F4</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>HistoryBackCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Back</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CycleTabsCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Tab</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>CycleTabsBackwardsCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Tab</Key>
+            <Group />
+          </KexBinding>
+          <KexBinding>
+            <CommandName>DoActionCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Return</Key>
+            <Group />
+          </KexBinding>
+        </KeyBindings>
+    </KeyModeBindings>
+  </Bindings>
+</KeyConfiguration>

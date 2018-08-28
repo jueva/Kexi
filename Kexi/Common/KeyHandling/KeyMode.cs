@@ -1,6 +1,6 @@
-﻿namespace Kexi
+﻿namespace Kexi.Common.KeyHandling
 {
-    public enum KeyboardMode
+    public enum KeyMode
     {
         Undefined  = 0,
         Classic    = 1,
