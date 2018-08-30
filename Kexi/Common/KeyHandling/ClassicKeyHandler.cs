@@ -5,22 +5,23 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
+using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.Common.KeyHandling
 {
     public class ClassicKeyHandler : IKeyHandler
     {
+        public List<KexBinding> Bindings { get; }
         public ClassicKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
             _workspace      =  workspace;
-            Bindings        =  bindings;
+            Bindings = bindings;
             _bindingHandler =  new BindingHandler(workspace, bindings);
             _timer          =  new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(1500)};
             _timer.Tick     += _timer_Tick;
         }
 
-        public List<KexBinding> Bindings { get; }
 
         public string SearchString
         {
@@ -39,24 +40,27 @@ namespace Kexi.Common.KeyHandling
         public bool Execute(KeyEventArgs args, ILister lister, string group)
         {
             _timer.Stop();
-            if (args.Key == Key.Return || args.Key == Key.Escape)
-            {
-                ClearSearchString();
-            }
             if (_bindingHandler.Handle(args, lister, group))
+            {
+                var type = _bindingHandler.LastCommand.GetType();
+                if (type == typeof(DoActionCommand) || type == typeof(HistoryBackCommand) || args.Key == Key.Escape)
+                {
+                    ClearSearchString();
+                }
                 return false;
+            }
 
             if (args.Key >= Key.A && args.Key <= Key.Z)
             {
                 var k = args.Key.ToString().ToLower()[0];
-                if (SearchString.Length == 1 && lastKey == args.Key || SearchString.Length == 0 && lastKey == args.Key)
+                if (SearchString.Length == 1 && _lastKey == args.Key || SearchString.Length == 0 && _lastKey == args.Key)
                 {
                     FocusNextItemWithSameStartLetter();
                 }
                 else
                 {
                     SearchString += k;
-                    lastKey      =  args.Key;
+                    _lastKey      =  args.Key;
                 }
                 args.Handled = true;
                 return false;
@@ -70,7 +74,7 @@ namespace Kexi.Common.KeyHandling
         private readonly DispatcherTimer _timer;
         private readonly Workspace       _workspace;
         private          string          _searchString;
-        private          Key            lastKey;
+        private          Key            _lastKey;
 
         private void FocusItemMatchingSearchString()
         {

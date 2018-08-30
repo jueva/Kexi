@@ -13,26 +13,22 @@ namespace Kexi.Common.KeyHandling
         public LiveFilterKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
             _workspace      = workspace;
-            Bindings        = bindings;
             _bindingHandler = new BindingHandler(workspace, bindings);
         }
-
-        public List<KexBinding> Bindings { get; }
 
         public bool Execute(KeyEventArgs args, ILister lister, string group)
         {
             if (_bindingHandler.Handle(args, lister, group))
-                return true;
-
-            if (args.Key == Key.Return || args.Key == Key.Escape)
             {
-                _workspace.PopupViewModel.Close();
+                if (_bindingHandler.LastCommand.GetType() == typeof(DoActionCommand) || args.Key == Key.Escape)
+                {
+                    _workspace.PopupViewModel.Close();
+                }
+                return true;
             }
 
-            var modifierKeys = args.KeyboardDevice.Modifiers;
-            if (modifierKeys == ModifierKeys.None && args.Key >= Key.A && args.Key <= Key.Z)
+            if (args.KeyboardDevice.Modifiers == ModifierKeys.None && args.Key >= Key.A && args.Key <= Key.Z)
             {
-                var k = args.Key.ToString().ToLower()[0];
                 _fileFilterPopupView = new FileFilterPopupViewModel(_workspace, _workspace.Options, null);
                 _filterPopupView     = new FilterPopupViewModel(_workspace, _workspace.Options, null);
                 new ShowFilterPopupCommand(_workspace, _fileFilterPopupView, _filterPopupView).Execute();

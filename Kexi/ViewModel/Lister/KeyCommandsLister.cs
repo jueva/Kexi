@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Kexi.Common;
-using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
 
@@ -17,11 +15,11 @@ namespace Kexi.ViewModel.Lister
     public class KeyCommandsLister : BaseLister<KexBindingItem>
     {
         [ImportingConstructor]
-        public KeyCommandsLister(Workspace       workspace,     INotificationHost                      notificationHost, Options options, CommandRepository commandRepository,
-            [ImportMany] IEnumerable<KeyDispatcher> keyHandlerses, [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
+        public KeyCommandsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository,
+            [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
         {
-            _commands    = commands;
-            Title        = PathName = Path ="Key Bindings";
+            _commands = commands;
+            Title     = PathName = Path = "Key Bindings";
         }
 
         public override bool ShowInMenu => true;
@@ -39,13 +37,12 @@ namespace Kexi.ViewModel.Lister
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
             var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "")).ToList();
-            //TODO: Keymode....
-            //foreach (var c in allCommands.ToImmutableArray())
-            //foreach (var b in KeyHandler.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
-            //{
-            //    allCommands.Remove(c);
-            //    allCommands.Add(new KexBindingItem(b, b.Group));
-            //}
+            foreach (var c in allCommands.ToArray())
+            foreach (var b in Workspace.KeyDispatcher.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
+            {
+                allCommands.Remove(c);
+                allCommands.Add(new KexBindingItem(b, b.Group));
+            }
 
             return Task.FromResult(allCommands.OrderBy(k => k.CommandName).AsEnumerable());
         }

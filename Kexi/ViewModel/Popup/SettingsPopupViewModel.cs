@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Popup
         public override void Open()
         {
             BaseItems = typeof(Options).GetProperties().OrderBy(p => p.Name).Select(p => 
-                new SettingItem(p.Name, GetValue(p.Name))
+                new SettingItem(p.Name)
                 {
                     DisplayName = $"{p.Name} ({GetValue(p.Name).ToString() })"
                 }
@@ -42,7 +42,7 @@ namespace Kexi.ViewModel.Popup
             return prop == null ? null : prop.GetValue(Options);
         }
 
-        public void DoAction(SettingItem item)
+        private void DoAction(SettingItem item)
         {
             if (item == null)
                 return;

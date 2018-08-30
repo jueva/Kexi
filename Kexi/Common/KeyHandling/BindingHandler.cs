@@ -23,7 +23,8 @@ namespace Kexi.Common.KeyHandling
         private readonly Workspace        _workspace;
         private          Key?             _firstKey;
         private          ModifierKeys?    _firstModifier;
-        private          IKexiCommand     _lastCommand;
+
+        public IKexiCommand LastCommand { get; private set; }
 
         public bool Handle(KeyEventArgs args, ILister lister, string group = null)
         {
@@ -82,9 +83,9 @@ namespace Kexi.Common.KeyHandling
                 try
                 {
                     if (binding.Command == _workspace.CommandRepository.GetCommandByName(nameof(RepeatLastCommandCommand)))
-                        _lastCommand?.Execute(lister);
+                        LastCommand?.Execute(lister);
                     else
-                        _lastCommand = binding.Command;
+                        LastCommand = binding.Command;
 
                     switch (binding.CommandName)
                     {

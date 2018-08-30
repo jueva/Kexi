@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kexi.ViewModel.Item
+﻿namespace Kexi.ViewModel.Item
 {
     public class SettingItem : BaseItem
     {
-        public SettingItem(string name, object value) : base(name)
+        public SettingItem(string name) : base(name)
+        {
+        }
+
+        public SettingItem(string name, object value) : this(name)
         {
             Value = value;
         }
 
-        private object _value;
-
         public object Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if (Equals(value, _value)) return;
@@ -25,5 +21,7 @@ namespace Kexi.ViewModel.Item
                 OnPropertyChanged();
             }
         }
+
+        private object _value;
     }
 }

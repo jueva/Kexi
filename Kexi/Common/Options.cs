@@ -72,6 +72,7 @@ namespace Kexi.Common
             CenterPopup = (bool) settings.GetValue("CenterPopup", typeof(bool));;
             AdressbarVisible = true;
             Highlights = (bool) settings.GetValue("Highlights", typeof(bool));
+            KeyMode = (KeyMode) Enum.Parse(typeof(KeyMode), (string) settings.GetValue("KeyMode", typeof(string)));
         }
 
 
@@ -380,7 +381,7 @@ namespace Kexi.Common
             if (setting != null)
             {
                 setting.Value = value;
-                config.Save(ConfigurationSaveMode.Minimal);
+                config.Save(ConfigurationSaveMode.Full);
             }
         }
 
