@@ -38,10 +38,12 @@ namespace Kexi.ViewModel.Lister
         {
             var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "")).ToList();
             foreach (var c in allCommands.ToArray())
-            foreach (var b in Workspace.KeyDispatcher.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
             {
-                allCommands.Remove(c);
-                allCommands.Add(new KexBindingItem(b, b.Group));
+                foreach (var b in Workspace.KeyDispatcher.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
+                {
+                    allCommands.Remove(c);
+                    allCommands.Add(new KexBindingItem(b, b.Group));
+                }
             }
 
             return Task.FromResult(allCommands.OrderBy(k => k.CommandName).AsEnumerable());

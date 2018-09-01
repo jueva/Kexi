@@ -74,7 +74,7 @@ namespace Kexi.Common.KeyHandling
         private readonly DispatcherTimer _timer;
         private readonly Workspace       _workspace;
         private          string          _searchString;
-        private          Key            _lastKey;
+        private          Key?           _lastKey;
 
         private void FocusItemMatchingSearchString()
         {
@@ -104,6 +104,7 @@ namespace Kexi.Common.KeyHandling
         public void ClearSearchString()
         {
             SearchString = "";
+            _lastKey = null;
         }
     }
 }
