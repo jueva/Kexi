@@ -662,16 +662,6 @@
                                     Height="96"
                                     Margin="2,2,2,9"
                                     Source="{Binding Details.LargeThumbnail, Mode=OneWay}">
-                    <!--<base:ImageControl.Triggers>
-                        <EventTrigger RoutedEvent="base:ImageControl.SourceChanged">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="(Image.Opacity)" From="0" To="1"
-                                                     Duration="0:0:01" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </base:ImageControl.Triggers>-->
                 </base:ImageControl>
                 <TextBlock Grid.Column="2" />
             </Grid>

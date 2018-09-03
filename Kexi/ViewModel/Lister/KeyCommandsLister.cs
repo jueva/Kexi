@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
+using Kexi.ViewModel.Popup;
 
 namespace Kexi.ViewModel.Lister
 {
@@ -16,9 +17,10 @@ namespace Kexi.ViewModel.Lister
     {
         [ImportingConstructor]
         public KeyCommandsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository,
-            [ImportMany] IEnumerable<IKexiCommand> commands) : base(workspace, notificationHost, options, commandRepository)
+            [ImportMany] IEnumerable<IKexiCommand> commands, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace, notificationHost, options, commandRepository)
         {
             _commands = commands;
+            _keyBindingPopupViewModel = keyBindingPopupViewModel;
             Title     = PathName = Path = "Key Bindings";
         }
 
@@ -33,6 +35,7 @@ namespace Kexi.ViewModel.Lister
 
         public override  string                    ProtocolPrefix => "Keybindings";
         private readonly IEnumerable<IKexiCommand> _commands;
+        private readonly SetKeyBindingPopupViewModel _keyBindingPopupViewModel;
 
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
@@ -51,6 +54,8 @@ namespace Kexi.ViewModel.Lister
 
         public override void DoAction(KexBindingItem item)
         {
+            Workspace.PopupViewModel = _keyBindingPopupViewModel;
+            _keyBindingPopupViewModel.Open();
         }
     }
 }

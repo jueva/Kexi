@@ -34,7 +34,7 @@ namespace Kexi.Common.KeyHandling
             var        groupName      = group ?? lister?.GetType().Name;
             var        listerCommands = _bindings.Where(b => b.Group == groupName || b.Group == "");
 
-            if (_firstKey != null && !IsModifier(k))
+            if (_firstKey != null && !k.IsModifier())
             {
                 binding =
                     listerCommands.OfType<KexDoubleBinding>()
@@ -121,20 +121,5 @@ namespace Kexi.Common.KeyHandling
             return false;
         }
 
-        private bool IsModifier(Key key)
-        {
-            switch (key)
-            {
-                case Key.LeftShift:
-                case Key.RightShift:
-                case Key.LeftAlt:
-                case Key.RightAlt:
-                case Key.LeftCtrl:
-                case Key.RightCtrl:
-                    return true;
-                default:
-                    return false;
-            }
-        }
     }
 }

@@ -266,6 +266,7 @@
     <Compile Include="Common\ConsoleAppManager.cs" />
     <Compile Include="Common\CopyHelper.cs" />
     <Compile Include="Common\FileHelper.cs" />
+    <Compile Include="Common\KeyExtensions.cs" />
     <Compile Include="Common\KeyHandling\BindingHandler.cs" />
     <Compile Include="Common\KeyHandling\ClassicKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyConfiguration.cs" />
@@ -531,6 +532,8 @@
     <Compile Include="ViewModel\Popup\ConsoleCommandPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\ContextMenuPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\DrivePopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\KeyBindingsPopupViewModel.cs" />
+    <Compile Include="ViewModel\Popup\SetKeyBindingPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\SettingsPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\SpecialPastePopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\CreateElementPopupViewModel.cs" />
