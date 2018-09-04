@@ -8,8 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kexi.Common;
-using Kexi.Common.KeyHandling;
-using Kexi.Converter;
 using Kexi.Files;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
@@ -17,6 +15,7 @@ using Kexi.Shell;
 using Kexi.ViewModel.Item;
 using Microsoft.WindowsAPICodePack.Shell;
 using Clipboard = System.Windows.Clipboard;
+using LengthConverter = Kexi.Converter.LengthConverter;
 
 namespace Kexi.ViewModel.Lister
 {
@@ -26,8 +25,8 @@ namespace Kexi.ViewModel.Lister
     public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider
     {
         [ImportingConstructor]
-        public FileLister(Workspace workspace,         INotificationHost    notificationHost, Options options,
-            CommandRepository       commandRepository)
+        public FileLister(Workspace workspace, INotificationHost notificationHost, Options options,
+            CommandRepository commandRepository)
             : base(workspace, notificationHost, options, commandRepository)
         {
             Title    = "Files";
@@ -40,7 +39,7 @@ namespace Kexi.ViewModel.Lister
 
         public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
         {
-            new Column("", "Thumbnail", ColumnType.Image) { OneTimeBinding = true},
+            new Column("", "Thumbnail", ColumnType.Image) {OneTimeBinding                      = true},
             new Column("Name", "DisplayName", ColumnType.Highlightable) {Width                 = 300},
             new Column("LastModified", "Details.LastModified", ColumnType.RightAligned) {Width = 180},
             new Column("Type", "Details.Type", ColumnType.Text, ColumnSize.Auto) {Width        = 180},
@@ -86,13 +85,13 @@ namespace Kexi.ViewModel.Lister
 
         public           BrowsingHistory         History { get; }
         private readonly FileItemProvider        _itemProvider;
-        private  FilesystemChangeWatcher _watcher;
+        private          FilesystemChangeWatcher _watcher;
 
         private void FileLister_PathChanging(string value)
         {
             Thumbnail = ShellNative.GetSmallBitmapSource(Path);
             _watcher?.ObservePath(value);
-            PathName = string.IsNullOrEmpty(_path) ? "My Computer" :System.IO.Path.GetFileName(_path);
+            PathName = string.IsNullOrEmpty(_path) ? "My Computer" : System.IO.Path.GetFileName(_path);
         }
 
         public override void Copy()
@@ -136,7 +135,7 @@ namespace Kexi.ViewModel.Lister
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();
-                SelectedItems .Foreach(i => i.IsMarkedForMove = false);
+                SelectedItems.Foreach(i => i.IsMarkedForMove = false);
             }
         }
 
@@ -225,7 +224,7 @@ namespace Kexi.ViewModel.Lister
 
         protected override void Dispose(bool disposing)
         {
-            _watcher = null;
+            _watcher    =  null;
             PathChanged -= FileLister_PathChanging;
             _itemProvider.Dispose();
             base.Dispose(disposing);

@@ -35,7 +35,7 @@ namespace Kexi.Extensions
                 {
                     foreach (var fi in files)
                         if (fi.ItemType == ItemType.Container)
-                            CompressFolder(fi.Path, archive, rootPath.Length+1);
+                            CompressFolder(fi.Path, archive, rootPath.Length + 1);
                         else
                             archive.CreateEntryFromFile(fi.Path, fi.FileInfo.Name);
                 }
@@ -48,7 +48,7 @@ namespace Kexi.Extensions
         {
             foreach (var file in Directory.GetFiles(path))
             {
-                var folderAndFilename = file.Substring(rootPathLength); 
+                var folderAndFilename = file.Substring(rootPathLength);
                 archive.CreateEntryFromFile(file, folderAndFilename);
             }
 

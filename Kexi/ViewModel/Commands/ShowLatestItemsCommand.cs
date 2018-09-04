@@ -41,7 +41,7 @@ namespace Kexi.ViewModel.Commands
                 target = item.Path;
 
             searchLister.Path = target;
-            searchLister.SearchPattern = "*.*";
+            searchLister.SearchPattern = "";
             searchLister.MaxItems = 20;
             _workspace.Open(searchLister);
             searchLister.GotView += SearchLister_GotView;

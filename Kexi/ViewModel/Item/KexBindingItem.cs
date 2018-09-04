@@ -1,33 +1,24 @@
-﻿using System.Windows.Forms;
-using Kexi.Common.KeyHandling;
-using Kexi.Interfaces;
+﻿using Kexi.Common.KeyHandling;
 
 namespace Kexi.ViewModel.Item
 {
     public class KexBindingItem : BaseItem
     {
-
-        public KexBindingItem(KexBinding binding, string lister) : this(binding.CommandName, lister)
+        public KexBindingItem(KexBinding binding) : this(binding.CommandName, binding.Group)
         {
-            if (binding is KexDoubleBinding doubleBinding)
-                Key = $"{doubleBinding.Modifier}-{doubleBinding.Key} {doubleBinding.SecondModifier}-{doubleBinding.SecondKey}";
-            else
-                Key = $"{binding.Modifier}-{binding.Key}";
-
-            CommandName = DisplayName = FilterString = binding.CommandName;
-            Lister = lister;
+            Binding     = binding;
         }
 
         public KexBindingItem(string commandName, string lister)
         {
-            Key = "None";
             CommandName = DisplayName = FilterString = commandName;
-            Lister = lister;
+            Lister      = lister;
         }
 
-        public string Key         { get; }
-        public string CommandName { get; }
-        public string Lister { get; set; }
+        public KexBinding Binding     { get; }
+        public string Key => Binding?.ToString() ?? "None";
+        public string     CommandName { get; }
+        public string     Lister      { get; set; }
 
         public override bool Equals(object obj)
         {

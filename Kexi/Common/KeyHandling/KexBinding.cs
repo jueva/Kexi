@@ -5,29 +5,25 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using Kexi.Annotations;
 using Kexi.Interfaces;
-using Kexi.ViewModel.Lister;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace Kexi.Common.KeyHandling
 {
     [XmlInclude(typeof(KexDoubleBinding))]
     [Serializable]
-    public class KexBinding : INotifyPropertyChanged 
+    public class KexBinding : INotifyPropertyChanged
     {
-        private ModifierKeys _modifier;
-        private Key _key;
-        private object[] _commandArguments;
-        private string _commandName;
+        protected KexBinding()
+        {
+        }
 
-        protected KexBinding() {}
         public KexBinding(string group, Key key, ModifierKeys modifier, string commandName, IKexiCommand action, object[] commandArguments = null)
         {
-            Key = key;
-            Modifier = modifier;
-            Command = action;
-            CommandName = commandName; 
+            Key              = key;
+            Modifier         = modifier;
+            Command          = action;
+            CommandName      = commandName;
             CommandArguments = commandArguments;
-            Group = group;
+            Group            = group;
         }
 
         public string CommandName
@@ -46,7 +42,7 @@ namespace Kexi.Common.KeyHandling
         public object[] CommandArguments
         {
             get => _commandArguments;
-            set
+            private set
             {
                 if (Equals(value, _commandArguments)) return;
                 _commandArguments = value;
@@ -75,12 +71,25 @@ namespace Kexi.Common.KeyHandling
                 OnPropertyChanged();
             }
         }
+
         public string Group { get; set; }
 
         [XmlIgnore]
         public IKexiCommand Command { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        [NonSerialized] private object[] _commandArguments;
+
+        private string       _commandName;
+        private Key          _key;
+        private ModifierKeys _modifier;
+
+        public override string ToString()
+        {
+            var firstMod = Modifier == ModifierKeys.None ? "" : Modifier + "-";
+            return $"{firstMod}{Key}";
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

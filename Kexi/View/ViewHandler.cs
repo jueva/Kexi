@@ -73,7 +73,7 @@ namespace Kexi.View
                         gc.CellTemplate = GetImageDataTemplate(col);
                         if (col.BindingExpression == "Thumbnail" || col.BindingExpression == "Details.Thumbnail")
                         {
-                            gc.Width = lister.Workspace.Options.FontSize * 2;
+                            gc.Width = lister.Workspace.Options.FontSize * 1.8;
                         }
                     }
                     else if (col.Type == ColumnType.Bool)

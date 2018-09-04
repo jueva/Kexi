@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kexi.Common;
 using Kexi.Interfaces;
+using Kexi.ItemProvider;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Popup;
 
@@ -17,9 +18,9 @@ namespace Kexi.ViewModel.Lister
     {
         [ImportingConstructor]
         public KeyCommandsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository,
-            [ImportMany] IEnumerable<IKexiCommand> commands, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace, notificationHost, options, commandRepository)
+            KeyBindingsProvider keyBindingsProvider, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace, notificationHost, options, commandRepository)
         {
-            _commands = commands;
+            _keyBindingsProvider = keyBindingsProvider;
             _keyBindingPopupViewModel = keyBindingPopupViewModel;
             Title     = PathName = Path = "Key Bindings";
         }
@@ -34,22 +35,13 @@ namespace Kexi.ViewModel.Lister
         };
 
         public override  string                    ProtocolPrefix => "Keybindings";
-        private readonly IEnumerable<IKexiCommand> _commands;
+        private readonly KeyBindingsProvider _keyBindingsProvider;
         private readonly SetKeyBindingPopupViewModel _keyBindingPopupViewModel;
 
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
-            var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, "")).ToList();
-            foreach (var c in allCommands.ToArray())
-            {
-                foreach (var b in Workspace.KeyDispatcher.Bindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) //TODO: SecondKey
-                {
-                    allCommands.Remove(c);
-                    allCommands.Add(new KexBindingItem(b, b.Group));
-                }
-            }
-
-            return Task.FromResult(allCommands.OrderBy(k => k.CommandName).AsEnumerable());
+            var bindings = _keyBindingsProvider.GetBindings();
+            return Task.FromResult(bindings);
         }
 
         public override void DoAction(KexBindingItem item)

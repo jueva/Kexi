@@ -4,7 +4,7 @@
     <Color x:Key="ControlBack">#FFFFFF</Color>
     <Color x:Key="BackColor">#404040</Color>
     <Color x:Key="BackDisabledColor">#555555</Color>
-    <SolidColorBrush x:Key="ActiveTabDecorator">#555555</SolidColorBrush>
+    <SolidColorBrush x:Key="ActiveTabDecorator"  Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}"/>
     <SolidColorBrush x:Key="ItemHighlightColor" Color="#FF158782" />
     <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
 
