@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Kexi.Common;
 using Kexi.Common.KeyHandling;
@@ -6,6 +7,9 @@ using Kexi.ViewModel.Item;
 
 namespace Kexi.ViewModel.Popup
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Serializer needs")]
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Serializer needs")]
+
     [Export]
     public class SetKeyBindingPopupViewModel : PopupViewModel<BaseItem>
     {
@@ -28,26 +32,31 @@ namespace Kexi.ViewModel.Popup
                 return;
             }
 
-            if (ea.Key == Key.Escape)
+            // ReSharper disable once SwitchStatementMissingSomeCases
+            switch (ea.Key)
             {
-                Binding = null;
-                Close();
-            }
-            else if (ea.Key == Key.Return)
-            {
-                Close();
-            }
-            else
-            {
-                Binding = Binding == null
-                    ? new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null)
-                    : new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                case Key.Escape:
+                    Binding = null;
+                    Close();
+                    break;
+                case Key.Return:
+                    SaveAndClose();
+                    break;
+                default:
+                    Binding = Binding == null
+                        ? new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null)
+                        : new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
 
-                Text += $"{ea.KeyboardDevice.Modifiers}+{ea.Key}";
+                    Text += $"{ea.KeyboardDevice.Modifiers}+{ea.Key}";
+                    break;
             }
 
             ea.Handled = true;
         }
 
+        private void SaveAndClose()
+        {
+            Close();
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Kexi.Common;
 using Kexi.Interfaces;
@@ -20,9 +19,9 @@ namespace Kexi.ViewModel.Lister
         public KeyCommandsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository,
             KeyBindingsProvider keyBindingsProvider, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace, notificationHost, options, commandRepository)
         {
-            _keyBindingsProvider = keyBindingsProvider;
+            _keyBindingsProvider      = keyBindingsProvider;
             _keyBindingPopupViewModel = keyBindingPopupViewModel;
-            Title     = PathName = Path = "Key Bindings";
+            Title                     = PathName = Path = "Key Bindings";
         }
 
         public override bool ShowInMenu => true;
@@ -34,14 +33,13 @@ namespace Kexi.ViewModel.Lister
             new Column("Command", "CommandName")
         };
 
-        public override  string                    ProtocolPrefix => "Keybindings";
-        private readonly KeyBindingsProvider _keyBindingsProvider;
+        public override  string                      ProtocolPrefix => "Keybindings";
         private readonly SetKeyBindingPopupViewModel _keyBindingPopupViewModel;
+        private readonly KeyBindingsProvider         _keyBindingsProvider;
 
         protected override Task<IEnumerable<KexBindingItem>> GetItems()
         {
-            var bindings = _keyBindingsProvider.GetBindings();
-            return Task.FromResult(bindings);
+            return Task.FromResult(_keyBindingsProvider.GetBindings());
         }
 
         public override void DoAction(KexBindingItem item)

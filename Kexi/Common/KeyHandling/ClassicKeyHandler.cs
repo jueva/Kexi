@@ -12,16 +12,16 @@ namespace Kexi.Common.KeyHandling
 {
     public class ClassicKeyHandler : IKeyHandler
     {
-        public List<KexBinding> Bindings { get; }
         public ClassicKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
             _workspace      =  workspace;
-            Bindings = bindings;
+            Bindings        =  bindings;
             _bindingHandler =  new BindingHandler(workspace, bindings);
             _timer          =  new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(1500)};
             _timer.Tick     += _timer_Tick;
         }
 
+        public List<KexBinding> Bindings { get; }
 
         public string SearchString
         {
@@ -29,9 +29,9 @@ namespace Kexi.Common.KeyHandling
             set
             {
                 _searchString = value;
-                _workspace.NotificationHost.AddInfo(_searchString);
                 if (!string.IsNullOrEmpty(_searchString))
                 {
+                    _workspace.NotificationHost.AddInfo(_searchString);
                     FocusItemMatchingSearchString();
                 }
             }
@@ -47,6 +47,7 @@ namespace Kexi.Common.KeyHandling
                 {
                     ClearSearchString();
                 }
+
                 return false;
             }
 
@@ -60,8 +61,9 @@ namespace Kexi.Common.KeyHandling
                 else
                 {
                     SearchString += k;
-                    _lastKey      =  args.Key;
+                    _lastKey     =  args.Key;
                 }
+
                 args.Handled = true;
                 return false;
             }
@@ -73,8 +75,8 @@ namespace Kexi.Common.KeyHandling
 
         private readonly DispatcherTimer _timer;
         private readonly Workspace       _workspace;
+        private          Key?            _lastKey;
         private          string          _searchString;
-        private          Key?           _lastKey;
 
         private void FocusItemMatchingSearchString()
         {
@@ -104,7 +106,7 @@ namespace Kexi.Common.KeyHandling
         public void ClearSearchString()
         {
             SearchString = "";
-            _lastKey = null;
+            _lastKey     = null;
         }
     }
 }

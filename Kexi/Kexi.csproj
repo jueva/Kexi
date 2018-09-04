@@ -270,6 +270,7 @@
     <Compile Include="Common\KeyHandling\BindingHandler.cs" />
     <Compile Include="Common\KeyHandling\ClassicKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyConfiguration.cs" />
+    <Compile Include="Common\KeyHandling\KeyConfigurationSerializer.cs" />
     <Compile Include="Common\KeyHandling\KeyModeBindings.cs" />
     <Compile Include="Common\KeyHandling\LiveFilterKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\ViStyleKeyHandler.cs" />

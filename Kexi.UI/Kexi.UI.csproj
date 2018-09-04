@@ -452,7 +452,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
+    <PostBuildEvent>rem copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
 rem copy $(ProjectDir)keyBindings.xml $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

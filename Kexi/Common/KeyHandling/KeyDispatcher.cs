@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Lister;
 
@@ -11,29 +9,23 @@ namespace Kexi.Common.KeyHandling
 {
     public class KeyDispatcher
     {
-        public const  Key    AlternateEscape  = Key.Oem102;
-        private const string KeyConfiguration = @".\keyBindings.xml";
-        public static Key    MoveDownKey      = Key.J;
-        public static Key    MoveUpKey        = Key.K;
-        public static Key    MoveLeftKey      = Key.H;
-        public static Key    MoveRightKey     = Key.L;
-
+        public const  Key AlternateEscape = Key.Oem102;
+        public static Key MoveDownKey     = Key.J;
+        public static Key MoveUpKey       = Key.K;
+        public static Key MoveLeftKey     = Key.H;
+        public static Key MoveRightKey    = Key.L;
 
         public KeyDispatcher(Workspace workspace)
         {
             Workspace = workspace;
-            var serializer = new XmlSerializer(typeof(KeyConfiguration));
-            using (var file = new FileStream(KeyConfiguration, FileMode.Open))
-            {
-                var configuration   = (KeyConfiguration) serializer.Deserialize(file);
-                var keyModeBindings = configuration.Bindings;
+            var serializer      = new KeyConfigurationSerializer();
+            var keyModeBindings = serializer.GetConfiguration().Bindings;
 
-                Workspace.PropertyChanged += Workspace_PropertyChanged;
-                _viStyleKeyHandler        =  new ViStyleKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.ViStyle)?.KeyBindings);
-                _classicKeyHandler        =  new ClassicKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.Classic)?.KeyBindings);
-                //Livefilter uses same Keybindingings as Classic
-                _liveFilterKeyHandler = new LiveFilterKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.Classic)?.KeyBindings);
-            }
+            Workspace.PropertyChanged += Workspace_PropertyChanged;
+            _viStyleKeyHandler        =  new ViStyleKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.ViStyle)?.KeyBindings);
+            _classicKeyHandler        =  new ClassicKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.Classic)?.KeyBindings);
+            //Livefilter uses same Keybindingings as Classic
+            _liveFilterKeyHandler = new LiveFilterKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.Classic)?.KeyBindings);
         }
 
         private Workspace Workspace { get; }
