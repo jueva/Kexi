@@ -36,7 +36,7 @@ namespace Kexi.ViewModel
                 FocusSearchBox();
             });
 
-            FocusSearchBoxCommand = new RelayCommand(c => FocusSearchBox());
+            //FocusSearchBoxCommand = new RelayCommand(c => FocusSearchBox());
         }
 
         public BreadcrumbViewModel BreadcrumbViewModel { get; }
@@ -53,7 +53,7 @@ namespace Kexi.ViewModel
 
         public string SearchBoxText
         {
-            get { return _searchBoxText; }
+            get => _searchBoxText;
             set
             {
                 if (value.Equals(_searchBoxText))
@@ -65,7 +65,7 @@ namespace Kexi.ViewModel
 
         public bool IsSearchBoxFocused
         {
-            get { return _isSearchBoxFocused; }
+            get => _isSearchBoxFocused;
             set
             {
                 if (value.Equals(_isSearchBoxFocused))
@@ -77,7 +77,7 @@ namespace Kexi.ViewModel
 
         public bool IsSearchSelected
         {
-            get { return _isSearchSelected; }
+            get => _isSearchSelected;
             set
             {
                 if (value == _isSearchSelected) return;
@@ -106,9 +106,9 @@ namespace Kexi.ViewModel
 
         public RelayCommand ClearCommand { get; }
 
-        public ICommand FocusSearchBoxCommand { get; }
+        //public ICommand FocusSearchBoxCommand { get; }
 
-        public void FocusSearchBox()
+        private void FocusSearchBox()
         {
             IsSearchBoxFocused = false;
             IsSearchBoxFocused = true;

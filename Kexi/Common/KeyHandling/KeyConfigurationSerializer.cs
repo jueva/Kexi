@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace Kexi.Common.KeyHandling
@@ -14,21 +9,20 @@ namespace Kexi.Common.KeyHandling
 
         public KeyConfiguration GetConfiguration()
         {
-            var serializer = new XmlSerializer(typeof(KeyConfiguration));
             using (var file = new FileStream(KeyConfiguration, FileMode.Open))
             {
-                var configuration = (KeyConfiguration) serializer.Deserialize(file);
-                return configuration;
+                var serializer = new XmlSerializer(typeof(KeyConfiguration));
+                return (KeyConfiguration) serializer.Deserialize(file);
             }
         }
 
-        public void SaveConfiguration()
+        public void SaveConfiguration(KeyConfiguration configuration)
         {
             var serializer = new XmlSerializer(typeof(KeyConfiguration));
-            using (var file = new FileStream(KeyConfiguration, FileMode.Open))
+            using (TextWriter writer = new StreamWriter(KeyConfiguration))
             {
-                var configuration = (KeyConfiguration) serializer.Deserialize(file);
-                //TODO: Saveit
+                serializer.Serialize(writer, configuration);
+                writer.Close();
             }
         }
     }

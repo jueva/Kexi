@@ -45,6 +45,8 @@ namespace Kexi.ViewModel.Lister
         public override void DoAction(KexBindingItem item)
         {
             Workspace.PopupViewModel = _keyBindingPopupViewModel;
+            _keyBindingPopupViewModel.SourceBinding = item.Binding;
+            _keyBindingPopupViewModel.CommandName = item.CommandName;
             _keyBindingPopupViewModel.Open();
         }
     }

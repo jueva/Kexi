@@ -23,16 +23,7 @@ namespace Kexi.ItemProvider
         public IEnumerable<KexBindingItem> GetBindings()
         {
             var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, ""));
-            var allBindings = _workspace.KeyDispatcher.Bindings;
-            //foreach (var c in allCommands.ToArray())
-            //{
-            //    //TODO: SecondKey
-            //    foreach (var b in allBindings.Where(bi => bi.CommandName == c.CommandName && bi.Group != c.Lister)) 
-            //    {
-            //        allCommands.Remove(c);
-            //        allCommands.Add(new KexBindingItem(b));
-            //    }
-            //}
+            var allBindings = _workspace.KeyDispatcher.AllBindings;
 
             var missing = allCommands.Where(c => allBindings.All(b => b.CommandName != c.CommandName));
             return allBindings.Select(b => new KexBindingItem(b)).Concat(missing);

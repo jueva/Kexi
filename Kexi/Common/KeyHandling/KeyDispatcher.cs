@@ -19,7 +19,8 @@ namespace Kexi.Common.KeyHandling
         {
             Workspace = workspace;
             var serializer      = new KeyConfigurationSerializer();
-            var keyModeBindings = serializer.GetConfiguration().Bindings;
+            Configuration = serializer.GetConfiguration();
+            var keyModeBindings = Configuration.Bindings;
 
             Workspace.PropertyChanged += Workspace_PropertyChanged;
             _viStyleKeyHandler        =  new ViStyleKeyHandler(workspace, keyModeBindings.FirstOrDefault(b => b.KeyMode == KeyMode.ViStyle)?.KeyBindings);
@@ -29,12 +30,15 @@ namespace Kexi.Common.KeyHandling
         }
 
         private Workspace Workspace { get; }
+        public IEnumerable<KexBinding> ViBindings => _viStyleKeyHandler.Bindings;
+        public IEnumerable<KexBinding> ClassicBindings => _classicKeyHandler.Bindings;
 
-        public IEnumerable<KexBinding> Bindings => Workspace.Options.KeyMode == KeyMode.ViStyle ? _viStyleKeyHandler.Bindings : _classicKeyHandler.Bindings;
+        public IEnumerable<KexBinding> AllBindings => ViBindings.Concat(ClassicBindings);
 
         private readonly ClassicKeyHandler    _classicKeyHandler;
         private readonly LiveFilterKeyHandler _liveFilterKeyHandler;
         private readonly ViStyleKeyHandler    _viStyleKeyHandler;
+        public KeyConfiguration Configuration { get; }
 
         private void Workspace_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

@@ -682,6 +682,12 @@
             <Key>Back</Key>
             <Group />
           </KexBinding>
+           <KexBinding>
+            <CommandName>GotoParentContainerCommand</CommandName>
+            <Modifier>Shift</Modifier>
+            <Key>Back</Key>
+            <Group />
+          </KexBinding>
           <KexBinding>
             <CommandName>CycleTabsCommand</CommandName>
             <Modifier>None</Modifier>

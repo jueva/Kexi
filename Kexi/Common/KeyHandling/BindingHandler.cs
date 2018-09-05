@@ -32,7 +32,7 @@ namespace Kexi.Common.KeyHandling
             var        modifierKeys   = args.KeyboardDevice.Modifiers;
             KexBinding binding        = null;
             var        groupName      = group ?? lister?.GetType().Name;
-            var        listerCommands = _bindings.Where(b => b.Group == groupName || b.Group == "");
+            var        listerCommands = _bindings.Where(b => b.Group == groupName || string.IsNullOrEmpty(b.Group));
 
             if (_firstKey != null && !k.IsModifier())
             {
