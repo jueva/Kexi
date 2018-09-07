@@ -16,6 +16,7 @@
                    d:DesignWidth="300"
                             d:DataContext="{d:DesignInstance viewModel:PopupViewModel}"
                    mc:Ignorable="d">
+                   
 
     <Popup x:Name="popup"
            AllowsTransparency="True"
@@ -43,8 +44,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                                <Grid x:Name="header"
-                      Grid.Row="0"
+                <Grid x:Name="header"
+                      Grid.Row="0" Margin="0"
                       Visibility="{Binding Path=TitleVisible, Converter={StaticResource boolToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -85,10 +86,10 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 3 0" Grid.Row="1">
+                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 3 0" Padding="0" Grid.Row="1">
                     <TextBox x:Name="TitleText" MinWidth="243"
                              TextWrapping="WrapWithOverflow"
-                             Margin="4 0 0 0"
+                             Margin="2 0 0 -3"
                              VerticalAlignment="Bottom"
                              Background="{DynamicResource InputTextBackground}"
                              Foreground="{DynamicResource InputTextForeground}"
@@ -100,7 +101,7 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Margin="0"
+                        Margin="0 2 0 0"
                         BorderThickness="1"
                         CornerRadius="0"
                         Padding="0">

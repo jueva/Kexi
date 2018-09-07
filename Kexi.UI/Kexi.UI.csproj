@@ -113,6 +113,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\ElementCountConverter.cs" />
+    <Compile Include="Converters\FontSizeConverter.cs" />
     <Compile Include="Converters\FullPathToNameConverter.cs" />
     <Compile Include="Converters\GridColumnConverter.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />

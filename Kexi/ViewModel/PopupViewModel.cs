@@ -27,7 +27,6 @@ namespace Kexi.ViewModel
 
         protected PopupViewModel()
         {
-            //KexContainer.Container.Compose(this); //Change
             TitleVisible        = Options.PopupTitleVisible;
             _hideInputAtStartup = true;
         }

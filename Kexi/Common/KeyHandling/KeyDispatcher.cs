@@ -18,8 +18,7 @@ namespace Kexi.Common.KeyHandling
         public KeyDispatcher(Workspace workspace)
         {
             Workspace = workspace;
-            var serializer      = new KeyConfigurationSerializer();
-            Configuration = serializer.GetConfiguration();
+            Configuration = KeyConfigurationSerializer.GetConfiguration();
             var keyModeBindings = Configuration.Bindings;
 
             Workspace.PropertyChanged += Workspace_PropertyChanged;

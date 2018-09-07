@@ -3,11 +3,11 @@ using System.Xml.Serialization;
 
 namespace Kexi.Common.KeyHandling
 {
-    public class KeyConfigurationSerializer
+    public static class KeyConfigurationSerializer
     {
-        public const string KeyConfiguration = @".\keyBindings.xml";
+        private const string KeyConfiguration = @".\keyBindings.xml";
 
-        public KeyConfiguration GetConfiguration()
+        public static KeyConfiguration GetConfiguration()
         {
             using (var file = new FileStream(KeyConfiguration, FileMode.Open))
             {
@@ -16,7 +16,7 @@ namespace Kexi.Common.KeyHandling
             }
         }
 
-        public void SaveConfiguration(KeyConfiguration configuration)
+        public static void SaveConfiguration(KeyConfiguration configuration)
         {
             var serializer = new XmlSerializer(typeof(KeyConfiguration));
             using (TextWriter writer = new StreamWriter(KeyConfiguration))

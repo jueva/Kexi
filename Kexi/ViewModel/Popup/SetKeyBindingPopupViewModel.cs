@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Kexi.Common;
 using Kexi.Common.KeyHandling;
 using Kexi.ViewModel.Item;
+using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Popup
 {
@@ -12,6 +13,7 @@ namespace Kexi.ViewModel.Popup
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Serializer needs")]
 
     [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class SetKeyBindingPopupViewModel : PopupViewModel<BaseItem>
     {
         [ImportingConstructor]
@@ -27,15 +29,23 @@ namespace Kexi.ViewModel.Popup
         public KexBinding Binding     { get; set; }
         public string     CommandName { get; set; }
         public string     Group       { get; set; }
+        private bool _bindingSet;
 
+        public override void Open()
+        {
+            _bindingSet = false;
+            base.Open();
+        }
+
+        [SuppressMessage("ReSharper", "SwitchStatementMissingSomeCases")]
         public override void PreviewKeyDown(object sender, KeyEventArgs ea)
         {
-            if (ea.Key.IsModifier())
+            if (ea.Key.IsModifier() || _bindingSet)
             {
+                base.PreviewKeyDown(sender, ea);
                 return;
             }
 
-            // ReSharper disable once SwitchStatementMissingSomeCases
             switch (ea.Key)
             {
                 case Key.Escape:
@@ -43,25 +53,49 @@ namespace Kexi.ViewModel.Popup
                     Close();
                     break;
                 case Key.Return:
-                    SaveAndClose();
+                    SelectListers();
                     break;
                 default:
-                    Binding = Binding == null
-                        ? new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null)
-                        : new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
-
                     Text += $"{ea.KeyboardDevice.Modifiers}+{ea.Key}";
+                    if (Binding == null)
+                    {
+                        Binding = new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                        Text += ", ";
+                    }
+                    else
+                    {
+                        Binding = new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                    }
+                    SetCaret(Text.Length);
                     break;
             }
 
             ea.Handled = true;
         }
 
-        private void SaveAndClose()
+        private void SelectListers()
         {
             if (Binding == null)
                 return;
+           
+            _bindingSet = true;
+            Text       = "";
+            Title      = "Choose Target Lister";
+            var allListers =  KexContainer.ResolveMany<ILister>()
+                .Where(l => !string.IsNullOrEmpty(l.Title))
+                .Where(l => l.ShowInMenu).Select(l => new BaseItem(l.Title){Path = l.GetType().Name});
+            BaseItems = new[] {new BaseItem("None")}.Concat(allListers);
+            var baseGroup = BaseItems.FirstOrDefault(i => i.Path == SourceBinding.Group);
+            if (baseGroup != null)
+            {
+                ItemsView.MoveCurrentTo(baseGroup);
+                ItemsView.Refresh();
+            }
+        }
 
+        protected override void ItemSelected(BaseItem selectedItem)
+        {
+            Binding.Group = selectedItem.Path;
             var keyConfiguration = Workspace.KeyDispatcher.Configuration;
             var keyMode = Options.KeyMode == KeyMode.ViStyle 
                 ? KeyMode.ViStyle 
@@ -69,14 +103,17 @@ namespace Kexi.ViewModel.Popup
             var sourceBindings = keyConfiguration.Bindings.SingleOrDefault(b => b.KeyMode == keyMode)?.KeyBindings;
             if (sourceBindings != null)
             {
-                if (sourceBindings.Contains(SourceBinding))
+                if (sourceBindings.Contains(SourceBinding) && SourceBinding.Group == selectedItem.Path)
                 {
                     sourceBindings.Remove(SourceBinding);
                 }
                 sourceBindings.Add(Binding);
             }
-           
-            new KeyConfigurationSerializer().SaveConfiguration(keyConfiguration);
+
+            KeyConfigurationSerializer.SaveConfiguration(keyConfiguration);
+            base.ItemSelected(selectedItem);
+            Title = "Press Key then Return to finish";
+            BaseItems = null;
             Close();
         }
     }
