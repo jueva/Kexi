@@ -21,13 +21,11 @@
             <converters:ViewTypeConverter x:Key="viewConverter" />
         </UserControl.Resources>
 
-    <!--ItemContainerStyle="{Binding CurrentContainerStyle}"-->
         <view1:KexiListView x:Name="_ListView"
                        Background="{DynamicResource ListerBackground}"
                        Foreground="{DynamicResource ListerForeground}"
                        ItemsSource="{Binding ItemsView}"
                        ItemContainerStyle="{Binding CurrentContainerStyle}"
-                       FocusVisualStyle="{x:Null}"
                        Padding="0"
                        Margin="0"
                        x:FieldModifier="public"
@@ -45,23 +43,6 @@
                        VirtualizingPanel.ScrollUnit="Pixel"
                        VirtualizingPanel.VirtualizationMode="Recycling">
                        
-        <!--<view1:KexiListView.Resources>
-            <ItemsPanelTemplate x:Key="ListPanelTemplate">
-                <base:MyVirtualizingStackPanel/>
-            </ItemsPanelTemplate>
-        </view1:KexiListView.Resources>-->
-        
-        <!--<view1:KexiListView.Style>
-            <Style TargetType="view1:KexiListView"         BasedOn="{StaticResource {x:Type ListBox}}">
-                <Style.Triggers>
-                    <DataTrigger Binding="CurrentViewMode" Value="0">
-                        --><!--<Setter Property="ItemsPanel" Value="{StaticResource ListPanelTemplate}"/>--><!--
-                        <Setter Property="Background" Value="Red"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </view1:KexiListView.Style>-->
-
         <view1:KexiListView.View>
             <MultiBinding Converter="{StaticResource viewConverter}" UpdateSourceTrigger="PropertyChanged">
                 <Binding Path="CurrentViewMode" />

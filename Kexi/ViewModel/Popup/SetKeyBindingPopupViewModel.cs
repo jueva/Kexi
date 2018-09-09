@@ -10,8 +10,7 @@ using Kexi.ViewModel.Lister;
 namespace Kexi.ViewModel.Popup
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Serializer needs")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Serializer needs")]
-
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification         = "Serializer needs")]
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class SetKeyBindingPopupViewModel : PopupViewModel<BaseItem>
@@ -20,19 +19,20 @@ namespace Kexi.ViewModel.Popup
         public SetKeyBindingPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler,
             PropertyEditorPopupViewModel propertyEditorPopup) : base(workspace, options, mouseHandler)
         {
-            Title              = "Press Key then Return to finish";
             HideInputAtStartup = true;
             TitleVisible       = true;
         }
 
-        public KexBinding SourceBinding { get; set; }
-        public KexBinding Binding     { get; set; }
-        public string     CommandName { get; set; }
-        public string     Group       { get; set; }
-        private bool _bindingSet;
+        public  KexBinding SourceBinding { get; set; }
+        public  KexBinding Binding       { get; set; }
+        public  string     CommandName   { get; set; }
+        public  string     Group         { get; set; }
+        private bool       _bindingSet;
 
         public override void Open()
         {
+            Title = "Press Key then Return to finish";
+            BaseItems = null;
             _bindingSet = false;
             base.Open();
         }
@@ -59,13 +59,14 @@ namespace Kexi.ViewModel.Popup
                     Text += $"{ea.KeyboardDevice.Modifiers}+{ea.Key}";
                     if (Binding == null)
                     {
-                        Binding = new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
-                        Text += ", ";
+                        Binding =  new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                        Text    += ", ";
                     }
                     else
                     {
                         Binding = new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
                     }
+
                     SetCaret(Text.Length);
                     break;
             }
@@ -77,28 +78,26 @@ namespace Kexi.ViewModel.Popup
         {
             if (Binding == null)
                 return;
-           
+
             _bindingSet = true;
-            Text       = "";
-            Title      = "Choose Target Lister";
-            var allListers =  KexContainer.ResolveMany<ILister>()
+            Text        = "";
+            Title       = "Choose Target Lister";
+            var allListers = KexContainer.ResolveMany<ILister>()
                 .Where(l => !string.IsNullOrEmpty(l.Title))
-                .Where(l => l.ShowInMenu).Select(l => new BaseItem(l.Title){Path = l.GetType().Name});
-            BaseItems = new[] {new BaseItem("None")}.Concat(allListers);
-            var baseGroup = BaseItems.FirstOrDefault(i => i.Path == SourceBinding.Group);
-            if (baseGroup != null)
-            {
-                ItemsView.MoveCurrentTo(baseGroup);
-                ItemsView.Refresh();
-            }
+                .Where(l => l.ShowInMenu).Select(l => new BaseItem(l.Title) {Path = l.GetType().Name});
+
+            var items =  new[] {new BaseItem("None"){Path = null}}.Concat(allListers).ToList();
+            BaseItems = items;
+            var index = items.FindIndex(i => i.Path == SourceBinding.Group);
+            ItemsView.MoveCurrentToPosition(index);
         }
 
         protected override void ItemSelected(BaseItem selectedItem)
         {
             Binding.Group = selectedItem.Path;
             var keyConfiguration = Workspace.KeyDispatcher.Configuration;
-            var keyMode = Options.KeyMode == KeyMode.ViStyle 
-                ? KeyMode.ViStyle 
+            var keyMode = Options.KeyMode == KeyMode.ViStyle
+                ? KeyMode.ViStyle
                 : KeyMode.Classic;
             var sourceBindings = keyConfiguration.Bindings.SingleOrDefault(b => b.KeyMode == keyMode)?.KeyBindings;
             if (sourceBindings != null)
@@ -107,13 +106,12 @@ namespace Kexi.ViewModel.Popup
                 {
                     sourceBindings.Remove(SourceBinding);
                 }
+
                 sourceBindings.Add(Binding);
             }
 
             KeyConfigurationSerializer.SaveConfiguration(keyConfiguration);
             base.ItemSelected(selectedItem);
-            Title = "Press Key then Return to finish";
-            BaseItems = null;
             Close();
         }
     }
