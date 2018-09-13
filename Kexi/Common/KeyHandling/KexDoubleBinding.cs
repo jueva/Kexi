@@ -47,5 +47,20 @@ namespace Kexi.Common.KeyHandling
             var secondMod = SecondModifier == ModifierKeys.None ? "" : SecondModifier + "-";
             return $"{firstMod}{Key}, {secondMod}{SecondKey}";
         }
+
+         public override bool Equals(object obj)
+        {
+            if (!(obj is KexDoubleBinding binding))
+                return false;
+
+
+            return base.Equals(obj) && binding.SecondKey == SecondKey && binding.SecondModifier == SecondModifier;
+        }
+
+        public override int GetHashCode()
+        {
+            return Key.GetHashCode() ^ Modifier.GetHashCode() ^ CommandName.GetHashCode() ^ SecondKey.GetHashCode() ^ SecondModifier.GetHashCode();
+        }
+
     }
 }

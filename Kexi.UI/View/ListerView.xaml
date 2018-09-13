@@ -41,6 +41,7 @@
                        VirtualizingPanel.IsVirtualizing="true"
                        VirtualizingPanel.IsVirtualizingWhenGrouping="true"
                        VirtualizingPanel.ScrollUnit="Pixel"
+                       FocusVisualStyle="{x:Null}"
                        VirtualizingPanel.VirtualizationMode="Recycling">
                        
         <view1:KexiListView.View>

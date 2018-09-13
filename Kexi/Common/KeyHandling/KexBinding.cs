@@ -91,6 +91,19 @@ namespace Kexi.Common.KeyHandling
             return $"{firstMod}{Key}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is KexBinding binding))
+                return false;
+
+            return binding.Key == Key && binding.Modifier == Modifier && binding.CommandName == CommandName;
+        }
+
+        public override int GetHashCode()
+        {
+            return Key.GetHashCode() ^ Modifier.GetHashCode() ^ CommandName.GetHashCode();
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

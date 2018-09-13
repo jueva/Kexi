@@ -18,14 +18,14 @@ namespace Kexi.ViewModel.Item
         public KexBinding Binding     { get; }
         public string Key => Binding?.ToString() ?? "None";
         public string     CommandName { get; }
-        public string     Lister      { get; set; }
+        public string     Lister      { get; }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is KexBindingItem o))
+            if (!(obj is KexBindingItem item) || Binding == null)
                 return false;
 
-            return Key == o.Key && CommandName == o.CommandName;
+            return Binding.Equals(item.Binding);
         }
 
         public override int GetHashCode()

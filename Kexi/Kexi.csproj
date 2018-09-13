@@ -318,6 +318,7 @@
     <Compile Include="ViewModel\Commands\CycleTabsCommand.cs" />
     <Compile Include="ViewModel\Commands\DecreaseFontSizeCommand.cs" />
     <Compile Include="ViewModel\Commands\DeleteFilesCommand.cs" />
+    <Compile Include="ViewModel\Commands\DeleteKeyBindingCommand.cs" />
     <Compile Include="ViewModel\Commands\DoActionCommand.cs" />
     <Compile Include="ViewModel\Commands\DoSearchCommand.cs" />
     <Compile Include="ViewModel\Commands\EditFileCommand.cs" />
