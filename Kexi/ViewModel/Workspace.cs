@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -12,6 +13,7 @@ using Kexi.Common;
 using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Dock;
+using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 using Kexi.ViewModel.Popup;
 using Xceed.Wpf.AvalonDock;
@@ -31,6 +33,7 @@ namespace Kexi.ViewModel
             KeyDispatcher            = new KeyDispatcher(this);
             CommanderbarViewModel = new CommanderbarViewModel(this);
             PopupViewModel = new FilterPopupViewModel(this, new Options(), null);
+            TaskManager = new TaskManager(this);
         }
 
         public RenamePopupViewModel RenamePopupViewModel
@@ -48,6 +51,7 @@ namespace Kexi.ViewModel
             get => Docking.ActiveLayoutContent;
             set => Docking.ActiveLayoutContent = value;
         }
+
         [Import]
         public Options Options { get; private set; }
 
@@ -79,6 +83,7 @@ namespace Kexi.ViewModel
         [Import]
         public RibbonViewModel RibbonViewModel { get; private set; }
 
+
         public double TabHeigth
         {
             get => _tabHeight;
@@ -104,6 +109,7 @@ namespace Kexi.ViewModel
             }
         }
 
+        public TaskManager TaskManager { get; }
         public DockingManager       Manager   { get; set; }
         public LayoutAnchorablePane LeftPane  { get; set; }
         public LayoutAnchorablePane RightPane { get; set; }

@@ -502,6 +502,7 @@
     <Compile Include="ViewModel\Item\SecurityItem.cs" />
     <Compile Include="ViewModel\Item\ServiceItem.cs" />
     <Compile Include="ViewModel\Item\SettingItem.cs" />
+    <Compile Include="ViewModel\Item\TaskItem.cs" />
     <Compile Include="ViewModel\Lister\BaseLister.cs" />
     <Compile Include="ViewModel\Item\DriveItem.cs" />
     <Compile Include="ViewModel\Lister\DriveLister.cs" />
@@ -565,6 +566,7 @@
     <Compile Include="ViewModel\ServiceLister.cs" />
     <Compile Include="ViewModel\ShowLastLocationsViewModel.cs" />
     <Compile Include="ViewModel\StatusbarViewModel.cs" />
+    <Compile Include="ViewModel\TaskManager.cs" />
     <Compile Include="ViewModel\TreeView\RootViewModel.cs" />
     <Compile Include="ViewModel\TreeView\TreeViewItem.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />

@@ -28,7 +28,7 @@
                 Margin="4"
                 Background="{DynamicResource ListerBackground}"
                 BorderBrush="{DynamicResource KexSelectionBorderBrush}"
-                BorderThickness="1 0 1 1"
+                BorderThickness="1 1 1 1"
                 CornerRadius="0 0 2 2"
                 Opacity="0.96"
                 Padding="0"

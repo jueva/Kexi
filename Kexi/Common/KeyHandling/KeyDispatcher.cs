@@ -34,6 +34,10 @@ namespace Kexi.Common.KeyHandling
 
         public IEnumerable<KexBinding> AllBindings => ViBindings.Concat(ClassicBindings);
 
+        public IEnumerable<KexBinding> ActiveBindings => Workspace.Options.KeyMode == KeyMode.ViStyle
+            ? ViBindings
+            : ClassicBindings;
+
         private readonly ClassicKeyHandler    _classicKeyHandler;
         private readonly LiveFilterKeyHandler _liveFilterKeyHandler;
         private readonly ViStyleKeyHandler    _viStyleKeyHandler;
@@ -57,29 +61,5 @@ namespace Kexi.Common.KeyHandling
             }
         }
 
-        //private void SaveConfiguration()
-        //{
-        //var configuration = new KeyConfiguration();
-        //configuration.Bindings.Add(new KeyModeBindings
-        //{
-        //    KeyMode = KeyMode.ViStyle,
-        //    Bindings = bindings
-        //});
-        //configuration.Bindings.Add(new KeyModeBindings
-        //{
-        //    KeyMode = KeyMode.Classic,
-        //    Bindings = new List<KexBinding>(),
-        //});
-        //configuration.Bindings.Add(new KeyModeBindings
-        //{
-        //    KeyMode = KeyMode.LiveFilter,
-        //    Bindings = new List<KexBinding>(),
-        //});
-        //using (var f = new FileStream(@"c:\temp\keyBindings1.xml", FileMode.Create))
-        //{
-        //    new XmlSerializer(typeof(KeyConfiguration)).Serialize(f, configuration);
-        //    f.Flush();
-        //}
-        //}
     }
 }

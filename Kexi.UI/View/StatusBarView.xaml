@@ -8,6 +8,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
              xmlns:converters="clr-namespace:Kexi.UI.Converters"
+             xmlns:view="clr-namespace:Kexi.UI.View"
              x:Name="statusbar"
              d:DataContext="{d:DesignInstance d:Type=viewModel:Workspace}" 
              Margin="0"
@@ -16,21 +17,8 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converters:NullToVisibilityConverter x:Key="nullToVisibility" />
         <converters:AnyToVisibilityConverter x:Key="anyToVisibility" />
-        <SolidColorBrush x:Key="BackGroundBrush" Color="#DDDDDD" />
-        <Style x:Key="ButtonBorder" TargetType="Border">
-            <Setter Property="Border.Background" Value="{StaticResource BackGroundBrush}" />
-            <Setter Property="Border.BorderBrush" Value="{StaticResource BackGroundBrush}" />
-            <Style.Triggers>
-                <Trigger Property="Border.IsMouseOver" Value="True">
-                    <Setter Property="Border.Background" Value="{DynamicResource KexMouseSelectionBackground}" />
-                    <Setter Property="Border.BorderBrush" Value="{DynamicResource KexMouseSelectionBackground}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converters:ViewTypeBackgroundConverter x:Key="ViewTypeBackgroundConverter"/>
     </UserControl.Resources>
 
     <StatusBar x:Name="statusBar"
@@ -63,42 +51,10 @@
             </Border>
         </StatusBarItem>
         <StatusBarItem HorizontalAlignment="Right" Padding="0 0 5 1">
-            <StackPanel Orientation="Horizontal">
-                <ContentControl Visibility="{Binding LoadingSpinnerVisibility}"
-                                Margin="3 0 0 0" 
-                                Foreground="{DynamicResource ListerForeground}"
-                                Style="{StaticResource spinnerStyle}">
-                    <iconPacks:FontAwesome Kind="SpinnerSolid" Width="15" Height="15" Spin="True" x:Name="LoadingSpinner" />
-                </ContentControl>
-                <Grid Visibility="{Binding SupportsMultiview, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0"
-                                Margin=" 0 0 0 0"
-                                BorderBrush="{StaticResource BackGroundBrush}"
-                                BorderThickness="0"
-                                Command="{Binding CommandRepository.ViewThumbnails}"
-                                Focusable="False"
-                                Background="{Binding CurrentViewMode, Converter={StaticResource ViewTypeBackgroundConverter}, ConverterParameter=Thumbnail}"
-                                Style="{StaticResource CommandButtonStyle}"
-                                >
-                            <iconPacks:FontAwesome Kind="ImagesSolid" Width="15" Height="15" />
-                        </Button>
-                        <Button Grid.Column="1"
-                                Margin="0 0 0 0"
-                                BorderBrush="{StaticResource BackGroundBrush}"
-                                BorderThickness="0"
-                                Command="{Binding CommandRepository.ViewDetails}"
-                                Focusable="False"
-                                Background="{Binding CurrentViewMode, Converter={StaticResource ViewTypeBackgroundConverter}, ConverterParameter=Detail}"
-                                Style="{StaticResource CommandButtonStyle}"
-                                >
-                            <iconPacks:FontAwesome Kind="ListAltSolid" Width="15" Height="15" />
-                        </Button>
-                </Grid>
-            </StackPanel>
+            <view:TaskView/>
+        </StatusBarItem>
+        <StatusBarItem HorizontalAlignment="Right" Padding="0 0 5 1">
+           <view:ViewSwitcher /> 
         </StatusBarItem>
     </StatusBar>
 </UserControl>

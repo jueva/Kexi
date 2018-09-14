@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
@@ -23,10 +24,12 @@ namespace Kexi.ItemProvider
         public IEnumerable<KexBindingItem> GetBindings()
         {
             var allCommands = _commands.Select(n => new KexBindingItem(n.GetType().Name, ""));
-            var allBindings = _workspace.KeyDispatcher.AllBindings;
 
-            var missing = allCommands.Where(c => allBindings.All(b => b.CommandName != c.CommandName));
-            return allBindings.Select(b => new KexBindingItem(b)).Concat(missing);
+            var activeBindings = _workspace.KeyDispatcher.ActiveBindings;
+
+            var missing = allCommands.Where(c => activeBindings.All(b => b.CommandName != c.CommandName));
+            return activeBindings.Select(b => new KexBindingItem(b)).Concat(missing);
         }
+
     }
 }

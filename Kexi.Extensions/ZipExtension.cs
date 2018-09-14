@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Kexi.Composition;
 using Kexi.Interfaces;
@@ -20,12 +21,20 @@ namespace Kexi.Extensions
         }
 
         [ExportContextMenuCommand(typeof(FileLister), "Zip Selection")]
-        public ICommand ZipSelection => new RelayCommand(c =>
+        public ICommand ZipSelection => new RelayCommand(c => ZipAsync());
+
+        private async void ZipAsync()
         {
             var files = _workspace.GetSelection<FileItem>().ToArray();
             if (files.Length == 0)
                 return;
 
+            var zipTask = new TaskItem("Zipping", ()=> ZipInternal(files));
+            await _workspace.TaskManager.RunAsync(zipTask);
+        }
+
+        private void ZipInternal(FileItem[] files)
+        {
             var rootPath = _workspace.ActiveLister.Path;
             var zipName  = files.First().FileInfo.Name;
             var zipPath  = Path.Combine(rootPath, $"{zipName}.zip");
@@ -40,7 +49,7 @@ namespace Kexi.Extensions
                             archive.CreateEntryFromFile(fi.Path, fi.FileInfo.Name);
                 }
             }
-        });
+        }
 
         private readonly Workspace _workspace;
 
