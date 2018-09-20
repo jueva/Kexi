@@ -116,7 +116,7 @@ namespace Kexi.Property
             if (Item.IsNetwork()) 
                 return await GetNetworkBottomItems();
 
-            async Task<ObservableCollection<PropertyItem>> FetchProperties()
+            Task<ObservableCollection<PropertyItem>> FetchProperties()
             {
                 var tempProp = new ObservableCollection<PropertyItem>
                 {
@@ -148,9 +148,7 @@ namespace Kexi.Property
                         tempProp.Add(new PropertyItem(key.Substring(13), props.GetValue(key)));
                 }
 
-                
-
-                return tempProp;
+                return Task.FromResult(tempProp);
             }
 
             return await Task.Run(FetchProperties);

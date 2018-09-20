@@ -29,7 +29,7 @@ namespace Kexi.Common.KeyHandling
             set
             {
                 _searchString = value;
-                if (!string.IsNullOrEmpty(_searchString))
+                if (!string.IsNullOrEmpty(value))
                 {
                     _workspace.NotificationHost.AddInfo(_searchString);
                     FocusItemMatchingSearchString();
@@ -46,6 +46,7 @@ namespace Kexi.Common.KeyHandling
                 if (type == typeof(DoActionCommand) || type == typeof(HistoryBackCommand) || args.Key == Key.Escape)
                 {
                     ClearSearchString();
+                    _workspace.NotificationHost.ClearCurrentMessage();
                 }
 
                 return false;

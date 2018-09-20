@@ -536,7 +536,6 @@
     <Compile Include="ViewModel\Popup\ConsoleCommandPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\ContextMenuPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\DrivePopupViewModel.cs" />
-    <Compile Include="ViewModel\Popup\KeyBindingsPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\SetKeyBindingPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\SettingsPopupViewModel.cs" />
     <Compile Include="ViewModel\Popup\SpecialPastePopupViewModel.cs" />

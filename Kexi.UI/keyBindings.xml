@@ -135,6 +135,14 @@
             <Key>Delete</Key>
             <Group>FileLister</Group>
           </KexBinding>
+          <KexDoubleBinding>
+            <CommandName>DeleteFilesCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>D</Key>
+            <SecondKey>D</SecondKey>
+            <SecondModifier>None</SecondModifier>
+            <Group>FileLister</Group>
+          </KexDoubleBinding>
           <KexBinding>
             <CommandName>ShowCommanderBarCommand</CommandName>
             <Modifier>None</Modifier>
@@ -231,16 +239,28 @@
             <Key>C</Key>
             <Group />
           </KexBinding>
-          <KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
             <CommandName>ShowDriveListerCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>D</Key>
+            <SecondModifier>None</SecondModifier>
+            <SecondKey>L</SecondKey>
             <Group />
           </KexBinding>
-          <KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
             <CommandName>ShowNetworkListerCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>D</Key>
+            <SecondModifier>None</SecondModifier>
+            <SecondKey>N</SecondKey>
+            <Group />
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>DeleteFilesCommand</CommandName>
             <Modifier>Shift</Modifier>
             <Key>D</Key>
+            <SecondModifier>Shift</SecondModifier>
+            <SecondKey>D</SecondKey>
             <Group />
           </KexBinding>
           <KexBinding>

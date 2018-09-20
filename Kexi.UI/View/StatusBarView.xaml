@@ -37,7 +37,9 @@
             <TextBlock Text="{Binding StatusString}" />
         </StatusBarItem>
         <StatusBarItem Padding="0 0 3 1">
-            <Border CornerRadius="3" BorderThickness="1" Background="{DynamicResource KexSelectionBackground}">
+            <Border CornerRadius="3" BorderThickness="1" Background="{DynamicResource KexSelectionBackground}"
+                    MouseLeftButtonDown="border_MouseLeftButtonDown" 
+                    >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Foreground="White"
                                Padding="2,0,2,0"

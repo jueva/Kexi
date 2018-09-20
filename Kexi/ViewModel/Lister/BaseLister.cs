@@ -471,7 +471,8 @@ namespace Kexi.ViewModel.Lister
         {
             ContextMenuItems = KexContainer.Container.InnerCompositionContainer.GetExports<ICommand, IExportCommandMetadata>()
                 .Where(e => e.Metadata.TargetListerType == GetType())
-                .Select(e => new CommandBoundItem(e.Metadata.Name, e.Value));
+                .Select(e => new CommandBoundItem(e.Metadata.Name, e.Value))
+                .Concat(new []{new CommandBoundItem("Copy", new CopyCommand(Workspace))});
 
             CurrentViewMode = Options.DefaultViewMode;
         }

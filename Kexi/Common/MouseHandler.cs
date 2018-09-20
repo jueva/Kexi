@@ -86,8 +86,6 @@ namespace Kexi.Common
 
         private void _listView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-
-
             var item = Utils.GetDataContextFromOriginalSource(e.OriginalSource) as IItem;
             if (item == null && e.ChangedButton == MouseButton.Left)
                 return;
@@ -104,7 +102,7 @@ namespace Kexi.Common
                     e.Handled                    = true;
                     break;
                 case MouseButton.Right:
-                    _workspace.ActiveLister.ShowContextMenu(item == null);
+                    _workspace.ActiveLister.ShowContextMenu(true);
                     e.Handled = true;
                     break;
             }

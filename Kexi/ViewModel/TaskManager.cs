@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Kexi.Annotations;
 using Kexi.ViewModel.Item;
 
 namespace Kexi.ViewModel
 {
-    public class TaskManager : ViewModelBase
+    public class TaskManager : INotifyPropertyChanged
     {
         public TaskManager(Workspace workspace)
         {
@@ -16,7 +19,7 @@ namespace Kexi.ViewModel
         public ObservableCollection<TaskItem> Tasks
         {
             get => _tasks;
-            private set
+            set
             {
                 _tasks = value;
                 OnPropertyChanged();
@@ -26,25 +29,12 @@ namespace Kexi.ViewModel
         private readonly Workspace                      _workspace;
         private          ObservableCollection<TaskItem> _tasks;
 
-        public void Run(TaskItem task)
+        public void Run(TaskItem task, Action action)
         {
             try
             {
                 Tasks.Add(task);
-                task.Action();
-            }
-            finally
-            {
-                Tasks.Remove(task);
-            };
-        }
-
-        public async Task RunAsync(TaskItem task)
-        {
-            try
-            {
-                Tasks.Add(task);
-                await Task.Run(task.Action);
+                action();
             }
             finally
             {
@@ -52,9 +42,25 @@ namespace Kexi.ViewModel
             }
         }
 
-        public void RemoveTask(TaskItem task)
+        public async Task RunAsync(TaskItem task, Action action)
         {
-            Tasks.Remove(task);
+            try
+            {
+                Tasks.Add(task);
+                await Task.Run(action);
+            }
+            finally
+            {
+                Tasks.Remove(task);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
