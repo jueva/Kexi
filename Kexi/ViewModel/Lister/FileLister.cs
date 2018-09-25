@@ -131,7 +131,8 @@ namespace Kexi.ViewModel.Lister
                 return;
 
             var items = Clipboard.GetFileDropList();
-            await Task.Factory.StartNew(() => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            var copyTask = new TaskItem("Copying");
+            await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();

@@ -29,7 +29,7 @@
         <Style TargetType="Button" BasedOn="{StaticResource BreadcrumbButtonStyle}" x:Key="LastButton"/>
     </UserControl.Resources>
     <Grid>
-        <Border
+        <Border x:Name="BreadcrumbBorder"
                 Background="{DynamicResource adressbarBack}"
                 BorderBrush="{DynamicResource InputTextBackground}"
                 BorderThickness="1 0 1 1"

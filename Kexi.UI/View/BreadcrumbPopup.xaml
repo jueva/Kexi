@@ -64,9 +64,10 @@
     </UserControl.Resources>
 
     <Popup IsOpen="{Binding PopupVisible}" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding PopupTarget}"
-           HorizontalOffset="-24" VerticalOffset="7" x:Name="popup"
+           HorizontalOffset="-24" VerticalOffset="0" x:Name="popup"
            PopupAnimation="{Binding ElementName=popupControl, Path=ViewModel.Options.PopupAnimation}"
            AllowsTransparency="True">
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0" />
