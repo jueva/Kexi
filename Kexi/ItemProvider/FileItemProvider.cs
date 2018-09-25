@@ -85,50 +85,13 @@ namespace Kexi.ItemProvider
 
         private IEnumerable<FileItem> GetItemsInternal(string path, bool showHidden = true)
         {
-            if (path.StartsWith(@"\\") && !Regex.IsMatch(path, @"^\\\\.+\\.+$")) return GetShares(path);
-
             return Directory.EnumerateDirectories(path).Select(p => new FileItem(p, ItemType.Container, itemProvider: this))
                 .Concat(
                     Directory.EnumerateFiles(path).Select(p => new FileItem(p, ItemType.Item, itemProvider: this))
                 );
         }
 
-        private IEnumerable<FileItem> GetShares(string path)
-        {
-            var folder = ShellObject.FromParsingName(path) as ShellFolder;
-            if (folder == null)
-                yield break;
-
-            var thumb = Utils.GetImageFromRessource("share.png");
-
-            ImmutableArray<FileItem> items;
-            try
-            {
-                items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
-                {
-                    Thumbnail   = thumb,
-                    IsFileShare = true
-                }).ToImmutableArray();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                PinvokeWindowsNetworking.ConnectToRemote(path, "", "", true);
-                items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container, itemProvider: this)
-                {
-                    IsFileShare = true,
-                    Thumbnail   = thumb
-                }).ToImmutableArray();
-            }
-
-            foreach (var fi in items)
-            {
-                fi.Details = new FileDetailItem(fi, CancellationToken.None)
-                {
-                    Type = "Share"
-                };
-                yield return fi;
-            }
-        }
+      
 
         public static string GetParentContainer(string path)
         {

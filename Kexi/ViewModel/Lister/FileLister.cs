@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kexi.Common;
@@ -54,31 +55,33 @@ namespace Kexi.ViewModel.Lister
 
         public override bool SupportsMultiview => true;
 
-        public bool DoBreadcrumbAction(string breadPath)
+        public async Task<bool> DoBreadcrumbAction(string breadPath)
         {
+            Path = breadPath;
+            await Refresh();
             //TODO: Move to Lister.Path, Refactor that shit
-            if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
-            {
-                var path = System.IO.Path.GetDirectoryName(breadPath);
-                Path = path;
-                Refresh();
-            }
-            else if (Directory.Exists(breadPath + "\\"))
-            {
-                var path = System.IO.Path.GetDirectoryName(breadPath + "\\");
-                Path = path;
-                Refresh();
-            }
-            else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
-            {
-                Path = breadPath;
-                Refresh();
-            }
-            else
-            {
-                NotificationHost.AddError(breadPath + " could not be found.");
-                return false;
-            }
+            //if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
+            //{
+            //    var path = System.IO.Path.GetDirectoryName(breadPath);
+            //    Path = path;
+            //    await Refresh();
+            //}
+            //else if (Directory.Exists(breadPath + "\\"))
+            //{
+            //    var path = System.IO.Path.GetDirectoryName(breadPath + "\\");
+            //    Path = path;
+            //    await Refresh();
+            //}
+            //else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
+            //{
+            //    Path = breadPath;
+            //    await Refresh();
+            //}
+            //else
+            //{
+            //    NotificationHost.AddError(breadPath + " could not be found.");
+            //    return false;
+            //}
 
             return true;
         }
@@ -140,7 +143,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public override void DoAction(FileItem selection)
+        public override async void DoAction(FileItem selection)
         {
             if (selection == null)
                 return;
@@ -151,7 +154,7 @@ namespace Kexi.ViewModel.Lister
                 if (result != null)
                 {
                     Path = result;
-                    Refresh();
+                    await Refresh();
                 }
             }
             catch (Exception ex)
@@ -198,6 +201,10 @@ namespace Kexi.ViewModel.Lister
         protected override async Task<IEnumerable<FileItem>> GetItems()
         {
             _itemProvider.CancelCurrentTasks();
+            if (new Uri(Path).IsUnc && !Directory.Exists(Path))
+            {
+                return await new NetworkShareProvider().GetItems(Path);
+            }
             return await _itemProvider.GetItems(Path);
         }
 

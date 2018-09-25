@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Common.MultiSelection;
@@ -42,7 +43,7 @@ namespace Kexi.ViewModel.Lister
         IItem  CurrentItem     { get; }
         IEnumerable<IItem> SelectedItems { get; }
         string HighlightString { get; set; }
-        void Refresh();
+        Task Refresh();
         string GetParentContainer();
         void DoAction(IItem item);
         event Action<string> PathChanged;

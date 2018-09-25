@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -48,48 +50,55 @@ namespace Kexi.UI.View
             }
         }
 
-        private void Text_OnKeyDown(object sender, KeyEventArgs e)
+        private async void Text_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape)
+            switch (e.Key)
             {
-                ExitAdressmode();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Return)
-            {
-                var path          = text.Text;
-                var currentLister = ViewModel.Workspace.ActiveLister;
-
-                //TODO: Refactor
-                var protocol      = "file";
-                var protocolIndex = path.IndexOf("://");
-                if (protocolIndex > -1)
+                case Key.Escape:
+                    ExitAdressmode();
+                    e.Handled = true;
+                    break;
+                case Key.Return:
                 {
-                    protocol = path.Substring(0, protocolIndex).ToLower();
-                    path     = path.Substring(protocolIndex + 3);
-                }
+                    var path          = text.Text;
+                    var currentLister = ViewModel.Workspace.ActiveLister;
 
-                var lister = ViewModel.Workspace.CreateListerByProtocol(protocol);
-                if (lister != null && lister.ProtocolPrefix != currentLister.ProtocolPrefix)
-                {
-                    lister.Path = path;
-                    ViewModel.Workspace.ReplaceCurrentLister(lister);
-                    lister.Refresh();
+                    //TODO: Refactor
+                    var protocol      = "file";
+                    var protocolIndex = path.IndexOf("://");
+                    if (protocolIndex > -1)
+                    {
+                        protocol = path.Substring(0, protocolIndex).ToLower();
+                        path     = path.Substring(protocolIndex + 3);
+                    }
+
+                    var lister = ViewModel.Workspace.CreateListerByProtocol(protocol);
+                    if (lister != null && lister.ProtocolPrefix != currentLister.ProtocolPrefix)
+                    {
+                        lister.Path = path;
+                        ViewModel.Workspace.ReplaceCurrentLister(lister);
+                        await lister.Refresh();
+                        ViewModel.Options.RestoreAdressbarVisibility();
+                        ViewModel.Mode = BreadcrumbMode.Breadcrumb;
+                        e.Handled      = true;
+                        return;
+                    }
+
+                    e.Handled = true;
+                    if (currentLister is IBreadCrumbProvider breadcrumbLister)
+                    {
+                            if (!await breadcrumbLister.DoBreadcrumbAction(path))
+                            {
+                                text.Text = lastValidAdress;
+                            }
+                        }
+
                     ViewModel.Options.RestoreAdressbarVisibility();
                     ViewModel.Mode = BreadcrumbMode.Breadcrumb;
-                    e.Handled = true;
-                    return;
+
+                    ViewModel.Workspace.FocusCurrentOrFirst();
+                    break;
                 }
-
-                if (currentLister is IBreadCrumbProvider breadcrumbLister)
-                    if (!breadcrumbLister.DoBreadcrumbAction(path))
-                        text.Text = lastValidAdress;
-
-                ViewModel.Options.RestoreAdressbarVisibility();
-                ViewModel.Mode = BreadcrumbMode.Breadcrumb;
-
-                ViewModel.Workspace.FocusCurrentOrFirst();
-                e.Handled = true;
             }
         }
 

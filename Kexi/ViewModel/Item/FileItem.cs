@@ -8,6 +8,7 @@ using Kexi.Files;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Kexi.ViewModel.Item
 {

@@ -136,7 +136,7 @@ namespace Kexi.ViewModel.Lister
                 OnPathChanged(value);
 
                 history?.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
-                Filter  = null;
+                Filter = null;
                 GroupBy = null;
                 SortHandler.ClearSort();
 
@@ -251,12 +251,13 @@ namespace Kexi.ViewModel.Lister
 
         public abstract IEnumerable<Column> Columns { get; }
 
-        public virtual async void Refresh()
+        public virtual async Task Refresh()
         {
             try
             {
                 LoadingStatus = LoadingStatus.Loading;
-                Items = new ObservableCollection<T>(await GetItems());
+                var items = await GetItems();
+                Items = new ObservableCollection<T>(items);
             }
             catch (Exception ex)
             {

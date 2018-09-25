@@ -159,10 +159,10 @@ namespace Kexi.ViewModel.Lister
         private          Process                 _currentProcess;
         private          string                  _workingDirectory;
 
-        public override void Refresh()
+        public override Task Refresh()
         {
             if (View == null || string.IsNullOrEmpty(Command))
-                return;
+                return Task.CompletedTask;
 
             var commandString = $"{DateTime.Now.ToShortTimeString()} - {WorkingDirectory ?? ""}> {Command}";
             Items.Add(new ConsoleItem(commandString, Command) {Highlighted = true});
@@ -184,6 +184,7 @@ namespace Kexi.ViewModel.Lister
             p.BeginOutputReadLine();
             p.BeginErrorReadLine();
             _currentProcess = p;
+            return Task.CompletedTask;
         }
 
         protected override Task<IEnumerable<ConsoleItem>> GetItems()

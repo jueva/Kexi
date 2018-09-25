@@ -281,6 +281,7 @@
     <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyMode.cs" />
     <Compile Include="ItemProvider\KeyBindingsProvider.cs" />
+    <Compile Include="ItemProvider\NetworkShareProvider.cs" />
     <Compile Include="Property\BasePropertyProvider.cs" />
     <Compile Include="Property\DefaultPropertyProvider.cs" />
     <Compile Include="Composition\ExportContextMenuCommand.cs" />

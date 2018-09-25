@@ -1,7 +1,9 @@
-﻿namespace Kexi.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Kexi.Interfaces
 {
     public interface IBreadCrumbProvider
     {
-        bool DoBreadcrumbAction(string breadPath);
+        Task<bool> DoBreadcrumbAction(string breadPath);
     }
 }
