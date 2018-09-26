@@ -203,7 +203,7 @@ namespace Kexi.ViewModel.Lister
             _itemProvider.CancelCurrentTasks();
             if (new Uri(Path).IsUnc && !Directory.Exists(Path))
             {
-                return await new NetworkShareProvider().GetItems(Path);
+                return await NetworkShareProvider.GetItems(Path);
             }
             return await _itemProvider.GetItems(Path);
         }

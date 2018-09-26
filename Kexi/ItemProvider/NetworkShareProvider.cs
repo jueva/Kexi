@@ -12,12 +12,11 @@ using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Kexi.ItemProvider
 {
-    public class NetworkShareProvider
+    public static class NetworkShareProvider
     {
-
-        public async Task<IEnumerable<FileItem>> GetItems(string path)
+        public static async Task<IEnumerable<FileItem>> GetItems(string path)
         {
-            var                      shareThumb = Utils.GetImageFromRessource("share.png");
+            var shareThumb = Utils.GetImageFromRessource("share.png");
             shareThumb.Freeze();
             return await Task.Run(() =>
             {

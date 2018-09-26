@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +10,6 @@ using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
-using Microsoft.WindowsAPICodePack.Shell;
 using Shell32;
 
 namespace Kexi.ItemProvider
@@ -57,7 +54,7 @@ namespace Kexi.ItemProvider
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    if (path.StartsWith(@"\\"))
+                    if (new Uri(path).IsUnc)
                     {
                         PinvokeWindowsNetworking.ConnectToRemote(path, "", "", true);
                         items = GetItemsInternal(path);
@@ -90,8 +87,6 @@ namespace Kexi.ItemProvider
                     Directory.EnumerateFiles(path).Select(p => new FileItem(p, ItemType.Item, itemProvider: this))
                 );
         }
-
-      
 
         public static string GetParentContainer(string path)
         {
