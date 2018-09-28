@@ -23,7 +23,7 @@ namespace Kexi.Shell
                 if (_fileInfo == null)
                 {
                     var info = new ShellNative.SHFILEINFO();
-                    var uFlags = ShellNative.Win32.SHGFI_ICON | ShellNative.SHGFI.SHGFI_TYPENAME;// | ShellNative.SHGFI.SHGFI_DISPLAYNAME;
+                    var uFlags = ShellNative.Win32.SHGFI_ICON | ShellNative.SHGFI.SHGFI_TYPENAME | ShellNative.SHGFI.SHGFI_DISPLAYNAME;
                     ShellNative.Win32.SHGetFileInfo(_fileName, 0, ref info, (uint) Marshal.SizeOf(info), uFlags);
                     _fileInfo = info;
                 }

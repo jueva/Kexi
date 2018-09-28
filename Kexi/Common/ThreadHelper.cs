@@ -24,5 +24,24 @@ namespace Kexi.Common
             thread.Start();
             return tcs.Task;
         }
+
+        public static Task StartTaskWithSingleThreadAffinity(Action action)
+        {
+            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    tcs.SetException(e);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            return tcs.Task;
+        }
     }
 }

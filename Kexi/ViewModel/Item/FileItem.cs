@@ -157,14 +157,18 @@ namespace Kexi.ViewModel.Item
             try
             {
                 var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
-                var token      = CancellationToken ?? System.Threading.CancellationToken.None;
-                IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
-                SetTargetType();
-                await Task.Factory.StartNew(() => { _details.Init(token); }, token);
-                await Task.Factory.StartNew(() => { _details.SetThumbs(token, largeThumb); }, token);
+                var token = CancellationToken ?? System.Threading.CancellationToken.None;
+
+                await Task.Factory.StartNew(() =>
+                {
+                    IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
+                    SetTargetType();
+                    _details.Init(token);
+                    _details.SetThumbs(token, largeThumb);
+                }, token);
                 if (_fetchDisplayName && !string.IsNullOrEmpty(Details.DisplayName))
                     DisplayName = Details.DisplayName;
-                Details   = _details;
+                Details = _details;
                 Thumbnail = _details.Thumbnail;
             }
             catch (TaskCanceledException)

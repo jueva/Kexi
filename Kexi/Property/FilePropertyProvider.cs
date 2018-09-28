@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Kexi.Common;
@@ -14,7 +10,6 @@ using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 using Microsoft.WindowsAPICodePack.Shell;
-using Mono.Cecil;
 
 namespace Kexi.Property
 {
@@ -31,14 +26,14 @@ namespace Kexi.Property
         private bool IsPicture  => "picture".Equals(GetKind());
         private bool IsExeOrDll => Item?.Extension == ".exe" || Item?.Extension == ".dll";
 
+        private ShellObject _shellObject;
+
         public override void Dispose()
         {
             _shellObject?.Dispose();
             _shellObject = null;
             base.Dispose();
         }
-
-        private ShellObject _shellObject;
 
         private string GetKind()
         {
@@ -70,14 +65,15 @@ namespace Kexi.Property
                 var nameOnly = new ObservableCollection<PropertyItem> {new PropertyItem("Name", Item.DisplayName)};
                 return await Task.FromResult(nameOnly);
             }
-            if (Item.IsNetwork()) 
+
+            if (Item.IsNetwork())
                 return await GetNetworkTopItems();
 
             var tempProp = new ObservableCollection<PropertyItem>();
             if ((CancellationTokenSource?.IsCancellationRequested ?? true) || Item == null)
                 return tempProp;
 
-            return await Task.Run(() =>
+            return await Task.Factory.StartNew(() =>
             {
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.DisplayName));
@@ -113,10 +109,10 @@ namespace Kexi.Property
             if (Item.IsFileShare)
                 return new ObservableCollection<PropertyItem>();
 
-            if (Item.IsNetwork()) 
+            if (Item.IsNetwork())
                 return await GetNetworkBottomItems();
 
-            Task<ObservableCollection<PropertyItem>> FetchProperties()
+            return await Task.Run(() =>
             {
                 var tempProp = new ObservableCollection<PropertyItem>
                 {
@@ -148,17 +144,9 @@ namespace Kexi.Property
                         tempProp.Add(new PropertyItem(key.Substring(13), props.GetValue(key)));
                 }
 
-                return Task.FromResult(tempProp);
-            }
-
-            return await Task.Run(FetchProperties);
+                return tempProp;
+            });
         }
-
-     
-
-      
-
-       
 
         private async Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
         {

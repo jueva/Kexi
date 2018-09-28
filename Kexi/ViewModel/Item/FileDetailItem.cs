@@ -22,11 +22,11 @@ namespace Kexi.ViewModel.Item
 
         public DateTime? Created
         {
-            get => created;
+            get => _created;
             set
             {
-                if (value.Equals(created)) return;
-                created = value;
+                if (value.Equals(_created)) return;
+                _created = value;
                 OnPropertyChanged();
             }
         }
@@ -38,6 +38,7 @@ namespace Kexi.ViewModel.Item
             {
                 if (value.Equals(_lastModified)) return;
                 _lastModified = value;
+
                 OnPropertyChanged();
             }
         }
@@ -69,25 +70,24 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-
         public string Type
         {
-            get => type;
+            get => _type;
             set
             {
-                if (value == type) return;
-                type = value;
+                if (value == _type) return;
+                _type = value;
                 OnPropertyChanged();
             }
         }
 
         public long Length
         {
-            get => length;
+            get => _length;
             set
             {
-                if (value == length) return;
-                length = value;
+                if (value == _length) return;
+                _length = value;
                 OnPropertyChanged();
             }
         }
@@ -134,26 +134,19 @@ namespace Kexi.ViewModel.Item
         private          DateTime?               _lastAccessed;
         private          DateTime?               _lastModified;
         private          BitmapSource            _thumbnail;
-        private          DateTime?               created;
-
-
-        private long   length;
-        private string type;
-
-        public async Task SetLargeThumbAsync()
-        {
-            var large = await ThreadHelper.StartTaskWithSingleThreadAffinity(GetLargeThumb);
-            LargeThumbnail = large;
-        }
-
+        private          DateTime?               _created;
+        private long   _length;
+        private string _type;
 
 
         public void Init(CancellationToken token)
         {
             if (token.IsCancellationRequested)
                 return;
-
-            if (_fileItem.ItemType == ItemType.Item && _fileItem.Path != null && File.Exists(_fileItem.Path)) Length = _fileItem.FileInfo.Length;
+            if (_fileItem.ItemType == ItemType.Item && _fileItem.Path != null && File.Exists(_fileItem.Path))
+            {
+                Length = _fileItem.FileInfo.Length;
+            }
 
             if (_fileItem.FileSystemInfo != null)
             {
@@ -165,22 +158,23 @@ namespace Kexi.ViewModel.Item
 
         public void SetThumbs(CancellationToken token, bool largeThumbs = false)
         {
-            if (token.IsCancellationRequested)
-                return;
-
             try
             {
                 var fullInfo = new NativeFileInfo(_fileItem.Path);
                 Type      = fullInfo.TypeName;
+                DisplayName = fullInfo.DisplayName;
                 Thumbnail = fullInfo.Icon;
                 Thumbnail.Freeze();
             }
-            catch (Exception ex)
+            catch 
             {
-                Console.WriteLine(ex);
             }
         }
-
+        public async Task SetLargeThumbAsync()
+        {
+            var large = await Task.Factory.StartNew(GetLargeThumb);
+            LargeThumbnail = large;
+        }
 
         public BitmapSource GetLargeThumb()
         {

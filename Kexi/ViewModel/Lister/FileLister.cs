@@ -57,31 +57,29 @@ namespace Kexi.ViewModel.Lister
 
         public async Task<bool> DoBreadcrumbAction(string breadPath)
         {
-            Path = breadPath;
-            await Refresh();
             //TODO: Move to Lister.Path, Refactor that shit
-            //if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
-            //{
-            //    var path = System.IO.Path.GetDirectoryName(breadPath);
-            //    Path = path;
-            //    await Refresh();
-            //}
-            //else if (Directory.Exists(breadPath + "\\"))
-            //{
-            //    var path = System.IO.Path.GetDirectoryName(breadPath + "\\");
-            //    Path = path;
-            //    await Refresh();
-            //}
-            //else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
-            //{
-            //    Path = breadPath;
-            //    await Refresh();
-            //}
-            //else
-            //{
-            //    NotificationHost.AddError(breadPath + " could not be found.");
-            //    return false;
-            //}
+            if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
+            {
+                var path = System.IO.Path.GetDirectoryName(breadPath);
+                Path = path;
+                await Refresh();
+            }
+            else if (Directory.Exists(breadPath + "\\"))
+            {
+                var path = System.IO.Path.GetDirectoryName(breadPath + "\\");
+                Path = path;
+                await Refresh();
+            }
+            else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
+            {
+                Path = breadPath;
+                await Refresh();
+            }
+            else
+            {
+                NotificationHost.AddError(breadPath + " could not be found.");
+                return false;
+            }
 
             return true;
         }
