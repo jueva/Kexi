@@ -203,8 +203,6 @@ namespace Kexi.ViewModel
             }
         }
 
-        //public Func<ICommand> FocusSearchBoxCommand { get; set; }
-
         public RecentLocationPopupViewModel AdressbarHistoryDatasource => _adressbarHistoryDatasource ?? (
             _adressbarHistoryDatasource = new RecentLocationPopupViewModel(this)
             {

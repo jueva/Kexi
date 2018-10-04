@@ -158,7 +158,6 @@ namespace Kexi.ViewModel.Item
             {
                 var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
                 var token = CancellationToken ?? System.Threading.CancellationToken.None;
-
                 await Task.Factory.StartNew(() =>
                 {
                     IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);

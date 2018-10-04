@@ -150,6 +150,7 @@ namespace Kexi.View
         {
             var binding = new Binding(col.BindingExpression);
             binding.Converter = col.Converter;
+            binding.IsAsync = col.IsAsync;
             return binding;
         }
 

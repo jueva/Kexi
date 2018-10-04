@@ -20,6 +20,8 @@ namespace Kexi
             MaxWidth = maxWidth;
         }
 
+        public bool IsAsync { get; set; }
+
         public string Header { get; set; }
         public string BindingExpression { get; set; }
         public IValueConverter Converter { get; set; }
