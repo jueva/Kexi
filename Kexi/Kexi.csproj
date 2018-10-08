@@ -564,6 +564,7 @@
     <Compile Include="ViewModel\RibbonViewModel.cs" />
     <Compile Include="Property\ServicePropertyProvider.cs" />
     <Compile Include="ViewModel\ServiceLister.cs" />
+    <Compile Include="ViewModel\SetupViewModel.cs" />
     <Compile Include="ViewModel\ShowLastLocationsViewModel.cs" />
     <Compile Include="ViewModel\StatusbarViewModel.cs" />
     <Compile Include="ViewModel\TaskManager.cs" />

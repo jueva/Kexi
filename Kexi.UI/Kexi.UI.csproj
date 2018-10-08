@@ -113,6 +113,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\ElementCountConverter.cs" />
+    <Compile Include="Converters\EnumToBoolExtension.cs" />
     <Compile Include="Converters\FontSizeConverter.cs" />
     <Compile Include="Converters\FullPathToNameConverter.cs" />
     <Compile Include="Converters\GridColumnConverter.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Converters\RibbonMarginConverter.cs" />
     <Compile Include="Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Converters\SubDirectoriesToVisibilityConverter.cs" />
+    <Compile Include="Converters\ThemeConverter.cs" />
     <Compile Include="Converters\UniquePathConverter.cs" />
     <Compile Include="Converters\ViewTypeBackgroundConverter.cs" />
     <Compile Include="Converters\ViewTypeConverter.cs" />
@@ -146,6 +148,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SetupWindow.xaml.cs">
+      <DependentUpon>SetupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\AdressBar.xaml.cs">
       <DependentUpon>AdressBar.xaml</DependentUpon>
@@ -238,6 +243,10 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SetupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\DefaultColors.xaml">
       <Generator>MSBuild:Compile</Generator>

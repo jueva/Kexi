@@ -372,6 +372,8 @@ namespace Kexi.Common
             }
         }
 
+        public bool IsInitialized => KeyMode != KeyMode.Undefined;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void WriteToConfig(string key, string value)
