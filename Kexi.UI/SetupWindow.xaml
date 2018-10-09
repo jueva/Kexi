@@ -3,37 +3,52 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:local="clr-namespace:Kexi.UI"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  x:Name="Setup"
                  xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
                  xmlns:converters="clr-namespace:Kexi.UI.Converters"
                  xmlns:keyHandling="clr-namespace:Kexi.Common.KeyHandling;assembly=Kexi"
                  d:DataContext="{d:DesignInstance d:Type=viewModel:SetupViewModel}"
-                 Background="{DynamicResource InputTextBackground}"
+                 Background="{DynamicResource ListerBackground}"
+                 Foreground="{DynamicResource ListerForeground}"
                  BorderThickness="1"
                  BorderBrush="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"
-                 ResizeMode="CanResizeWithGrip"
                  TitleForeground="{DynamicResource ListerForeground}"
                  WindowStartupLocation="CenterScreen"
                  WindowTitleBrush="{DynamicResource ListerBackground}"
                  ShowMinButton="False"
                  ShowMaxRestoreButton="False"
                  mc:Ignorable="d"
-                 Title="Welcome" Height="300" Width="300">
+                 Title="Welcome. Please select" Height="340" Width="450">
 
-    <StackPanel Orientation="Vertical" Margin="10">
-        <Label FontWeight="Bold">Key Mode</Label>
-        <RadioButton GroupName="keymode" IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.Classic}}">Classic</RadioButton>
-        <RadioButton GroupName="keymode" IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.LiveFilter}}">Live Filter</RadioButton>
-        <RadioButton GroupName="keymode" IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.ViStyle}}">Vi Mode</RadioButton>
+    <StackPanel Orientation="Vertical" Margin="10" Background="{DynamicResource ListerBackground}">
+        <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold">Theme</Label>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
+                     IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winDark'}">Dark</RadioButton>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
+                     IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winLight'}">Light</RadioButton>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
+                     IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='solarizedDark'}">Solarized Dark</RadioButton>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
+                     IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='solarizedLight'}">Solarized Light</RadioButton>
 
-        <Label FontWeight="Bold">Theme</Label>
-        <RadioButton GroupName="theme" IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='Dark'}">Dark</RadioButton>
-        <RadioButton GroupName="theme" IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='Light'}">Light</RadioButton>
-        <RadioButton GroupName="theme" IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='Solarized Dark'}">Solarized Dark</RadioButton>
-        <RadioButton GroupName="theme" IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='Solarized Light'}">Solarized Light</RadioButton>
+        <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold" Margin="0 10 0 0">Key Mode</Label>
+        <RadioButton  Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
+                     IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.Classic}}">
+            Classic (Windows Explorer like, Items get focus as you type)
+        </RadioButton>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
+                     IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.LiveFilter}}">
+            Live Filter (Gnome Nautilus like, Items are filtered as you type)
+        </RadioButton>
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
+                     IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.ViStyle}}">
+            Vi Mode (Somehow Vi-ish. Press w to filter, i to browse, move with j/k, ...)
+        </RadioButton>
+        <Label Foreground="{DynamicResource ListerForeground}">Press ? in any keymode to explore/change shortcuts</Label>
+        <Label Foreground="{DynamicResource ListerForeground}">Press F1 to show all commands</Label>
 
         <Button Margin="0 10 0 0" Command="{Binding OkButtonCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}">Ok</Button>
     </StackPanel>
+
 </mah:MetroWindow>

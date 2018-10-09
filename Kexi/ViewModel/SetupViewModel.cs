@@ -12,8 +12,10 @@ namespace Kexi.ViewModel
         public SetupViewModel(Workspace workspace)
         {
             _workspace      = workspace;
-            OkButtonCommand = new RelayCommand(CloseWindow);
-            KeyMode = KeyMode.Classic;
+            OkButtonCommand = new RelayCommand(OkButtonClicked);
+            KeyMode = _workspace.Options.KeyMode == KeyMode.Undefined 
+                ? KeyMode.Classic : _workspace.Options.KeyMode;
+            Theme = _workspace.ThemeHandler.CurrentThemeName;
         }
 
         public KeyMode KeyMode
@@ -24,6 +26,7 @@ namespace Kexi.ViewModel
                 if (value == _keyMode) return;
                 _keyMode = value;
                 OnPropertyChanged();
+                _workspace.Options.KeyMode = value;
             }
         }
 
@@ -34,7 +37,18 @@ namespace Kexi.ViewModel
             {
                 if (value == _theme) return;
                 _theme = value;
+                _workspace.ThemeHandler.ChangeTheme(value);
                 OnPropertyChanged();
+            }
+        }
+
+        private void OkButtonClicked(object parameter)
+        {
+            if (parameter is Window window)
+            {
+                window.Close();
+                _workspace.Options.WriteToConfig(nameof(_workspace.Options.KeyMode), KeyMode.ToString());
+                _workspace.Options.WriteToConfig(nameof(_workspace.Options.Theme), Theme);
             }
         }
 
@@ -45,14 +59,8 @@ namespace Kexi.ViewModel
         private KeyMode _keyMode;
         private string _theme;
 
-        private void CloseWindow(object parameter)
-        {
-            if (parameter is Window window)
-                window.Close();
-        }
-
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private  void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

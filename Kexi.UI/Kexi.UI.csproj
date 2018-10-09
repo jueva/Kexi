@@ -107,6 +107,7 @@
     <Compile Include="Base\ListerViewTemplateSelector.cs" />
     <Compile Include="Base\MyVirtualizingStackpanel.cs" />
     <Compile Include="Base\VirtualizingWrapPanel.cs" />
+    <Compile Include="Commands\ShowSetupWindowCommand.cs" />
     <Compile Include="Converters\ActiveDocumentConverter.cs" />
     <Compile Include="Converters\AnyToBoolConverter.cs" />
     <Compile Include="Converters\AnyToVisibilityConverter.cs" />
@@ -476,8 +477,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
-rem copy $(ProjectDir)keyBindings.xml $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>if not exist "$(TargetDir)Themes\" (
+mkdir $(TargetDir)Themes\
+copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
+)
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -4,7 +4,12 @@
       <KeyModeBindings>
         <KeyMode>ViStyle</KeyMode>
         <KeyBindings>
-
+          <KexBinding>
+            <CommandName>ShowCommandsPopupCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>F1</Key>
+            <Group />
+          </KexBinding>
           <KexBinding>
             <CommandName>ViewFileCommand</CommandName>
             <Modifier>None</Modifier>

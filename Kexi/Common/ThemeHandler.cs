@@ -27,6 +27,8 @@ namespace Kexi.Common
         public List<FileInfo> Themes { get; private set; }
         public FileInfo CurrentTheme { get; private set; }
 
+        public string CurrentThemeName => Path.GetFileNameWithoutExtension(CurrentTheme.FullName);
+
         private void InitThemes()
         {
             var themeDirectory = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Themes\"));

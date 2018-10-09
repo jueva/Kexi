@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using Kexi.UI.Commands;
 using Kexi.ViewModel;
 
 namespace Kexi.UI
@@ -20,9 +21,7 @@ namespace Kexi.UI
             mainWindow.Show();
             if (!_workspace.Options.IsInitialized)
             {
-                var setup = new SetupWindow(_workspace);
-                setup.ShowDialog();
-                _workspace.FocusListView();
+                new ShowSetupWindowCommand(_workspace).Execute(null);
             }
         }
 
