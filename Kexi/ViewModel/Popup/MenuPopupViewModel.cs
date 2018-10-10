@@ -197,6 +197,7 @@ namespace Kexi.ViewModel.Popup
                         }))),
                     Thumbnail = menuImg
                 },
+                new MenuCommandBoundItem("Options", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowSettingsListerCommand)).Execute())),
                 new MenuCommandBoundItem("GroupBy", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowGroupByPopupCommand)).Execute())),
                 new MenuCommandBoundItem("Sort", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowSortPopupCommand)).Execute())),
                 new MenuCommandBoundItem("Toggle Hidden Items", new RelayCommand(c =>

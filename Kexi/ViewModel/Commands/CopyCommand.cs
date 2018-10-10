@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
+using System.Linq;
+using System.Windows;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -9,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class CopyCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public CopyCommand(Workspace workspace)
         {
@@ -19,15 +18,24 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return _workspace.ActiveLister is ICopyPasteHandler;
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            if (_workspace.ActiveLister is ICopyPasteHandler handler) 
+            if (_workspace.ActiveLister is ICopyPasteHandler handler)
+            {
                 handler.Copy();
+            }
+            else
+            {
+                var items = _workspace.ActiveLister.SelectedItems.Select(i => i.DisplayName);
+                var text  = string.Join(",", items);
+                Clipboard.SetText(text);
+            }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }
