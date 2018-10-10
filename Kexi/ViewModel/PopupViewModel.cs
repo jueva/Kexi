@@ -334,13 +334,27 @@ namespace Kexi.ViewModel
             }
             else if (ea.Key == Key.Down)
             {
-                MoveDown();
-                ea.Handled = true;
+                 if (BaseItems == null || !BaseItems.Any())
+                 {
+                     Close();
+                 }
+                else
+                {
+                    MoveDown();
+                    ea.Handled = true;
+                }
             }
             else if (ea.Key == Key.Up)
             {
-                MoveUp();
-                ea.Handled = true;
+                 if (BaseItems == null || !BaseItems.Any())
+                 {
+                     Close();
+                 }
+                else
+                {
+                    MoveUp();
+                    ea.Handled = true;
+                }
             }
             else if (ea.Key == Key.Tab)
             {
