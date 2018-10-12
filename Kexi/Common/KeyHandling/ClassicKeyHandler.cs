@@ -31,7 +31,8 @@ namespace Kexi.Common.KeyHandling
                 _searchString = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    _workspace.NotificationHost.AddInfo(_searchString);
+                    if (_workspace.Options.ShowSearchStringInClassicMode)
+                        _workspace.NotificationHost.AddInfo(_searchString);
                     FocusItemMatchingSearchString();
                 }
             }
@@ -46,7 +47,8 @@ namespace Kexi.Common.KeyHandling
                 if (type == typeof(DoActionCommand) || type == typeof(HistoryBackCommand) || args.Key == Key.Escape)
                 {
                     ClearSearchString();
-                    _workspace.NotificationHost.ClearCurrentMessage();
+                    if (_workspace.Options.ShowSearchStringInClassicMode)
+                        _workspace.NotificationHost.ClearCurrentMessage();
                 }
 
                 return false;
@@ -90,15 +92,26 @@ namespace Kexi.Common.KeyHandling
 
         private void FocusNextItemWithSameStartLetter()
         {
+            //search in currentItem to end
             var baseItems = _workspace.CurrentItems.SkipWhile(i => i.Path != _workspace.CurrentItem.Path).Skip(1);
             var filter    = new ItemFilter<IItem>(baseItems, SearchString);
             var selection = filter.MatchesBeginning.FirstOrDefault();
-            if (selection != null) _workspace.FocusItem(selection);
+            if (selection != null) 
+                _workspace.FocusItem(selection);
+            else
+            {
+                //search in start to currentItem
+                baseItems = _workspace.CurrentItems.TakeWhile((i => i.Path != _workspace.CurrentItem.Path));
+                filter    = new ItemFilter<IItem>(baseItems, SearchString);
+                selection = filter.MatchesBeginning.FirstOrDefault();
+                if (selection != null)
+                    _workspace.FocusItem(selection);
+            }
 
             _timer.Start();
         }
 
-        private void _timer_Tick(object sender, EventArgs e)
+        private void _timer_Tick(object sender, EventArgs e)    
         {
             _timer.Stop();
             ClearSearchString();
