@@ -24,7 +24,6 @@ namespace Kexi.UI.View
 
         private FrameworkElement _adressbar;
         private FrameworkElement _dockManager;
-
         private TextBox          _input;
         private Border           _inputBorder;
         private FrameworkElement _ribbonbar;

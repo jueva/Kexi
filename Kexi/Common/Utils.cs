@@ -23,10 +23,12 @@ namespace Kexi.Common
 
         public static T FindParent<T>(DependencyObject current) where T : class
         {
+            if (!(current is Visual))
+                return null;
             var parent = VisualTreeHelper.GetParent(current);
 
             if (parent == null) return null;
-            if (parent is T) return parent as T;
+            if (parent is T variable) return variable;
             return FindParent<T>(parent);
         }
 
