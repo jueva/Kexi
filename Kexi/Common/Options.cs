@@ -42,6 +42,7 @@ namespace Kexi.Common
         private string _theme;
         private string _viewClipboardHotKey;
         private KeyMode _keyMode;
+        private bool _showSearchStringInClassicMode;
 
         public Options()
         {
@@ -72,6 +73,7 @@ namespace Kexi.Common
             CenterPopup = (bool) settings.GetValue("CenterPopup", typeof(bool));;
             AdressbarVisible = true;
             Highlights = (bool) settings.GetValue("Highlights", typeof(bool));
+            ShowSearchStringInClassicMode = false;
 
             var keyString = (string) settings.GetValue("KeyMode", typeof(string));
             KeyMode = Enum.TryParse<KeyMode>(keyString, true, out var mode) 
@@ -376,6 +378,17 @@ namespace Kexi.Common
         }
 
         public bool IsInitialized => KeyMode != KeyMode.Undefined;
+
+        public bool ShowSearchStringInClassicMode
+        {
+            get => _showSearchStringInClassicMode;
+            set
+            {
+                if (value == _showSearchStringInClassicMode) return;
+                _showSearchStringInClassicMode = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
