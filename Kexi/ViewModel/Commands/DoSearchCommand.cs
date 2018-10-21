@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             var searchPattern = parameter as string;
             if (string.IsNullOrEmpty(searchPattern))
@@ -38,7 +38,7 @@ namespace Kexi.ViewModel.Commands
             {
                 searchLister.SearchPattern = (string)parameter;
                 if (searchLister.View != null)
-                    searchLister.Refresh();
+                    await searchLister.Refresh();
                 else
                     searchLister.GotView += searchLister_GotView;
             }

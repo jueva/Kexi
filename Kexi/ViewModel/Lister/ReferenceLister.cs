@@ -100,13 +100,13 @@ namespace Kexi.ViewModel.Lister
             return refs;
         }
 
-        public override void DoAction(ReferenceItem item)
+        public override async void DoAction(ReferenceItem item)
         {
             if (!string.IsNullOrEmpty(item?.TargetPath))
             {
                 History.Push(Path,Filter, GroupBy, SortHandler.CurrentSortDescription);
                 Path = item.TargetPath;
-                Refresh();
+                await Refresh();
             }
         }
 

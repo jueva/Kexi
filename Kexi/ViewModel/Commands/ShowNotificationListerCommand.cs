@@ -23,11 +23,11 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             var notifications = KexContainer.Resolve<NotificationLister>();
             _workspace.Open(notifications);
-            notifications.Refresh();
+            await notifications.Refresh();
         }
 
         public event EventHandler CanExecuteChanged;

@@ -21,13 +21,13 @@ namespace Kexi.ViewModel.Commands
             return _workspace.CurrentItem is FileItem;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             if (_workspace.CurrentItem is FileItem fileItem)
             {
                 var processLister = KexContainer.Resolve<ProcessLister>();
                 _workspace.Open(processLister);
-                processLister.Refresh();
+                await processLister.Refresh();
             }
         }
 

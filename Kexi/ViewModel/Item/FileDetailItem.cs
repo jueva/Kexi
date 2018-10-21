@@ -166,19 +166,20 @@ namespace Kexi.ViewModel.Item
                 Thumbnail = fullInfo.Icon;
                 Thumbnail.Freeze();
             }
-            catch 
+            catch
             {
+                // ignored
             }
         }
-        public async Task SetLargeThumbAsync()
+
+        private async void SetLargeThumbAsync()
         {
-            var large = await Task.Factory.StartNew(GetLargeThumb);
-            LargeThumbnail = large;
+            LargeThumbnail = await GetLargeThumbAsync();
         }
 
-        public BitmapSource GetLargeThumb()
+        public async Task<BitmapSource> GetLargeThumbAsync()
         {
-            return ThumbnailProvider.GetThumbnailSource(_fileItem.Path, 256, 256, ThumbnailOptions.None, _cancellationToken);
+            return await Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(_fileItem.Path, 256, 256, ThumbnailOptions.None, _cancellationToken));
         }
 
         [NotifyPropertyChangedInvocator]

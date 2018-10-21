@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -13,7 +12,6 @@ using Kexi.Common;
 using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Dock;
-using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 using Kexi.ViewModel.Popup;
 using Xceed.Wpf.AvalonDock;
@@ -30,10 +28,10 @@ namespace Kexi.ViewModel
             Container             = KexContainer.Container;
             _renamePopupViewModel = new RenamePopupViewModel(this);
             Docking               = new DockViewModel(this);
-            KeyDispatcher            = new KeyDispatcher(this);
+            KeyDispatcher         = new KeyDispatcher(this);
             CommanderbarViewModel = new CommanderbarViewModel(this);
-            PopupViewModel = new FilterPopupViewModel(this, new Options(), null);
-            TaskManager = new TaskManager(this);
+            PopupViewModel        = new FilterPopupViewModel(this, new Options(), null);
+            TaskManager           = new TaskManager(this);
         }
 
         public RenamePopupViewModel RenamePopupViewModel
@@ -109,10 +107,10 @@ namespace Kexi.ViewModel
             }
         }
 
-        public TaskManager TaskManager { get; }
-        public DockingManager       Manager   { get; set; }
-        public LayoutAnchorablePane LeftPane  { get; set; }
-        public LayoutAnchorablePane RightPane { get; set; }
+        public TaskManager          TaskManager { get; }
+        public DockingManager       Manager     { get; set; }
+        public LayoutAnchorablePane LeftPane    { get; set; }
+        public LayoutAnchorablePane RightPane   { get; set; }
 
         public DockViewModel Docking { get; }
 
@@ -157,7 +155,6 @@ namespace Kexi.ViewModel
         {
             get
             {
-                
                 var layoutElement = Manager.Layout.LastFocusedDocument;
 
                 var documentPane = layoutElement?.FindParent<LayoutDocumentPane>();
@@ -175,10 +172,7 @@ namespace Kexi.ViewModel
 
                 if (value && CurrentDocumentPaneGroup?.Children != null && CurrentDocumentPaneGroup.Children.Count == 1)
                 {
-                    var fileLister = KexContainer.Resolve<FileLister>();
-                    fileLister.Path = ActiveLister.Path;
-                    fileLister.Refresh();
-                    Open(fileLister);
+                    RefreshLister();
                     SplitVertical();
                 }
 
@@ -186,6 +180,7 @@ namespace Kexi.ViewModel
                 OnPropertyChanged();
             }
         }
+
 
         public DocumentViewModel CommanderTargetLayoutDocument
         {
@@ -198,7 +193,7 @@ namespace Kexi.ViewModel
                 var index   = pindex == 0 ? 1 : 0;
                 var docPane = CurrentDocumentPaneGroup.Children.ElementAt(index);
                 var doc     = ((LayoutDocumentPane) docPane).SelectedContent;
-                var view = doc?.Content as DocumentViewModel;
+                var view    = doc?.Content as DocumentViewModel;
                 return view;
             }
         }
@@ -224,21 +219,26 @@ namespace Kexi.ViewModel
             }
         }
 
-        public  TextBox                      TitleTextBox    { get; set; }
-        public  Border                       TitleTextBorder { get; set; }
-        public  IDockingManager              DockingMananger { get; set; }
+        public TextBox         TitleTextBox    { get; set; }
+        public Border          TitleTextBorder { get; set; }
+        public IDockingManager DockingMananger { get; set; }
 
-        private object                       _activeLayoutContent;
         private ILister                      _activeLister;
         private RecentLocationPopupViewModel _adressbarHistoryDatasource;
         private bool                         _commanderMode;
-        private ICommand                     _editConfigurationCommand;
         private bool                         _hasMultipleTabs;
-        private PopupViewModel _popupViewModel;
+        private PopupViewModel               _popupViewModel;
         private RenamePopupViewModel         _renamePopupViewModel;
         private RelayCommand                 _showAdressbarHistoryPopupCommand;
         private double                       _tabHeight;
-        private ToolViewModel[]              _tools;
+
+        private async void RefreshLister()
+        {
+            var fileLister = KexContainer.Resolve<FileLister>();
+            fileLister.Path = ActiveLister.Path;
+            await fileLister.Refresh();
+            Open(fileLister);
+        }
 
         public void EnsureUniquePathName()
         {
@@ -452,7 +452,7 @@ namespace Kexi.ViewModel
                 return;
 
             listView.ScrollIntoView(listView.SelectedItem);
-            var temp = listView.ItemContainerGenerator.ContainerFromItem(listView.SelectedItem ?? CurrentItems.FirstOrDefault());
+            var temp      = listView.ItemContainerGenerator.ContainerFromItem(listView.SelectedItem ?? CurrentItems.FirstOrDefault());
             var container = temp as UIElement;
             if (clearSelection)
                 container?.Focus();

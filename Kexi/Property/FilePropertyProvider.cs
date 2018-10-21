@@ -97,7 +97,7 @@ namespace Kexi.Property
 
             if (IsPicture)
                 ThumbMaxHeight = 120;
-            await Item.Details.SetLargeThumbAsync();
+            Item.Details.LargeThumbnail = await Item.Details.GetLargeThumbAsync();
             return Item.Details.LargeThumbnail;
         }
 

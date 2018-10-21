@@ -54,7 +54,7 @@ namespace Kexi.ViewModel.Popup
             });
         }
 
-        protected override void ItemSelected(DriveItem selectedItem)
+        protected override async void ItemSelected(DriveItem selectedItem)
         {
             if (selectedItem == null)
                 return;
@@ -73,7 +73,7 @@ namespace Kexi.ViewModel.Popup
             {
                 var lister = KexContainer.Resolve<FileLister>();
                 Workspace.Open(lister);
-                lister.Refresh();
+                await lister.Refresh();
             }
 
             base.ItemSelected(selectedItem);
@@ -82,12 +82,11 @@ namespace Kexi.ViewModel.Popup
         private static string GetDriveInfoString(DriveInfo di)
         {
             if (!di.IsReady)
-                return string.Format("{0} - not ready", di.Name);
+                return $"{di.Name} - not ready";
 
             try
             {
-                return string.Format("{0} {1} ({2}/{3} GB free)", di.Name, di.VolumeLabel, di.TotalFreeSpace / 1000000000,
-                    di.TotalSize / 1000000000);
+                return $"{di.Name} {di.VolumeLabel} ({di.TotalFreeSpace / 1000000000}/{di.TotalSize / 1000000000} GB free)";
             }
             catch
             {

@@ -23,11 +23,11 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             var lister = KexContainer.Resolve<KeyCommandsLister>();
             _workspace.Open(lister);
-            lister.Refresh();
+            await lister.Refresh();
         }
 
         public event EventHandler CanExecuteChanged;

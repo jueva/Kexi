@@ -23,14 +23,14 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public  void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             if (_workspace.CurrentItem is FileItem fileItem)
             {
                 var referenceLister = KexContainer.Resolve<ReferenceLister>();
                 referenceLister.Path = fileItem.GetPathResolved();
                 _workspace.Open(referenceLister);
-                referenceLister.Refresh();
+                await referenceLister.Refresh();
             }
         }
 

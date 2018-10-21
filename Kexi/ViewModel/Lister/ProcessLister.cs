@@ -69,15 +69,20 @@ namespace Kexi.ViewModel.Lister
                 return new RelayCommand(c =>
                     {
                         var item       = Workspace.GetSelection<ProcessItem>().First();
-                        var fileLister = KexContainer.Resolve<FileLister>();
-                        fileLister.Path = System.IO.Path.GetDirectoryName(item.FileName);
-                        fileLister.Refresh();
-                        _processItem       =  item;
-                        fileLister.GotView += FileLister_GotView;
-                        Workspace.Open(fileLister);
+                        RefreshLister(item);
                     }
                 );
             }
+        }
+
+        private async void RefreshLister(ProcessItem item)
+        {
+            var fileLister = KexContainer.Resolve<FileLister>();
+            fileLister.Path = System.IO.Path.GetDirectoryName(item.FileName);
+            await fileLister.Refresh();
+            _processItem       =  item;
+            fileLister.GotView += FileLister_GotView;
+            Workspace.Open(fileLister);
         }
 
         private readonly Lazy<BitmapImage> _thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("process.png"));

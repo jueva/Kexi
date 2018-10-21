@@ -23,11 +23,11 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             var network = KexContainer.Resolve<NetworkLister>();
             _workspace.Open(network);
-            network.Refresh();
+            await network.Refresh();
         }
 
         public event EventHandler CanExecuteChanged;

@@ -4,30 +4,29 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Kexi.Common;
-using Kexi.Common.KeyHandling;
 using Kexi.Shell;
 using Kexi.ViewModel;
-using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Lister;
-using MahApps.Metro.Controls;
 
 namespace Kexi.UI
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
+        private const string LayoutConfig = @".\lastLayout.config";
+
         public MainWindow(Workspace workspace)
         {
             InitializeComponent();
-            Workspace = workspace;
+            Workspace   = workspace;
             DataContext = workspace;
             Workspace.ThemeHandler.ChangeTheme(Workspace.Options.Theme);
             mainWindow.GotFocus += RegisterHotKey;
-            Workspace.Manager = mainWindow.DockManager.DockingManager;
-            Workspace.LeftPane = mainWindow.DockManager.leftAnchorPane;
-            Workspace.RightPane = mainWindow.DockManager.rightAnchorPane;
+            Workspace.Manager   =  mainWindow.DockManager.DockingManager;
+            Workspace.LeftPane  =  mainWindow.DockManager.leftAnchorPane;
+            Workspace.RightPane =  mainWindow.DockManager.rightAnchorPane;
         }
 
-        private const string LayoutConfig = @".\lastLayout.config";
+        private static Workspace Workspace { get; set; }
 
         private void MainWindow_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -45,15 +44,13 @@ namespace Kexi.UI
                 OpenFavorites();
         }
 
-        private void OpenFavorites()
+        private async void OpenFavorites()
         {
             var fileLister = KexContainer.Resolve<FileLister>();
             fileLister.Path = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             Workspace.Open(fileLister);
-            fileLister.Refresh();
+            await fileLister.Refresh();
         }
-
-        private static Workspace Workspace { get; set; }
 
         private void RegisterHotKey(object sender, EventArgs ea)
         {

@@ -21,14 +21,14 @@ namespace Kexi.ViewModel.Commands
             return _workspace.CurrentItem is FileItem;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             if (_workspace.CurrentItem is FileItem fileItem)
             {
                 var propLister = KexContainer.Resolve<PropertyLister>();
                 _workspace.Open(propLister);
                 propLister.FileItem = fileItem;
-                propLister.Refresh();
+                await propLister.Refresh();
             }
         }
 
