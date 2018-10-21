@@ -125,7 +125,7 @@ namespace Kexi.ViewModel.Lister
             }, DispatcherPriority.Background);
         }
 
-        public override void DoAction(FileItem searchItem)
+        public override async void DoAction(FileItem searchItem)
         {
             var fItem  = new FileItem(searchItem.Path, searchItem.ItemType);
             var result = new FileListerAction(Workspace, fItem).DoAction();
@@ -134,7 +134,7 @@ namespace Kexi.ViewModel.Lister
                 var fileLister = KexContainer.Resolve<FileLister>();
                 fileLister.Path = fItem.Path;
                 Workspace.Open(fileLister);
-                fileLister.Refresh();
+                await fileLister.Refresh();
             }
         }
 

@@ -57,7 +57,7 @@ namespace Kexi.ViewModel.Lister
         {
             get
             {
-                return new RelayCommand(commandArgument =>
+                return new RelayCommand(async commandArgument =>
                 {
                     var item = GetSelectedItems(commandArgument).FirstOrDefault();
                     if (item == null)
@@ -67,7 +67,7 @@ namespace Kexi.ViewModel.Lister
                     var lister = KexContainer.Resolve<FileLister>();
                     lister.Path = new FileInfo(target.TargetPath).DirectoryName;
                     _workspace.Open(lister);
-                    lister.Refresh();
+                    await lister.Refresh();
                 }
                         );
             }

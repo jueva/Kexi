@@ -33,13 +33,13 @@ namespace Kexi.Common
                     _mainWindow.WindowState = WindowState.Normal;
                     _workspace.FocusListView();
                 });
-                HotkeyManager.Current.AddOrReplace("ViewClipboard", showClipboard, ModifierKeys.Windows, (n, h) =>
+                HotkeyManager.Current.AddOrReplace("ViewClipboard", showClipboard, ModifierKeys.Windows, async (n, h) =>
                 {
                     var textLister = KexContainer.Resolve<TextLister>();
                     _workspace.Open(textLister);
                     textLister.Path = textLister.PathName = textLister.Title = "Clipboard";
                     textLister.Text = Clipboard.GetText();
-                    textLister.Refresh();
+                    await textLister.Refresh();
                     _mainWindow.Activate();
                     _mainWindow.WindowState = WindowState.Normal;
                 });

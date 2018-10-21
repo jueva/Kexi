@@ -44,7 +44,7 @@ namespace Kexi.Property
         protected override async Task<BitmapSource> GetThumbnail()
         {
             var fi = new FileItem(Item?.AssemblyPath);
-            await fi.Details.SetLargeThumbAsync();
+            fi.Details.LargeThumbnail = await fi.Details.GetLargeThumbAsync();
             return fi.Details.LargeThumbnail;
         }
     }

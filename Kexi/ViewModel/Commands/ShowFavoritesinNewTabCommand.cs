@@ -22,12 +22,12 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async  void Execute(object parameter)
         {
             var favoriteLocation = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             var fileLister       = KexContainer.Resolve<FileLister>();
             fileLister.Path = favoriteLocation;
-            fileLister.Refresh();
+            await fileLister.Refresh();
             _workspace.Open(fileLister);
         }
 

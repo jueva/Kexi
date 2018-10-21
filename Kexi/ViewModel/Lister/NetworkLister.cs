@@ -37,12 +37,12 @@ namespace Kexi.ViewModel.Lister
 
         public override string ProtocolPrefix => "Network";
 
-        public override void DoAction(NetworkItem item)
+        public override async void DoAction(NetworkItem item)
         {
             var lister = KexContainer.Resolve<FileLister>();
             lister.Path = @"\\" + item.DisplayName;
             Workspace.ReplaceCurrentLister(lister);
-            lister.Refresh();
+            await lister.Refresh();
         }
     }
 

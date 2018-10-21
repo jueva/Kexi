@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Lister
             : base(workspace, notificationHost, options, commandRepository)
         {
             Title                                            =  PathName = "Notifications";
-            NotificationHost.Notifications.CollectionChanged += (sender, args) => Refresh();
+            NotificationHost.Notifications.CollectionChanged += async (sender, args) => await Refresh();
         }
 
         public override IEnumerable<Column> Columns { get; } =
@@ -50,10 +50,10 @@ namespace Kexi.ViewModel.Lister
         {
             get
             {
-                return _clearAllNotificationsCommand ?? (_clearAllNotificationsCommand = new RelayCommand(c =>
+                return _clearAllNotificationsCommand ?? (_clearAllNotificationsCommand = new RelayCommand(async c =>
                 {
                     NotificationHost.Notifications.Clear();
-                    Refresh();
+                    await Refresh();
                 }));
             }
         }

@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             if (!(_workspace.CurrentItem is FileItem currentFileItem))
                 return;
@@ -40,7 +40,7 @@ namespace Kexi.ViewModel.Commands
                 var path = currentFileItem.GetPathResolved();
                 fileLister.Path = path;
             }
-            fileLister.Refresh();
+            await fileLister.Refresh();
             _workspace.Open(fileLister);
         }
 

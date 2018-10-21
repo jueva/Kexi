@@ -64,13 +64,13 @@ namespace Kexi
         private readonly DockingManager _dockingManager;
         private readonly Workspace      _workspace;
 
-        private void Serializer_LayoutSerializationCallback(object sender, LayoutSerializationCallbackEventArgs e)
+        private async void Serializer_LayoutSerializationCallback(object sender, LayoutSerializationCallbackEventArgs e)
         {
             if (!(e.Model is LayoutDocument document))
                 return;
             var lister = KexContainer.Resolve<FileLister>();
             lister.Path = document.ContentId;
-            lister.Refresh();
+            await lister.Refresh();
             e.Content   = new DocumentViewModel
             {
                 Content = lister,

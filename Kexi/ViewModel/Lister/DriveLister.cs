@@ -90,12 +90,12 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public override void DoAction(DriveItem item)
+        public override async void DoAction(DriveItem item)
         {
             var fi = KexContainer.Resolve<FileLister>();
             fi.Path = item?.Path;
             Workspace.ReplaceCurrentLister(fi);
-            fi.Refresh();
+            await fi.Refresh();
         }
 
         public override string ProtocolPrefix => "Drives";
