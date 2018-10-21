@@ -274,6 +274,7 @@
     <Compile Include="Common\KeyHandling\KeyModeBindings.cs" />
     <Compile Include="Common\KeyHandling\LiveFilterKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\ViStyleKeyHandler.cs" />
+    <Compile Include="Common\OptionItem.cs" />
     <Compile Include="Common\PathPart.cs" />
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />
