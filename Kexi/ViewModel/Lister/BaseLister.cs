@@ -134,11 +134,7 @@ namespace Kexi.ViewModel.Lister
                 _path = value;
 
                 OnPathChanged(value);
-
                 history?.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
-                Filter = null;
-                GroupBy = null;
-                SortHandler.ClearSort();
 
                 OnNotifyPropertyChanged();
             }
@@ -258,6 +254,9 @@ namespace Kexi.ViewModel.Lister
                 LoadingStatus = LoadingStatus.Loading;
                 var items = await GetItems();
                 Items = new ObservableCollection<T>(items);
+                Filter = null;
+                GroupBy = null;
+                SortHandler.ClearSort();
             }
             catch (Exception ex)
             {
