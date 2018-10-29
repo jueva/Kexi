@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using Kexi.Common;
 using Kexi.ViewModel.Item;
 
 namespace Kexi.ItemProvider
@@ -18,9 +19,11 @@ namespace Kexi.ItemProvider
 
         public async Task GetItems(string initialDirectory, string searchPattern, ObservableCollection<FileItem> items = null)
         {
-            items?.Clear();
             if (items != null)
+            {
+                items.Clear();
                 BindingOperations.EnableCollectionSynchronization(items, _locker);
+            }
             await Task.Run(() => GetFilesSave(initialDirectory, searchPattern, items), CancellationTokenSource.Token);
             SearchFinished?.Invoke();
         }
@@ -36,10 +39,10 @@ namespace Kexi.ItemProvider
                         container = stack.Pop();
 
                     var files =
-                        Directory.EnumerateDirectories(container).Select(d => new DirectoryInfo(d)).Where(s => s.Name.IndexOf(pattern, StringComparison.CurrentCultureIgnoreCase) > -1)
-                            .Select(d => new FileItem(d.FullName))
-                            .Union(Directory.EnumerateFiles(container).Select(f => new FileInfo(f)).Where(s => s.Name.IndexOf(pattern, StringComparison.CurrentCultureIgnoreCase) > -1)
-                                .Select(s => new FileItem(s.FullName))
+                        Directory.EnumerateDirectories(container).Select(d => new DirectoryInfo(d))
+                            .Select(d => new FileItem(d.FullName)).Where(s => IsMatch(s, pattern))
+                            .Union(Directory.EnumerateFiles(container).Select(f => new FileInfo(f))
+                                .Select(s => new FileItem(s.FullName)).Where(s => IsMatch(s, pattern))
                             );
 
                     foreach (var fi in files)
@@ -62,6 +65,11 @@ namespace Kexi.ItemProvider
                         container = stack.Pop();
                 }
             } while (stack.Count != 0 && !CancellationTokenSource.IsCancellationRequested);
+        }
+
+        private static bool IsMatch(FileItem fi, string pattern)
+        {
+            return new ItemFilter<FileItem>(fi, pattern).Any();
         }
 
         public event Action<FileItem> ItemAdded;
