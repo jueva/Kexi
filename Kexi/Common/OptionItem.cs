@@ -7,6 +7,7 @@ namespace Kexi.Common
     public class OptionItem<T> : INotifyPropertyChanged
         where T : class
     {
+
         public string Group
         {
             get => _group;
@@ -29,10 +30,22 @@ namespace Kexi.Common
             }
         }
 
+        public string Lister
+        {
+            get => _lister;
+            set
+            {
+                if (value == _lister) return;
+                _lister = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _group;
         private T      _value;
+        private string _lister;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
