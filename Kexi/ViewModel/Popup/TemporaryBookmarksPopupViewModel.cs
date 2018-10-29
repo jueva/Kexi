@@ -32,7 +32,10 @@ namespace Kexi.ViewModel.Popup
                 if (fileItem.ItemType == ItemType.Item)
                     new FileListerAction(Workspace, fileItem).DoAction();
                 else
+                {
                     Workspace.ActiveLister.Path = fileItem.Path;
+                    Workspace.ActiveLister.Refresh();
+                }
                 base.ItemSelected(selectedItem);
                 Text   = "";
                 IsOpen = false;

@@ -25,7 +25,10 @@ namespace Kexi.ViewModel.Commands
         {
             var next = _workspace.TemporaryFavorites.Next();
             if (next != null)
+            {
                 _workspace.ActiveLister.Path = next.Path;
+                _workspace.ActiveLister.Refresh();
+            }
         }
 
         public event EventHandler CanExecuteChanged;
