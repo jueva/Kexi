@@ -28,7 +28,11 @@ namespace Kexi.Common
                 _filterParts = filter
                     .Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
                     .Select(p => new FilterPart(p)).Where(p => p.HasFilter).ToList();
+            _firstPart = _filterParts.FirstOrDefault();
         }
+
+        private readonly FilterPart _firstPart;
+        private static ItemFilterComparer _comparer = new ItemFilterComparer();
 
         public bool IsEmpty => !Matches.Any();
 
@@ -38,9 +42,14 @@ namespace Kexi.Common
 
         protected List<FilterPart> FilterParts => _filterParts;
 
+        public IEnumerable<T> MatchesEquals
+        {
+            get { return _items.Where(i => MatchItemEquals(i, _firstPart)); }
+        }
+
         public IEnumerable<T> MatchesBeginning
         {
-            get { return _items.Where(i => MatchItemStartsWith(i, FilterParts.FirstOrDefault())); }
+            get { return _items.Where(i => MatchItemStartsWith(i, _firstPart)); }
         }
 
         public IEnumerable<T> MatchesContaining
@@ -48,12 +57,12 @@ namespace Kexi.Common
             get { return FilterParts.Aggregate(_items, (current, part) => current.Where(i => MatchItemContaining(i, part))); }
         }
 
-        public virtual IEnumerable<T> Matches
+        public IEnumerable<T> Matches
         {
             get
             {
-                var ret = IsSinglePart && !FilterParts.First().Negate
-                    ? MatchesBeginning.Union(MatchesContaining, new ItemFilterComparer())
+                var ret = IsSinglePart && !_firstPart.Negate
+                    ? MatchesEquals.Union(MatchesBeginning.Union(MatchesContaining, _comparer), _comparer)
                     : MatchesContaining;
                 return ret;
             }
@@ -74,13 +83,22 @@ namespace Kexi.Common
         private readonly List<FilterPart> _filterParts;
         private readonly IEnumerable<T>   _items;
 
+        protected virtual bool MatchItemEquals(T item, FilterPart part)
+        {
+            if (item?.FilterString == null)
+                return false;
+            var ret = item.FilterString.Equals(part.FilterString, StringComparison.OrdinalIgnoreCase);
+            return part.Negate ? !ret : ret;
+        }
+
         protected virtual bool MatchItemStartsWith(T item, FilterPart part)
         {
-            if (item == null)
+            if (item?.FilterString == null)
                 return false;
 
             if (FilterParts.Count == 0)
                 return true;
+
             var ret = item.FilterString.StartsWith(FilterParts.First().FilterString, StringComparison.OrdinalIgnoreCase);
             return part.Negate ? !ret : ret;
         }
@@ -93,14 +111,6 @@ namespace Kexi.Common
             if (part.Negate)
                 return item.FilterString.IndexOf(part.FilterString, StringComparison.OrdinalIgnoreCase) == -1;
             return item.FilterString.IndexOf(part.FilterString, StringComparison.OrdinalIgnoreCase) != -1;
-        }
-
-        public bool IsMatch(object item)
-        {
-            var popup = item as T;
-            return
-                _filterParts.All(p => MatchItemStartsWith(popup, p))
-                || _filterParts.All(p => MatchItemContaining(popup, p));
         }
 
         private class ItemFilterComparer : IEqualityComparer<T>

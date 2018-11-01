@@ -102,7 +102,8 @@ namespace Kexi.Common
                     e.Handled                    = true;
                     break;
                 case MouseButton.Right:
-                    _workspace.ActiveLister.ShowContextMenu(true);
+                    var emptyPath = item == null; //click on no item
+                    _workspace.ActiveLister.ShowContextMenu(emptyPath);
                     e.Handled = true;
                     break;
             }
