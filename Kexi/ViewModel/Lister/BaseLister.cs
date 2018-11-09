@@ -211,7 +211,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public virtual void ShowContextMenu(bool atMousePosition)
+        public virtual void ShowContextMenu()
         {
             CommandRepository.GetCommandByName(nameof(ShowListerContextMenuPopupCommand)).Execute(true);
         }
@@ -247,15 +247,18 @@ namespace Kexi.ViewModel.Lister
 
         public abstract IEnumerable<Column> Columns { get; }
 
-        public virtual async Task Refresh()
+        public virtual async Task Refresh(bool clearFilterAndGroup = true)
         {
             try
             {
                 LoadingStatus = LoadingStatus.Loading;
                 var items = await GetItems();
                 Items = new ObservableCollection<T>(items);
-                Filter = null;
-                GroupBy = null;
+                if (clearFilterAndGroup)
+                {
+                    Filter  = null;
+                    GroupBy = null;
+                }
                 SortHandler.ClearSort();
             }
             catch (Exception ex)

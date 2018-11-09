@@ -84,7 +84,7 @@ namespace Kexi.ViewModel.Popup
             }
             else if (ea.Key == Key.OemPeriod && Text == ".")
             {
-                CommandRepository.GetCommandByName(nameof(GotoParentContainerCommand)).Execute();
+                CommandRepository.GetCommandByName(nameof(HistoryBackKeepFilterCommand)).Execute();
                 Text        = "";
                 ea.Handled = true;
             }

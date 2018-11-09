@@ -57,7 +57,7 @@ namespace Kexi.ViewModel.Lister
             new Column("Referenced by", "RelativePath"),
         };
 
-        public override async Task Refresh()
+        public override async Task Refresh(bool clearFilterAndGroup = true)
         {
             Items.Clear();
             if (Item.IsContainer)

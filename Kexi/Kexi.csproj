@@ -329,6 +329,7 @@
     <Compile Include="ViewModel\Commands\FilterToCurrentExtensionCommand.cs" />
     <Compile Include="ViewModel\Commands\FocusNextConsoleCommand.cs" />
     <Compile Include="ViewModel\Commands\FocusPreviousConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\HistoryBackKeepFilterCommand.cs" />
     <Compile Include="ViewModel\Commands\IncreaseFontSizeCommand.cs" />
     <Compile Include="ViewModel\Commands\LoadKeybindingsCommand.cs" />
     <Compile Include="ViewModel\Commands\LoadLayoutCommand.cs" />

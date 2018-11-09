@@ -102,7 +102,7 @@ namespace Kexi.ViewModel.Lister
             PathName = $"Search {SearchPattern} ({Items.Count})";
         }
 
-        public override async Task Refresh()
+        public override async Task Refresh(bool clearFilterAndGroup = true)
         {
             PathName        = "Search " + SearchPattern;
             HighlightString = SearchPattern;

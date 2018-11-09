@@ -172,10 +172,10 @@ namespace Kexi.ViewModel.Lister
             return FileItemProvider.GetParentContainer(Path);
         }
 
-        public override void ShowContextMenu(bool emptyPath)
+        public override void ShowContextMenu()
         {
             var scm = new ShellContextMenu();
-            if (emptyPath && Path != null)
+            if (Workspace.CurrentItem == null && Path != null)
             {
                 var dirInfo = new[] {new DirectoryInfo(Path)};
                 scm.ShowContextMenu(dirInfo, Cursor.Position);
