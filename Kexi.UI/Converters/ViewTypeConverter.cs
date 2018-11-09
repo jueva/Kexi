@@ -4,7 +4,6 @@ using System.Windows.Data;
 using Kexi.Common;
 using Kexi.View;
 using Kexi.ViewModel.Lister;
-using Xceed.Wpf.Toolkit;
 
 namespace Kexi.UI.Converters
 {
@@ -26,7 +25,7 @@ namespace Kexi.UI.Converters
                     case ViewType.Thumbnail:
                         return viewHandler.GetThumbView();
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(AllowedSpecialValues), "Unknown View Type");
+                        throw new ArgumentOutOfRangeException(nameof(values), "Unknown View Type");
                 }
             }
             return Binding.DoNothing;

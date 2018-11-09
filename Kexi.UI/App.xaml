@@ -7,16 +7,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Fluent;Component/themes/generic.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/themes/generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Accents/orange.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/colors/basedark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/themes/dark.amber.xaml" />
                 <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/themes/windowbuttoncommands.xaml" />
                 <!--  Accent and AppTheme setting  -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/themes/dark.amber.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="Themes/DefaultColors.xaml" />
                 <ResourceDictionary Source="Themes/Generic.xaml" />
