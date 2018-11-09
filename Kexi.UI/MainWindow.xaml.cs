@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,13 +28,6 @@ namespace Kexi.UI
         }
 
         private static Workspace Workspace { get; set; }
-
-        private void MainWindow_Unloaded(object sender, RoutedEventArgs e)
-        {
-            var options = Workspace.Options;
-            if (options.LoadLastLayout)
-                Workspace.DockingMananger.SerializeLayout(LayoutConfig);
-        }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -68,6 +62,12 @@ namespace Kexi.UI
         {
             if (!(e.OriginalSource is TextBox))
                 Workspace.KeyDispatcher.Execute(e, Workspace.ActiveLister);
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            if (Workspace.Options.LoadLastLayout)
+                Workspace.DockingMananger.SerializeLayout(LayoutConfig);
         }
     }
 }

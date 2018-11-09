@@ -38,6 +38,8 @@ namespace Kexi
             var documents = _dockingManager.Layout.RootPanel.Descendents().OfType<LayoutDocument>();
             foreach (var d in documents)
             {
+                if (d.Content is DocumentViewModel viewModel)
+                    d.ContentId = viewModel.Content.Path;
                 if (d.Content is ILister lister)
                     d.ContentId = lister.Path;
                 if (d.Content is LayoutDocument layoutDocument)
