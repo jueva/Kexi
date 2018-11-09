@@ -48,6 +48,7 @@ namespace Kexi.Common.KeyHandling
                     _workspace.NotificationHost.AddInfo($"Binding {_firstKey}-{k} not found");
                     _firstKey      = null;
                     _firstModifier = null;
+                    args.Handled = true;
                     return true;
                 }
 
