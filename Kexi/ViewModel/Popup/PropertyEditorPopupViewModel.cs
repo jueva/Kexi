@@ -28,6 +28,11 @@ namespace Kexi.ViewModel.Popup
             BaseItems     = GetValues().ToList();
             IsFreeText = !BaseItems.Any();
             base.Open();
+            if (IsFreeText)
+            {
+                Text = _propertyInfo.GetValue(Options).ToString();
+                SelectAll();
+            }
         }
 
         public override void TextChanged(object sender, TextChangedEventArgs ea)
@@ -51,7 +56,7 @@ namespace Kexi.ViewModel.Popup
 
             _propertyInfo.SetValue(BaseObject, value);
             var option = BaseObject as Options;
-            option?.WriteToConfig(_propertyInfo.Name, value.ToString());
+            option?.WriteToConfig(_propertyInfo.Name, value?.ToString() ?? "");
             _settingItem.Value = value;
             IsOpen             = false;
         }

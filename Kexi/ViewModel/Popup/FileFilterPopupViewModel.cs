@@ -36,7 +36,7 @@ namespace Kexi.ViewModel.Popup
         }
 
         private bool _firstInput = true;
-        private bool pauseFilter;
+        private bool _pauseFilter;
 
         public override void PreviewTextInput(object sender, TextCompositionEventArgs ea)
         {
@@ -96,7 +96,7 @@ namespace Kexi.ViewModel.Popup
 
         private async Task SetFilter(string filter)
         {
-            if (pauseFilter)
+            if (_pauseFilter)
                 return;
 
             Workspace.ActiveLister.Filter           = filter;
@@ -115,9 +115,9 @@ namespace Kexi.ViewModel.Popup
             CommandRepository.GetCommandByName(nameof(DoActionCommand)).Execute();
             //avoid flickering on filter popup, when current list is filtered, filter is set to null
             //and all items from current list are show before before refresh happens
-            pauseFilter = true; 
+            _pauseFilter = true; 
             Text = "";
-            pauseFilter = false;
+            _pauseFilter = false;
         }
 
     }
