@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -9,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class PasteCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public PasteCommand(Workspace workspace)
         {
@@ -28,6 +25,7 @@ namespace Kexi.ViewModel.Commands
             handler?.Paste();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

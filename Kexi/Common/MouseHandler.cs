@@ -102,7 +102,7 @@ namespace Kexi.Common
                     e.Handled                    = true;
                     break;
                 case MouseButton.Right:
-                    _workspace.ActiveLister.ShowContextMenu(true);
+                    _workspace.ActiveLister.ShowContextMenu();
                     e.Handled = true;
                     break;
             }

@@ -91,7 +91,11 @@ namespace Kexi.Files
         }
 
         public string Delete(IEnumerable<FileItem> selectedItems)
-        {
+            {
+            if (selectedItems.FirstOrDefault()?.DisplayName == "..")
+            {
+                return "Can't delete this item";
+            }
             foreach (var i in selectedItems)
                 if (i.ItemType == ItemType.Container)
                     try

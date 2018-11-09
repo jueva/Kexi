@@ -159,7 +159,7 @@ namespace Kexi.ViewModel.Lister
         private          Process                 _currentProcess;
         private          string                  _workingDirectory;
 
-        public override Task Refresh()
+        public override Task Refresh(bool clearFilterAndGroup = true)
         {
             if (View == null || string.IsNullOrEmpty(Command))
                 return Task.CompletedTask;

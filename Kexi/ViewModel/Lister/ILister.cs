@@ -43,11 +43,11 @@ namespace Kexi.ViewModel.Lister
         IItem  CurrentItem     { get; }
         IEnumerable<IItem> SelectedItems { get; }
         string HighlightString { get; set; }
-        Task Refresh();
+        Task Refresh(bool clearFilterAndGroup = true);
         string GetParentContainer();
         void DoAction(IItem item);
         event Action<string> PathChanged;
-        void ShowContextMenu(bool atMousePosition);
+        void ShowContextMenu();
         event Action<ILister> GotView;
         string GetStatusString();
 

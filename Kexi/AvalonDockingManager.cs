@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
+using System.Threading.Tasks;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Dock;
@@ -18,18 +17,6 @@ namespace Kexi
         {
             _workspace      = workspace;
             _dockingManager = dockingManager;
-            //_dockingManager.DocumentClosed += _dockingManager_DocumentClosed;
-        }
-
-        private void _dockingManager_DocumentClosed(object sender, DocumentClosedEventArgs e)
-        {
-            var parent = e.Document?.Parent;
-            if (parent != null)
-            {
-                var group = parent as LayoutDocumentPaneGroup;
-                group?.RemoveChild(e.Document);
-            }
-
         }
 
         public void SerializeLayout(string file)
@@ -37,6 +24,8 @@ namespace Kexi
             var documents = _dockingManager.Layout.RootPanel.Descendents().OfType<LayoutDocument>();
             foreach (var d in documents)
             {
+                if (d.Content is DocumentViewModel viewModel)
+                    d.ContentId = viewModel.Content.Path;
                 if (d.Content is ILister lister)
                     d.ContentId = lister.Path;
                 if (d.Content is LayoutDocument layoutDocument)
@@ -44,7 +33,6 @@ namespace Kexi
                         d.ContentId = subLister.Path;
             }
 
-            ;
             var serializer = new XmlLayoutSerializer(_dockingManager);
             serializer.Serialize(file);
         }
@@ -69,14 +57,18 @@ namespace Kexi
             if (!(e.Model is LayoutDocument document))
                 return;
             var lister = KexContainer.Resolve<FileLister>();
-            lister.Path = document.ContentId;
-            await lister.Refresh();
-            e.Content   = new DocumentViewModel
+            e.Content = new DocumentViewModel
             {
-                Content = lister,
+                Content   = lister,
                 ContentId = Guid.NewGuid().ToString()
             };
+            await LoadIt(lister, document);
         }
 
+        private async Task LoadIt(ILister lister, LayoutDocument doc)
+        {
+            lister.Path = doc.ContentId;
+            await lister.Refresh(); //ensure this has a Task
+        }
     }
 }

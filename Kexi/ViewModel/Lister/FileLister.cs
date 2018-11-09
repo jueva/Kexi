@@ -133,7 +133,10 @@ namespace Kexi.ViewModel.Lister
 
             var items = Clipboard.GetFileDropList();
             var copyTask = new TaskItem("Copying");
-            await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            await Workspace.TaskManager.RunAsync(copyTask, () =>
+            {
+                new FilesystemAction(NotificationHost).Paste(Path, items, action);
+            });
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();
@@ -169,10 +172,10 @@ namespace Kexi.ViewModel.Lister
             return FileItemProvider.GetParentContainer(Path);
         }
 
-        public override void ShowContextMenu(bool emptyPath)
+        public override void ShowContextMenu()
         {
             var scm = new ShellContextMenu();
-            if (emptyPath && Path != null)
+            if (Workspace.CurrentItem == null && Path != null)
             {
                 var dirInfo = new[] {new DirectoryInfo(Path)};
                 scm.ShowContextMenu(dirInfo, Cursor.Position);
@@ -221,11 +224,14 @@ namespace Kexi.ViewModel.Lister
 
         private void FocusFirstPastedItem(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newItem    = e.NewItems[0] as FileItem;
-            var firstPaste = System.IO.Path.GetFileName(Clipboard.GetFileDropList().Cast<string>().FirstOrDefault());
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems.Count > 0 && newItem?.Name == firstPaste)
-                View.FocusItem(newItem);
             Items.CollectionChanged -= FocusFirstPastedItem;
+            if (e?.NewItems[0] is FileItem newItem)
+            {
+                ClearSelection();
+                var firstPaste = System.IO.Path.GetFileName(Clipboard.GetFileDropList().Cast<string>().FirstOrDefault());
+                if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems.Count > 0 && newItem.Name == firstPaste)
+                    View.FocusItem(newItem);
+            }
         }
 
         protected override void Dispose(bool disposing)

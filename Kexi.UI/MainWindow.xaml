@@ -25,7 +25,7 @@
                       WindowTitleBrush="{DynamicResource ListerBackground}"
                       KeyDown="MainWindow_OnKeyDown"
                       Loaded="MainWindow_Loaded"
-                      Unloaded="MainWindow_Unloaded"
+                      Closing="MainWindow_OnClosing"
                       SourceInitialized="RegisterNotification"
                       FontSize="{Binding Options.FontSize}"
                       FontFamily="{Binding Options.FontFamily}"

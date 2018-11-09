@@ -40,8 +40,8 @@ namespace Kexi.ViewModel.Commands
                 var path = currentFileItem.GetPathResolved();
                 fileLister.Path = path;
             }
-            await fileLister.Refresh();
             _workspace.Open(fileLister);
+            await fileLister.Refresh();
         }
 
         public event EventHandler CanExecuteChanged;

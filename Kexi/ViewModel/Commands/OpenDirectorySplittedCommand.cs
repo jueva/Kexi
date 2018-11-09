@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var documentPaneGroup1 = _workspace.ActiveLayoutDocument?.FindParent<LayoutDocumentPaneGroup>();
+            var documentPaneGroup1 = _workspace.Manager.Layout.ActiveContent?.FindParent<LayoutDocumentPaneGroup>();
             if (documentPaneGroup1?.ChildrenCount < 4)
             {
                 new OpenDirectoryCommand(_workspace).Execute(parameter);
