@@ -43,7 +43,7 @@
         </RadioButton>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
                      IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.ViStyle}}">
-            Vi Mode (Somehow Vi-ish. Press w to filter, i to browse, move with j/k, ...)
+            Vi Mode (Somehow Vi-ish. Press w or / to filter, e for context menu, move with j/k, ...)
         </RadioButton>
         <Label Foreground="{DynamicResource ListerForeground}">Press ? in any keymode to explore/change shortcuts</Label>
         <Label Foreground="{DynamicResource ListerForeground}">Press F1 to show all commands</Label>

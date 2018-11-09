@@ -523,12 +523,6 @@
             <Group />
           </KexBinding>
           <KexBinding>
-            <CommandName>FilterToCurrentExtensionCommand</CommandName>
-            <Modifier>Control</Modifier>
-            <Key>W</Key>
-            <Group />
-          </KexBinding>
-          <KexBinding>
             <CommandName>CutCommand</CommandName>
             <Modifier>Control</Modifier>
             <Key>X</Key>
