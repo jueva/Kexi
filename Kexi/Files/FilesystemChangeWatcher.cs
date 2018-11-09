@@ -12,19 +12,22 @@ namespace Kexi.Files
 {
     public class FilesystemChangeWatcher
     {
-        private readonly FileLister _fileLister;
-
         public FilesystemChangeWatcher(FileLister fileLister)
         {
             _fileLister = fileLister;
         }
+
+        private          ObservableCollection<FileItem> Items => _fileLister.Items;
+        private readonly FileLister                     _fileLister;
+
+        private FileSystemWatcher _watcher;
 
         public void Register()
         {
             _watcher = new FileSystemWatcher
             {
                 NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-                Filter = "*.*"
+                Filter       = "*.*"
             };
             _watcher.Changed += FileWatcherChanged;
             _watcher.Created += FileWatcherChanged;
@@ -38,26 +41,22 @@ namespace Kexi.Files
             {
                 try
                 {
-                    _watcher.Path = path;
+                    _watcher.Path                = path;
                     _watcher.EnableRaisingEvents = true;
                 }
                 catch (Exception)
                 {
-                } //TODO: Invalid Path when navigating f.e. Zip Files, find if instead of catch
+                    //TODO: Invalid Path when navigating f.e. Zip Files, find if instead of catch
+                } 
             }
         }
-
-        private ObservableCollection<FileItem> Items
-        {
-            get { return _fileLister.Items; }
-        } 
 
         private void FileWatcherRenamed(object sender, RenamedEventArgs e)
         {
             var item = Items.FirstOrDefault(f => f.Path == e.OldFullPath);
             if (item != null)
             {
-                item.Path = e.FullPath;
+                item.Path        = e.FullPath;
                 item.DisplayName = item.Name;
             }
         }
@@ -84,6 +83,7 @@ namespace Kexi.Files
                         {
                             return;
                         }
+
                         var itemc = new FileItem(e.FullPath, type);
                         Items.Add(itemc);
 
@@ -102,17 +102,17 @@ namespace Kexi.Files
                         {
                             Items.Remove(itemToDelete);
                         }
+
                         if (!Items.Any())
                         {
                             var item = new FileItem(Directory.GetParent(_fileLister.Path).FullName, ItemType.Container, "..");
                             Items.Add(item);
                         }
+
                         _fileLister.Workspace.FocusListView();
                     });
                     break;
             }
         }
-
-        private FileSystemWatcher _watcher;
     }
 }

@@ -97,7 +97,7 @@ namespace Kexi.ViewModel.Lister
             NotificationHost.AddInfo("Paste Action not supported");
         }
 
-        public Workspace Workspace { get; set; }
+        public Workspace Workspace { get; }
 
         public string HighlightString
         {
@@ -213,7 +213,7 @@ namespace Kexi.ViewModel.Lister
 
         public virtual void ShowContextMenu(bool atMousePosition)
         {
-            CommandRepository.GetCommandByName(nameof(ShowListerContextMenuPopupCommand)).Execute(atMousePosition);
+            CommandRepository.GetCommandByName(nameof(ShowListerContextMenuPopupCommand)).Execute(true);
         }
 
         public event Action<ILister> GotView;
