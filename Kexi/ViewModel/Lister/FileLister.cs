@@ -202,7 +202,7 @@ namespace Kexi.ViewModel.Lister
         protected override async Task<IEnumerable<FileItem>> GetItems()
         {
             _itemProvider.CancelCurrentTasks();
-            if (new Uri(Path).IsUnc && !Directory.Exists(Path))
+            if (Path != null && new Uri(Path).IsUnc && !Directory.Exists(Path))
             {
                 return await NetworkShareProvider.GetItems(Path);
             }

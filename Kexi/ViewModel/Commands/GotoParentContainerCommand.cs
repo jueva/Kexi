@@ -24,8 +24,6 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             var parent = _workspace.ActiveLister.GetParentContainer();
-            if (parent == null)
-                return;
             _workspace.ActiveLister.Path = parent;
             _workspace.ActiveLister.Refresh();
         }
