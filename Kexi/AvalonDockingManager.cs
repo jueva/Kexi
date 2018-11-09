@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
 using System.Threading.Tasks;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
@@ -19,18 +17,6 @@ namespace Kexi
         {
             _workspace      = workspace;
             _dockingManager = dockingManager;
-            //_dockingManager.DocumentClosed += _dockingManager_DocumentClosed;
-        }
-
-        private void _dockingManager_DocumentClosed(object sender, DocumentClosedEventArgs e)
-        {
-            var parent = e.Document?.Parent;
-            if (parent != null)
-            {
-                var group = parent as LayoutDocumentPaneGroup;
-                group?.RemoveChild(e.Document);
-            }
-
         }
 
         public void SerializeLayout(string file)
@@ -47,7 +33,6 @@ namespace Kexi
                         d.ContentId = subLister.Path;
             }
 
-            ;
             var serializer = new XmlLayoutSerializer(_dockingManager);
             serializer.Serialize(file);
         }
@@ -85,6 +70,5 @@ namespace Kexi
             lister.Path = doc.ContentId;
             await lister.Refresh(); //ensure this has a Task
         }
-
     }
 }
