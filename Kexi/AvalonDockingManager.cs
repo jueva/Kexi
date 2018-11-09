@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Dock;
@@ -69,13 +70,18 @@ namespace Kexi
             if (!(e.Model is LayoutDocument document))
                 return;
             var lister = KexContainer.Resolve<FileLister>();
-            lister.Path = document.ContentId;
-            await lister.Refresh();
-            e.Content   = new DocumentViewModel
+            e.Content = new DocumentViewModel
             {
-                Content = lister,
+                Content   = lister,
                 ContentId = Guid.NewGuid().ToString()
             };
+            await LoadIt(lister, document);
+        }
+
+        private async Task LoadIt(ILister lister, LayoutDocument doc)
+        {
+            lister.Path = doc.ContentId;
+            await lister.Refresh(); //ensure this has a Task
         }
 
     }
