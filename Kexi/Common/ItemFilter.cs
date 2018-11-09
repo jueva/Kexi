@@ -8,12 +8,15 @@ namespace Kexi.Common
 {
     public class ItemFilter<T> : IEnumerable<T> where T : class, IItem
     {
+        private string _filterString;
+
         public ItemFilter(T item, string filterString) : this(new[] {item}, filterString)
         {
         }
 
         public ItemFilter(IEnumerable<T> items, string filterString)
         {
+            _filterString = filterString;
             _items = items;
             if (string.IsNullOrEmpty(filterString))
             {
@@ -61,6 +64,9 @@ namespace Kexi.Common
         {
             get
             {
+                if (_filterString == "-")
+                    return _items;
+
                 var ret = IsSinglePart && !_firstPart.Negate
                     ? MatchesEquals.Union(MatchesBeginning.Union(MatchesContaining, _comparer), _comparer)
                     : MatchesContaining;
