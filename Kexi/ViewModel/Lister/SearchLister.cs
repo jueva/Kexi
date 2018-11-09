@@ -47,6 +47,7 @@ namespace Kexi.ViewModel.Lister
             new Column("", "Thumbnail", ColumnType.Image),
             new Column("Name", "DisplayName", ColumnType.Highlightable) {Width = 200},
             new Column("LastModified", "Details.LastModified") {Width          = 150},
+            new Column("Type", "Details.Type", ColumnType.Text, ColumnSize.Auto) {Width        = 180},
             new Column("ContainingFolder", "Directory") {Width                 = 500}
         };
 
