@@ -20,7 +20,7 @@ namespace Kexi.ViewModel.Lister
         [ImportingConstructor]
         public NetworkLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository) : base(workspace, notificationHost, options, commandRepository)
         {
-            Title = PathName = "Network Computers";
+            Title = PathName = "Network";
         }
 
         public override IEnumerable<Column> Columns { get; } =
