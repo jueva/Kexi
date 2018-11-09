@@ -107,9 +107,8 @@ namespace Kexi.Files
                         {
                             var item = new FileItem(Directory.GetParent(_fileLister.Path).FullName, ItemType.Container, "..");
                             Items.Add(item);
+                            _fileLister.Workspace.FocusCurrentOrFirst();
                         }
-
-                        _fileLister.Workspace.FocusListView();
                     });
                     break;
             }
