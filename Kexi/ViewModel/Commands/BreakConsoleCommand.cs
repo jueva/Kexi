@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class BreakConsoleCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public BreakConsoleCommand(Workspace workspace)
         {
@@ -29,6 +27,7 @@ namespace Kexi.ViewModel.Commands
                     console.BreakConsole.Execute(parameter);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

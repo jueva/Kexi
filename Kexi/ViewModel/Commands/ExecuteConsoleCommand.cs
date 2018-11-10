@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Lister;
 
@@ -10,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ExecuteConsoleCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ExecuteConsoleCommand(Workspace workspace)
         {
@@ -42,7 +39,7 @@ namespace Kexi.ViewModel.Commands
                 if (_workspace.ActiveLister is FileLister fileLister)
                 {
                     console.WorkingDirectory = _workspace.ActiveLister.Path;
-                    console.Selection = fileLister.SelectedItems;
+                    console.Selection        = fileLister.SelectedItems;
                 }
 
                 console.Command = command;
@@ -51,6 +48,7 @@ namespace Kexi.ViewModel.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

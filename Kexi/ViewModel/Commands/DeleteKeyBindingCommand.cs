@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
@@ -15,8 +12,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class DeleteKeyBindingCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public DeleteKeyBindingCommand(Workspace workspace)
         {
@@ -34,13 +29,14 @@ namespace Kexi.ViewModel.Commands
             {
                 var keyConfiguration = _workspace.KeyDispatcher.Configuration;
                 var keyMode = _workspace.Options.KeyMode == KeyMode.ViStyle
-                ? KeyMode.ViStyle
-                : KeyMode.Classic;
+                    ? KeyMode.ViStyle
+                    : KeyMode.Classic;
                 var sourceBindings = keyConfiguration.Bindings.SingleOrDefault(b => b.KeyMode == keyMode)?.KeyBindings;
                 sourceBindings?.RemoveAll(b => b.Equals(binding.Binding));
             }
         }
 
-        public event EventHandler CanExecuteChanged;
-    }   
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
+    }
 }

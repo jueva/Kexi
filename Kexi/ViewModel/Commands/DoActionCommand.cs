@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class DoActionCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public DoActionCommand(Workspace workspace)
         {
@@ -27,6 +25,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.DoAction(item);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

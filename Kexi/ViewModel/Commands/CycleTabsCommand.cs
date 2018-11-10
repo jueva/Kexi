@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class CycleTabsCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public CycleTabsCommand(Workspace workspace)
         {
@@ -26,6 +24,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.CycleTab(1);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

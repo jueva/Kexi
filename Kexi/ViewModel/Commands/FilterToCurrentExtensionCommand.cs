@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class FilterToCurrentExtensionCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public FilterToCurrentExtensionCommand(Workspace workspace)
         {
@@ -35,9 +33,9 @@ namespace Kexi.ViewModel.Commands
                     FilterPopupViewModel.GetFilterPredicate(fileItem.Extension);
                 _workspace.FocusListView();
             }
-            
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

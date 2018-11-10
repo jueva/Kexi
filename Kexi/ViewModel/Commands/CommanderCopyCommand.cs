@@ -33,15 +33,11 @@ namespace Kexi.ViewModel.Commands
                 var currentDoc = _workspace.ActiveLayoutContent;
                 new CopyHelper(_workspace).CopySelectionToClipboard();
                 var target = _workspace.CommanderTargetLayoutDocument;
-                var lister = target.Content as FileLister;
-                if (lister == null)
+                if (!(target.Content is FileLister lister))
                     return;
 
-                var items  = Clipboard.GetFileDropList();
-                await Task.Factory.StartNew(() =>
-                {
-                    new FilesystemAction(_workspace.NotificationHost).Copy(lister.Path, items);
-                });
+                var items = Clipboard.GetFileDropList();
+                await Task.Factory.StartNew(() => { new FilesystemAction(_workspace.NotificationHost).Copy(lister.Path, items); });
                 _workspace.ActiveLayoutContent = target;
                 _workspace.FocusItem(_workspace.CurrentItems.FirstOrDefault(i => i.DisplayName == Path.GetFileName(items.Cast<string>().Last())));
                 _workspace.ActiveLayoutContent = currentDoc;

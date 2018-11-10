@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class AdjustColumnWidth : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public AdjustColumnWidth(Workspace workspace)
         {
@@ -25,13 +23,13 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            if (!(_workspace .ActiveLister.View.ListView.View is GridView gridView))
+            if (!(_workspace.ActiveLister.View.ListView.View is GridView gridView))
                 return;
 
             foreach (var column in gridView.Columns)
             {
-                var header = ((ContentControl)column.Header).Content as string;
-                var col = _workspace.ActiveLister.Columns.FirstOrDefault(co => co.Header == header);
+                var header = ((ContentControl) column.Header).Content as string;
+                var col    = _workspace.ActiveLister.Columns.FirstOrDefault(co => co.Header == header);
                 //TODO: check actualsize vs desiredsize
                 if (string.IsNullOrEmpty(col?.Header)) continue;
                 column.Width = column.ActualWidth;
@@ -39,6 +37,7 @@ namespace Kexi.ViewModel.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

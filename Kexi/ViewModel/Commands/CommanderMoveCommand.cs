@@ -13,8 +13,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class CommanderMoveCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public CommanderMoveCommand(Workspace workspace)
         {
@@ -43,9 +41,9 @@ namespace Kexi.ViewModel.Commands
             {
                 throw new Exception("Error Moving", ex);
             }
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

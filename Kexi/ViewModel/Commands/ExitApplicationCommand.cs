@@ -9,7 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ExitApplicationCommand : IKexiCommand
     {
-
         [ImportingConstructor]
         public ExitApplicationCommand()
         {
@@ -22,7 +21,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            Application.Current.Shutdown(); 
+            Application.Current.Shutdown();
         }
 
         public event EventHandler CanExecuteChanged;

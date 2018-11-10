@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class AdjustListerWidthCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public AdjustListerWidthCommand(Workspace workspace)
         {
@@ -29,6 +27,7 @@ namespace Kexi.ViewModel.Commands
             ui.FitWidth();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

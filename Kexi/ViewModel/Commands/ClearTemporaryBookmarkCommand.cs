@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ClearTemporaryBookmarkCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ClearTemporaryBookmarkCommand(Workspace workspace)
         {
@@ -25,9 +23,9 @@ namespace Kexi.ViewModel.Commands
         {
             _workspace.TemporaryFavorites.Favorites.Clear();
             _workspace.NotificationHost.AddInfo("Temporary Favorites cleared");
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

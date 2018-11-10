@@ -12,8 +12,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class DoSearchCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public DoSearchCommand(Workspace workspace)
         {
@@ -36,7 +34,7 @@ namespace Kexi.ViewModel.Commands
 
             if (_workspace.ActiveLister is SearchLister searchLister)
             {
-                searchLister.SearchPattern = (string)parameter;
+                searchLister.SearchPattern = (string) parameter;
                 if (searchLister.View != null)
                     await searchLister.Refresh();
                 else
@@ -44,21 +42,22 @@ namespace Kexi.ViewModel.Commands
             }
             else
             {
-                searchLister = KexContainer.Resolve<SearchLister>();
-                searchLister.Path = _workspace.ActiveLister.Path;
+                searchLister               = KexContainer.Resolve<SearchLister>();
+                searchLister.Path          = _workspace.ActiveLister.Path;
                 searchLister.SearchPattern = searchPattern;
                 _workspace.Open(searchLister);
                 searchLister.GotView += searchLister_GotView;
             }
         }
 
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
+
         private void searchLister_GotView(ILister lister)
         {
             new SortHandler(lister).HandleSorting(new BaseItem("LastModified"), ListSortDirection.Descending);
-            ((ICollectionViewLiveShaping)lister.ItemsView).IsLiveSorting = true;
+            ((ICollectionViewLiveShaping) lister.ItemsView).IsLiveSorting = true;
             lister.Refresh();
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

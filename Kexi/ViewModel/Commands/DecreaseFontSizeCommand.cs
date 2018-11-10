@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class DecreaseFontSizeCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public DecreaseFontSizeCommand(Workspace workspace)
         {
@@ -25,11 +23,11 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             _workspace.Options.FontSize--;
-            if (Application.Current.MainWindow != null) 
+            if (Application.Current.MainWindow != null)
                 Application.Current.MainWindow.FontSize = _workspace.Options.FontSize;
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }
