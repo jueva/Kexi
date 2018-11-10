@@ -192,6 +192,7 @@
     <Compile Include="ViewModel\Commands\ClearFilterCommand.cs" />
     <Compile Include="ViewModel\Commands\ClearSortingCommand.cs" />
     <Compile Include="ViewModel\Commands\ClearTemporaryBookmarkCommand.cs" />
+    <Compile Include="ViewModel\Commands\CloseAllTabsButThisCommand.cs" />
     <Compile Include="ViewModel\Commands\CommanderCopyCommand.cs" />
     <Compile Include="ViewModel\Commands\CommanderMoveCommand.cs" />
     <Compile Include="ViewModel\Commands\CreateShortcutInFavoritesCommand.cs" />
@@ -212,7 +213,6 @@
     <Compile Include="ViewModel\Commands\FocusPreviousConsoleCommand.cs" />
     <Compile Include="ViewModel\Commands\HistoryBackKeepFilterCommand.cs" />
     <Compile Include="ViewModel\Commands\IncreaseFontSizeCommand.cs" />
-    <Compile Include="ViewModel\Commands\LoadKeybindingsCommand.cs" />
     <Compile Include="ViewModel\Commands\LoadLayoutCommand.cs" />
     <Compile Include="ViewModel\Commands\MarkSelectedCommand.cs" />
     <Compile Include="ViewModel\Commands\MoveToHistoryItemCommand.cs" />
