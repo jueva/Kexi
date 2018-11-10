@@ -43,6 +43,8 @@ namespace Kexi.ViewModel.Popup
             var result = (_firstInput ? "" : Text) + ea.Text; //newly opened, existing filter selected
             if (new ItemFilter<IItem>(Workspace.CurrentItems, result).IsEmpty && result != ".")
             {
+                if (Workspace.Options.BeepOnNoMatch)
+                    System.Media.SystemSounds.Beep.Play();
                 ea.Handled = true;
             }
             _firstInput = false;
