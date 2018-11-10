@@ -7,10 +7,12 @@ namespace Kexi.ViewModel.Dock
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ToolExplorerViewModel : ToolViewModel
     {
+        public const string Identifier = "ExplorerView";
+
         [ImportingConstructor]
         public ToolExplorerViewModel(Workspace workspace) : base("Explorer", workspace)
         {
-            ContentId   = "ExplorerView";
+            ContentId   = Identifier;
             AnchorTitle = "Tree";
             Content     = new ExplorerContentView(workspace);
         }

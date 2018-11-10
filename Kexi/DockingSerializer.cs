@@ -60,15 +60,15 @@ namespace Kexi
                 case LayoutAnchorable anchorable:
                     switch (anchorable.ContentId)
                     {
-                        case"ExplorerView":
+                        case ToolExplorerViewModel.Identifier:
                             _workspace.Docking.ExplorerViewModel.IsVisible = anchorable.IsVisible;
                             e.Content = _workspace.Docking.ExplorerViewModel;
                             break;
-                        case "DetailView":
+                        case ToolDetailViewModel.Identifier:
                             _workspace.Docking.DetailViewModel.IsVisible = anchorable.IsVisible;
                             e.Content = _workspace.Docking.DetailViewModel;
                             break;
-                        case "Preview":
+                        case ToolPreviewViewModel.Identifier:
                             _workspace.Docking.PreviewViewModel.IsVisible = anchorable.IsVisible;
                             e.Content = _workspace.Docking.PreviewViewModel;
                             break;

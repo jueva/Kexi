@@ -8,10 +8,11 @@ namespace Kexi.ViewModel.Dock
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ToolDetailViewModel : ToolViewModel
     {
+        public const string Identifier = "DetailView";
         [ImportingConstructor]
         public ToolDetailViewModel(Workspace workspace) : base("Details", workspace)
         {
-            ContentId   = "DetailView";
+            ContentId   = Identifier;
             AnchorTitle = "Details";
             Content     = new FilePropertyProvider(workspace);
             IsVisible   = true;

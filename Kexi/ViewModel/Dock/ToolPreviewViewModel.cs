@@ -7,10 +7,12 @@ namespace Kexi.ViewModel.Dock
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ToolPreviewViewModel : ToolViewModel
     {
+        public const string Identifier = "Preview";
+
         [ImportingConstructor]
         public ToolPreviewViewModel(Workspace workspace) : base("Preview", workspace)
         {
-            ContentId   = "Preview";
+            ContentId   = Identifier;
             AnchorTitle = "Preview";
             Content     = new PreviewContentView(Workspace);
         }
