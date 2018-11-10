@@ -11,6 +11,7 @@ namespace Kexi.UI.Base
         public DataTemplate ToolDetailTemplate { get; set; }
 
         public DataTemplate ToolExplorerTemplate { get; set; }
+
         public DataTemplate ToolPreviewTemplate  { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)

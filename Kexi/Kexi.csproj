@@ -136,7 +136,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvalonDockingManager.cs" />
+    <Compile Include="DockingSerializer.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="CommandRepository.cs" />
     <Compile Include="Common\BreadcrumbMode.cs" />

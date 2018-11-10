@@ -23,7 +23,6 @@
                   Foreground="{DynamicResource ListerForeground}"
                   mc:Ignorable="d">
                   
-     <!--DocumentPaneControlStyle="{StaticResource MyDocumentPaneControlStyle}"-->
     <xcad:DockingManager Name="dockingManager"
                          Margin="0"
                          ActiveContent="{Binding ActiveLayoutContent, Mode=TwoWay}"
@@ -40,7 +39,6 @@
         </xcad:DockingManager.Resources>
         <xcad:DockingManager.Theme>
             <kexiMetro:KexiMetroTheme />
-            <!--<expression:ExpressionDarkTheme />-->
         </xcad:DockingManager.Theme>
 
         <xcad:DockingManager.DocumentHeaderTemplate>

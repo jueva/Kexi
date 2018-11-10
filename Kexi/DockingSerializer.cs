@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Dock;
@@ -11,9 +12,9 @@ using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace Kexi
 {
-    public class AvalonDockingManager : IDockingManager
+    public class DockingSerializer : IDockingManager
     {
-        public AvalonDockingManager(Workspace workspace, DockingManager dockingManager)
+        public DockingSerializer(Workspace workspace, DockingManager dockingManager)
         {
             _workspace      = workspace;
             _dockingManager = dockingManager;
@@ -54,21 +55,58 @@ namespace Kexi
 
         private async void Serializer_LayoutSerializationCallback(object sender, LayoutSerializationCallbackEventArgs e)
         {
-            if (!(e.Model is LayoutDocument document))
-                return;
-            var lister = KexContainer.Resolve<FileLister>();
-            e.Content = new DocumentViewModel
+            switch (e.Model)
             {
-                Content   = lister,
-                ContentId = Guid.NewGuid().ToString()
-            };
-            await LoadIt(lister, document);
+                case LayoutAnchorable anchorable:
+                    switch (anchorable.ContentId)
+                    {
+                        case"ExplorerView":
+                            _workspace.Docking.ExplorerViewModel.IsVisible = anchorable.IsVisible;
+                            e.Content = _workspace.Docking.ExplorerViewModel;
+                            break;
+                        case "DetailView":
+                            _workspace.Docking.DetailViewModel.IsVisible = anchorable.IsVisible;
+                            e.Content = _workspace.Docking.DetailViewModel;
+                            break;
+                        case "Preview":
+                            _workspace.Docking.PreviewViewModel.IsVisible = anchorable.IsVisible;
+                            e.Content = _workspace.Docking.PreviewViewModel;
+                            break;
+                    }
+                    break;
+                case LayoutDocument document:
+                {
+                    var lister = KexContainer.Resolve<FileLister>();
+
+
+                    e.Content = new DocumentViewModel
+                    {
+                        Content   = lister,
+                        ContentId = Guid.NewGuid().ToString()
+                    };
+                    await LoadIt(lister, document);
+                    break;
+                }
+            }
         }
 
         private async Task LoadIt(ILister lister, LayoutDocument doc)
         {
             lister.Path = doc.ContentId;
+            if (doc.IsSelected && doc.IsActive)
+            {
+                lister.GotItems         += Lister_GotItems;
+                _workspace.ActiveLister =  lister;
+            }
             await lister.Refresh(); //ensure this has a Task
+        }
+        private void Lister_GotItems(object sender, EventArgs e)
+        {
+            if (sender is ILister lister)
+            {
+                lister.GotItems -= Lister_GotItems;
+                lister.View?.ListView?.Dispatcher?.BeginInvoke(DispatcherPriority.Background, (Action) (() => lister.View?.FocusCurrentOrFirst()));
+            }
         }
     }
 }

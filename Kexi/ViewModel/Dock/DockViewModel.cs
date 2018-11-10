@@ -8,10 +8,10 @@ namespace Kexi.ViewModel.Dock
         public DockViewModel(Workspace workspace)
         {
             Workspace         = workspace;
-            DetailViewModel   = new ToolDetailViewModel(workspace);
+            DetailViewModel = new ToolDetailViewModel(workspace);
             ExplorerViewModel = new ToolExplorerViewModel(workspace);
-            PreviewViewModel  = new ToolPreviewViewModel(workspace);
-            Tools             = new ToolViewModel[] {DetailViewModel, ExplorerViewModel, PreviewViewModel};
+            PreviewViewModel = new ToolPreviewViewModel(workspace);
+            Tools = new ToolViewModel[] { DetailViewModel, ExplorerViewModel, PreviewViewModel };
         }
 
         public ObservableCollection<DocumentViewModel> Files

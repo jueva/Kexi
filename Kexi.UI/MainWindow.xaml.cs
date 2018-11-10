@@ -33,7 +33,9 @@ namespace Kexi.UI
         {
             var options = Workspace.Options;
             if (options.LoadLastLayout && File.Exists(LayoutConfig) && new FileInfo(LayoutConfig).Length > 0)
+            {
                 Workspace.DockingMananger.DeserializeLayout(LayoutConfig);
+            }
             else
                 OpenFavorites();
         }

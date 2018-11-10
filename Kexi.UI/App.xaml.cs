@@ -16,7 +16,7 @@ namespace Kexi.UI
             _workspace = KexContainer.Resolve<Workspace>();
 
             var mainWindow = new MainWindow(_workspace);
-            _workspace.DockingMananger   =  new AvalonDockingManager(_workspace, mainWindow.DockManager.DockingManager);
+            _workspace.DockingMananger   =  new DockingSerializer(_workspace, mainWindow.DockManager.DockingManager);
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             mainWindow.Show();
             if (!_workspace.Options.IsInitialized)
