@@ -43,6 +43,18 @@ namespace Kexi.Common
 
         public bool IsEmptyAndSinglePart => IsEmpty && IsSinglePart;
 
+        public bool IsEmptyIgnoringNegated
+        {
+            get
+            {
+                if (_filterString == "-")
+                    return false;
+
+                var it = FilterParts.Where(p => !p.Negate).Aggregate(_items, (current, part) => current.Where(i => MatchItemContaining(i, part)));
+                return !it.Any();
+            }
+        }
+
         protected List<FilterPart> FilterParts => _filterParts;
 
         public IEnumerable<T> MatchesEquals
