@@ -93,7 +93,7 @@ namespace Kexi
         private async Task LoadIt(ILister lister, LayoutDocument doc)
         {
             lister.Path = doc.ContentId;
-            if (doc.IsSelected && doc.IsActive)
+            if (doc.IsLastFocusedDocument)
             {
                 lister.GotItems         += Lister_GotItems;
                 _workspace.ActiveLister =  lister;
@@ -104,6 +104,7 @@ namespace Kexi
         {
             if (sender is ILister lister)
             {
+                _workspace.NotificationHost.AddInfo("Focus");
                 lister.GotItems -= Lister_GotItems;
                 lister.View?.ListView?.Dispatcher?.BeginInvoke(DispatcherPriority.Background, (Action) (() => lister.View?.FocusCurrentOrFirst()));
             }
