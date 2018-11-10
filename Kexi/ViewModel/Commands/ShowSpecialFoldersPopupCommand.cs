@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowSpecialFoldersPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly SpecialFolderPopupViewModel _popupViewModel;
-
         [ImportingConstructor]
         public ShowSpecialFoldersPopupCommand(Workspace workspace, SpecialFolderPopupViewModel popupViewModel)
         {
-            _workspace = workspace;
+            _workspace      = workspace;
             _popupViewModel = popupViewModel;
         }
 
@@ -26,10 +23,12 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.PopupViewModel      = _popupViewModel;
+            _workspace.PopupViewModel = _popupViewModel;
             _popupViewModel.Open();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler                    CanExecuteChanged;
+        private readonly SpecialFolderPopupViewModel _popupViewModel;
+        private readonly Workspace                   _workspace;
     }
 }

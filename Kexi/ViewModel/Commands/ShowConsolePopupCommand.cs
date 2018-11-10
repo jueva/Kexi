@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowConsolePopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly ConsoleCommandPopupViewModel _consoleCommandPopup;
-
         [ImportingConstructor]
         public ShowConsolePopupCommand(Workspace workspace, ConsoleCommandPopupViewModel consoleCommandPopup)
         {
-            _workspace = workspace;
+            _workspace           = workspace;
             _consoleCommandPopup = consoleCommandPopup;
         }
 
@@ -26,7 +23,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var command               = parameter as string;
+            var command = parameter as string;
             _workspace.PopupViewModel = _consoleCommandPopup;
             _consoleCommandPopup.Open();
             if (!string.IsNullOrEmpty(command))
@@ -34,9 +31,12 @@ namespace Kexi.ViewModel.Commands
                 _consoleCommandPopup.Text = command;
                 _consoleCommandPopup.SelectAll();
             }
+
             _consoleCommandPopup.UnSelectListView();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler                     CanExecuteChanged;
+        private readonly ConsoleCommandPopupViewModel _consoleCommandPopup;
+        private readonly Workspace                    _workspace;
     }
 }

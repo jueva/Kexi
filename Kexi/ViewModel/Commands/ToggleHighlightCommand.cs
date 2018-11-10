@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -9,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ToggleHighlightCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ToggleHighlightCommand(Workspace workspace)
         {
@@ -27,9 +24,9 @@ namespace Kexi.ViewModel.Commands
             _workspace.Options.Highlights = !_workspace.Options.Highlights;
             var notification = "Highlighting turned " + (_workspace.Options.Highlights ? "on" : "off");
             _workspace.NotificationHost.AddInfo(notification);
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

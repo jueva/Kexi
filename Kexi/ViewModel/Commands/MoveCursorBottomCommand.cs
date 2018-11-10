@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -12,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class MoveCursorBottomCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public MoveCursorBottomCommand(Workspace workspace)
         {
@@ -34,6 +30,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.View.ListView.SelectionMode = SelectionMode.Extended;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

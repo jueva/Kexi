@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ViewFileCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ViewFileCommand(Workspace workspace)
         {
@@ -28,9 +26,9 @@ namespace Kexi.ViewModel.Commands
             viewer.Path = _workspace.CurrentItem.Path;
             _workspace.Open(viewer);
             _workspace.ActiveLister.Refresh();
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowDrivesPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly DrivePopupViewModel _drivePopup;
-
         [ImportingConstructor]
         public ShowDrivesPopupCommand(Workspace workspace, DrivePopupViewModel drivePopup)
         {
-            _workspace = workspace;
+            _workspace  = workspace;
             _drivePopup = drivePopup;
         }
 
@@ -27,9 +24,11 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             _workspace.PopupViewModel = _drivePopup;
-            _drivePopup.IsOpen = true;
+            _drivePopup.IsOpen        = true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler            CanExecuteChanged;
+        private readonly DrivePopupViewModel _drivePopup;
+        private readonly Workspace           _workspace;
     }
 }

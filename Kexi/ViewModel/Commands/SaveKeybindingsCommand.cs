@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using Kexi.Common;
 using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
-using Kexi.ViewModel.Item;
-using Kexi.ViewModel.Popup;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace Kexi.ViewModel.Commands
 {
@@ -18,17 +10,14 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class SaveKeybindingsCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
-        [ImportMany]
-        public IEnumerable<KeyDispatcher> keyhandlers { get; private set; }
-
-
         [ImportingConstructor]
         public SaveKeybindingsCommand(Workspace workspace)
         {
             _workspace = workspace;
         }
+
+        [ImportMany]
+        public IEnumerable<KeyDispatcher> keyhandlers { get; private set; }
 
         public bool CanExecute(object parameter)
         {
@@ -45,9 +34,9 @@ namespace Kexi.ViewModel.Commands
             //    serializer.Serialize(file, allcommands);
             //    file.Flush();
             //}
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

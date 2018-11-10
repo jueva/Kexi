@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ViewThumbnailsCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ViewThumbnailsCommand(Workspace workspace)
         {
@@ -28,6 +26,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.FocusCurrentOrFirst();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Windows.Controls;
 using Kexi.Interfaces;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -10,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class OpenDirectorySplittedCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public OpenDirectorySplittedCommand(Workspace workspace)
         {
@@ -33,6 +30,7 @@ namespace Kexi.ViewModel.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

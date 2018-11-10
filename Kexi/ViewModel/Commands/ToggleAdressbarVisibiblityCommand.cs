@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ToggleAdressbarVisibiblityCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ToggleAdressbarVisibiblityCommand(Workspace workspace)
         {
@@ -23,9 +21,10 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.Options.GlobalAdressbarVisible = !_workspace.Options.GlobalAdressbarVisible; 
+            _workspace.Options.GlobalAdressbarVisible = !_workspace.Options.GlobalAdressbarVisible;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -11,8 +11,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowFilePropertiesCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ShowFilePropertiesCommand(Workspace workspace)
         {
@@ -27,15 +25,16 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             var shell       = new Shell32.Shell();
-            var path = _workspace.CurrentItem.Path;
+            var path        = _workspace.CurrentItem.Path;
             var dir         = Path.GetDirectoryName(path);
             var file        = Path.GetFileName(path);
             var shellFolder = shell.NameSpace(dir) as Folder3;
-            var verbs      = shellFolder?.ParseName(file)?.Verbs().Cast<FolderItemVerb>();
-            var properties = verbs?.FirstOrDefault(fi => fi.Name == "P&roperties" || fi.Name == "E&igenschaften"); //TODO: avoid this hack
+            var verbs       = shellFolder?.ParseName(file)?.Verbs().Cast<FolderItemVerb>();
+            var properties  = verbs?.FirstOrDefault(fi => fi.Name == "P&roperties" || fi.Name == "E&igenschaften"); //TODO: avoid this hack
             properties?.DoIt();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

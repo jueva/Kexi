@@ -26,6 +26,6 @@ namespace Kexi.ViewModel.Commands
             Process.Start(startInfo);
         }
 
-        public event EventHandler  CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }

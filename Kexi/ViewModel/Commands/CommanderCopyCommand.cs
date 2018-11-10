@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -16,8 +15,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class CommanderCopyCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public CommanderCopyCommand(Workspace workspace)
         {
@@ -37,10 +34,13 @@ namespace Kexi.ViewModel.Commands
                 new CopyHelper(_workspace).CopySelectionToClipboard();
                 var target = _workspace.CommanderTargetLayoutDocument;
                 var lister = target.Content as FileLister;
+                if (lister == null)
+                    return;
+
                 var items  = Clipboard.GetFileDropList();
                 await Task.Factory.StartNew(() =>
                 {
-                    if (lister != null) new FilesystemAction(_workspace.NotificationHost).Copy(lister.Path, items);
+                    new FilesystemAction(_workspace.NotificationHost).Copy(lister.Path, items);
                 });
                 _workspace.ActiveLayoutContent = target;
                 _workspace.FocusItem(_workspace.CurrentItems.FirstOrDefault(i => i.DisplayName == Path.GetFileName(items.Cast<string>().Last())));
@@ -53,6 +53,7 @@ namespace Kexi.ViewModel.Commands
         }
 
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

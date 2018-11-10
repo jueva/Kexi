@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowMinimizeCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowMinimizeCommand(Workspace workspace)
         {
@@ -28,6 +26,7 @@ namespace Kexi.ViewModel.Commands
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class RestartAsAdminCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public RestartAsAdminCommand(Workspace workspace)
         {
@@ -40,6 +38,7 @@ namespace Kexi.ViewModel.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Data;
-using System.Windows.Input;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -11,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ClearFilterCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ClearFilterCommand(Workspace workspace)
         {
@@ -33,11 +30,13 @@ namespace Kexi.ViewModel.Commands
             {
                 col.CustomSort = null;
             }
-            foreach(var i in currentSelection)
+
+            foreach (var i in currentSelection)
                 _workspace.ActiveLister.SetSelection(i, true);
             _workspace.FocusListView();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowRestoreCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowRestoreCommand(Workspace workspace)
         {
@@ -28,6 +26,7 @@ namespace Kexi.ViewModel.Commands
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

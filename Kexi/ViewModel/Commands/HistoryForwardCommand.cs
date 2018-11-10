@@ -3,7 +3,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Kexi.Common;
 using Kexi.Interfaces;
-using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Commands
 {
@@ -11,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class HistoryForwardCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public HistoryForwardCommand(Workspace workspace)
         {
@@ -26,10 +23,16 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var history     = _workspace.ActiveLister as IHistorisationProvider;
+            var history        = _workspace.ActiveLister as IHistorisationProvider;
             var historyForward = history?.History.Next;
             if (historyForward != null) MoveToHistoryItem(historyForward);
         }
+
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
+
+
+        private HistoryItem _currentHistoryItem;
 
         public void MoveToHistoryItem(HistoryItem item)
         {
@@ -48,9 +51,5 @@ namespace Kexi.ViewModel.Commands
             var selected = _workspace.ActiveLister.ItemsView.SourceCollection.Cast<IItem>().FirstOrDefault(f => f.Path == _currentHistoryItem.SelectedPath);
             _workspace.ActiveLister.View.FocusItem(selected);
         }
-
-
-        private      HistoryItem  _currentHistoryItem;
-        public event EventHandler CanExecuteChanged;
     }
 }

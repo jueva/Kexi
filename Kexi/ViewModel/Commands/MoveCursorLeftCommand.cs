@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Kexi.Interfaces;
 
@@ -12,12 +10,9 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class MoveCursorLeftCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
-        public MoveCursorLeftCommand(Workspace workspace)
+        public MoveCursorLeftCommand()
         {
-            _workspace = workspace;
         }
 
         public bool CanExecute(object parameter)
@@ -31,6 +26,6 @@ namespace Kexi.ViewModel.Commands
             uie?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Left));
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
     }
 }

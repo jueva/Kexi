@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class RefreshListerCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public RefreshListerCommand(Workspace workspace)
         {
@@ -26,6 +24,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.Refresh();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

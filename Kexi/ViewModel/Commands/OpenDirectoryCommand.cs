@@ -11,8 +11,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class OpenDirectoryCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public OpenDirectoryCommand(Workspace workspace)
         {
@@ -40,10 +38,12 @@ namespace Kexi.ViewModel.Commands
                 var path = currentFileItem.GetPathResolved();
                 fileLister.Path = path;
             }
+
             _workspace.Open(fileLister);
             await fileLister.Refresh();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

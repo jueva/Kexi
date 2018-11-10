@@ -9,12 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ExitApplicationCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
 
         [ImportingConstructor]
-        public ExitApplicationCommand(Workspace workspace)
+        public ExitApplicationCommand()
         {
-            _workspace = workspace;
         }
 
         public bool CanExecute(object parameter)

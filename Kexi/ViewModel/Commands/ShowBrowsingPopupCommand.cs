@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowBrowsingPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly BrowsingPopupViewModel _browsingPopup;
-
         [ImportingConstructor]
         public ShowBrowsingPopupCommand(Workspace workspace, BrowsingPopupViewModel browsingPopup)
         {
-            _workspace = workspace;
+            _workspace     = workspace;
             _browsingPopup = browsingPopup;
         }
 
@@ -26,10 +23,12 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-           _workspace.PopupViewModel = _browsingPopup;
-           _browsingPopup.Open();
+            _workspace.PopupViewModel = _browsingPopup;
+            _browsingPopup.Open();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler               CanExecuteChanged;
+        private readonly BrowsingPopupViewModel _browsingPopup;
+        private readonly Workspace              _workspace;
     }
 }

@@ -10,9 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowSortPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly SortPopupViewModel _sortPopup;
-
         [ImportingConstructor]
         public ShowSortPopupCommand(Workspace workspace, SortPopupViewModel sortPopup)
         {
@@ -27,7 +24,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.PopupViewModel  = _sortPopup;
+            _workspace.PopupViewModel = _sortPopup;
             _sortPopup.Open();
             if (_workspace.ActiveLister.ItemsView.SortDescriptions.Any())
             {
@@ -42,6 +39,8 @@ namespace Kexi.ViewModel.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler           CanExecuteChanged;
+        private readonly SortPopupViewModel _sortPopup;
+        private readonly Workspace          _workspace;
     }
 }

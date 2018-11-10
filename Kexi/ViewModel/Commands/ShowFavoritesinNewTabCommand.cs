@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowFavoritesinNewTabCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ShowFavoritesinNewTabCommand(Workspace workspace)
         {
@@ -22,7 +20,7 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public async  void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             var favoriteLocation = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             var fileLister       = KexContainer.Resolve<FileLister>();
@@ -31,6 +29,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.Open(fileLister);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

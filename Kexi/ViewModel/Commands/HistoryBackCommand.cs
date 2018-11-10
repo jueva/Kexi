@@ -27,7 +27,7 @@ namespace Kexi.ViewModel.Commands
         {
             var history     = _workspace.ActiveLister as IHistorisationProvider;
             var historyBack = history?.History.Previous;
-            if (historyBack != null) 
+            if (historyBack != null)
                 MoveToHistoryItem(historyBack);
         }
 

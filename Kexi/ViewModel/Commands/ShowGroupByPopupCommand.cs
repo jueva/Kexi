@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowGroupByPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly GroupByPopupViewModel _groupByPopup;
-
         [ImportingConstructor]
         public ShowGroupByPopupCommand(Workspace workspace, GroupByPopupViewModel groupByPopup)
         {
-            _workspace = workspace;
+            _workspace    = workspace;
             _groupByPopup = groupByPopup;
         }
 
@@ -26,10 +23,12 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-           _workspace.PopupViewModel = _groupByPopup;
+            _workspace.PopupViewModel = _groupByPopup;
             _groupByPopup.Open();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler              CanExecuteChanged;
+        private readonly GroupByPopupViewModel _groupByPopup;
+        private readonly Workspace             _workspace;
     }
 }

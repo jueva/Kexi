@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowSynchronizeFilenamesPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly SynchronizeFilenamesPopupViewModel _popupViewModel;
-
         [ImportingConstructor]
         public ShowSynchronizeFilenamesPopupCommand(Workspace workspace, SynchronizeFilenamesPopupViewModel popupViewModel)
         {
-            _workspace = workspace;
+            _workspace      = workspace;
             _popupViewModel = popupViewModel;
         }
 
@@ -30,6 +27,8 @@ namespace Kexi.ViewModel.Commands
             _popupViewModel.Open();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler                           CanExecuteChanged;
+        private readonly SynchronizeFilenamesPopupViewModel _popupViewModel;
+        private readonly Workspace                          _workspace;
     }
 }

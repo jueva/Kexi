@@ -9,13 +9,10 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowContextMenuPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly ContextMenuPopupViewModel _contextMenuPopup;
-
         [ImportingConstructor]
         public ShowContextMenuPopupCommand(Workspace workspace, ContextMenuPopupViewModel contextMenuPopup)
         {
-            _workspace = workspace;
+            _workspace        = workspace;
             _contextMenuPopup = contextMenuPopup;
         }
 
@@ -26,10 +23,12 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.PopupViewModel             = _contextMenuPopup;
+            _workspace.PopupViewModel = _contextMenuPopup;
             _contextMenuPopup.Open();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler                  CanExecuteChanged;
+        private readonly ContextMenuPopupViewModel _contextMenuPopup;
+        private readonly Workspace                 _workspace;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -9,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class AddTemporaryBookmarksCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public AddTemporaryBookmarksCommand(Workspace workspace)
         {
@@ -30,9 +27,9 @@ namespace Kexi.ViewModel.Commands
                 _workspace.TemporaryFavorites.Add(item);
                 _workspace.NotificationHost.AddInfo(item.Path + " added to Temporary Favorites");
             }
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

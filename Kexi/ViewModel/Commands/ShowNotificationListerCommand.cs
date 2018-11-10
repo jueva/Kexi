@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Lister;
 
@@ -10,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowNotificationListerCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ShowNotificationListerCommand(Workspace workspace)
         {
@@ -30,6 +27,7 @@ namespace Kexi.ViewModel.Commands
             await notifications.Refresh();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

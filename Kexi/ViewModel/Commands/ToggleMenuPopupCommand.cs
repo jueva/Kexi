@@ -9,9 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ToggleMenuPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly MenuPopupViewModel _menuPopup;
-
         [ImportingConstructor]
         public ToggleMenuPopupCommand(Workspace workspace, MenuPopupViewModel menuPopup)
         {
@@ -41,11 +38,13 @@ namespace Kexi.ViewModel.Commands
             }
             else
             {
-                _workspace.PopupViewModel      = _menuPopup;
+                _workspace.PopupViewModel = _menuPopup;
                 _menuPopup.Open();
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler           CanExecuteChanged;
+        private readonly MenuPopupViewModel _menuPopup;
+        private readonly Workspace          _workspace;
     }
 }

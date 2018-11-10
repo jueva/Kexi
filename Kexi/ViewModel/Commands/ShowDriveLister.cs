@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Kexi.Interfaces;
-using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Commands
@@ -10,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowDriveListerCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ShowDriveListerCommand(Workspace workspace)
         {
@@ -30,6 +27,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.Refresh();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

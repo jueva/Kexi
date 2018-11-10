@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class QuitCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public QuitCommand(Workspace workspace)
         {
@@ -24,9 +22,10 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            Application.Current.Shutdown(); 
+            Application.Current.Shutdown();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowSplitVerticalCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowSplitVerticalCommand(Workspace workspace)
         {
@@ -26,6 +24,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.SplitVertical();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class MoveCursorTopCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public MoveCursorTopCommand(Workspace workspace)
         {
@@ -26,12 +24,13 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             _workspace.ActiveLister.View.ListView.SelectionMode = SelectionMode.Single;
-            var items                                           = _workspace.ActiveLister.ItemsView.Cast<IItem>();
+            var items = _workspace.ActiveLister.ItemsView.Cast<IItem>();
             _workspace.ActiveLister.View.ListView.SelectedIndex = 0;
             _workspace.FocusItem(items.FirstOrDefault());
             _workspace.ActiveLister.View.ListView.SelectionMode = SelectionMode.Extended;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -9,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class CutCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public CutCommand(Workspace workspace)
         {
@@ -27,10 +24,11 @@ namespace Kexi.ViewModel.Commands
             if (!CanExecute(parameter))
                 return;
 
-            if (_workspace.ActiveLister is ICopyPasteHandler handler) 
+            if (_workspace.ActiveLister is ICopyPasteHandler handler)
                 handler.Cut();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

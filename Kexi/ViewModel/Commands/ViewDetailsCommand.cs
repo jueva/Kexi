@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ViewDetailsCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public ViewDetailsCommand(Workspace workspace)
         {
@@ -26,9 +24,9 @@ namespace Kexi.ViewModel.Commands
         {
             new ViewHandler(_workspace.ActiveLister).SetDetailsView();
             _workspace.FocusCurrentOrFirst();
-
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

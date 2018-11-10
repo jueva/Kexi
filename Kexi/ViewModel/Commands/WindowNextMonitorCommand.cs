@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowNextMonitorCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowNextMonitorCommand(Workspace workspace)
         {
@@ -26,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             var all = Screen.AllScreens;
-            var s = UIHelper.GetCurrentScreen();
+            var s   = UIHelper.GetCurrentScreen();
             int i;
             for (i = 0; i < all.Length; i++)
                 if (all[i].DeviceName == s.DeviceName)
@@ -39,6 +37,7 @@ namespace Kexi.ViewModel.Commands
             UIHelper.CenterToScreen(all[i]);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

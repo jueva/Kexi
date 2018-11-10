@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class OpenPathInExplorerCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public OpenPathInExplorerCommand(Workspace workspace)
         {
@@ -34,13 +32,14 @@ namespace Kexi.ViewModel.Commands
                 var psi = new ProcessStartInfo("explorer")
                 {
                     WorkingDirectory = path,
-                    Arguments = path
+                    Arguments        = path
                 };
-                var p = new Process { StartInfo = psi };
+                var p = new Process {StartInfo = psi};
                 p.Start();
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

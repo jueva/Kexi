@@ -8,8 +8,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class GotoParentContainerCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public GotoParentContainerCommand(Workspace workspace)
         {
@@ -28,6 +26,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.Refresh();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

@@ -10,16 +10,12 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class ShowFilterPopupCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-        private readonly FileFilterPopupViewModel _fileFilterPopup;
-        private readonly FilterPopupViewModel _filterPopup;
-
         [ImportingConstructor]
         public ShowFilterPopupCommand(Workspace workspace, FileFilterPopupViewModel fileFilterPopup, FilterPopupViewModel filterPopup)
         {
-            _workspace = workspace;
+            _workspace       = workspace;
             _fileFilterPopup = fileFilterPopup;
-            _filterPopup = filterPopup;
+            _filterPopup     = filterPopup;
         }
 
         public bool CanExecute(object parameter)
@@ -30,13 +26,17 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             var filterPopupViewModel = _workspace.ActiveLister is FileLister
-                ? (PopupViewModel)_fileFilterPopup : _filterPopup;
+                ? (PopupViewModel) _fileFilterPopup
+                : _filterPopup;
 
             _workspace.PopupViewModel = filterPopupViewModel;
             filterPopupViewModel.Open();
             filterPopupViewModel.SelectAll();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler                 CanExecuteChanged;
+        private readonly FileFilterPopupViewModel _fileFilterPopup;
+        private readonly FilterPopupViewModel     _filterPopup;
+        private readonly Workspace                _workspace;
     }
 }

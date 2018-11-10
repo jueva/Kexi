@@ -10,8 +10,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowDockRightCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowDockRightCommand(Workspace workspace)
         {
@@ -28,13 +26,14 @@ namespace Kexi.ViewModel.Commands
             var s = UIHelper.GetCurrentScreen();
             if (Application.Current.MainWindow != null)
             {
-                Application.Current.MainWindow.Top = s.WorkingArea.Y;
+                Application.Current.MainWindow.Top    = s.WorkingArea.Y;
                 Application.Current.MainWindow.Height = s.WorkingArea.Height;
-                Application.Current.MainWindow.Width = s.WorkingArea.Width / 2;
-                Application.Current.MainWindow.Left = s.WorkingArea.X + s.WorkingArea.Width - Application.Current.MainWindow.Width;
+                Application.Current.MainWindow.Width  = s.WorkingArea.Width / 2;
+                Application.Current.MainWindow.Left   = s.WorkingArea.X + s.WorkingArea.Width - Application.Current.MainWindow.Width;
             }
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }

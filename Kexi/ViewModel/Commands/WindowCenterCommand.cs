@@ -9,8 +9,6 @@ namespace Kexi.ViewModel.Commands
     [Export(typeof(IKexiCommand))]
     public class WindowCenterCommand : IKexiCommand
     {
-        private readonly Workspace _workspace;
-
         [ImportingConstructor]
         public WindowCenterCommand(Workspace workspace)
         {
@@ -27,6 +25,7 @@ namespace Kexi.ViewModel.Commands
             UIHelper.CenterToScreen(UIHelper.GetCurrentScreen());
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler  CanExecuteChanged;
+        private readonly Workspace _workspace;
     }
 }
