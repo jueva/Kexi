@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Kexi.Common
 {
@@ -97,6 +98,19 @@ namespace Kexi.Common
                 Brushes.Black, dpi.PixelsPerDip);
 
             return new Size(formattedText.Width, formattedText.Height);
+        }
+
+        public static T GetParentLayoutContainer<T>(ILayoutElement content) where T : class, ILayoutContainer
+        {
+            var parent = content.Parent;
+            while (parent != null)
+            {
+                if (parent is T casted)
+                    return casted;
+                parent = parent.Parent;
+            }
+
+            return null;
         }
 
     }

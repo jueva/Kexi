@@ -131,7 +131,7 @@ namespace Kexi.ViewModel
 
         protected LayoutDocumentPaneGroup CurrentDocumentPaneGroup => ActiveLayoutDocument == null
             ? Manager.Layout.Descendents().OfType<LayoutDocumentPaneGroup>().FirstOrDefault()
-            : GetParent<LayoutDocumentPaneGroup>(ActiveLayoutDocument);
+            : Utils.GetParentLayoutContainer<LayoutDocumentPaneGroup>(ActiveLayoutDocument);
 
         protected LayoutDocumentPane CurrentDocumentPane
         {
@@ -466,17 +466,6 @@ namespace Kexi.ViewModel
         }
 
 
-        private static T GetParent<T>(ILayoutElement content) where T : class, ILayoutContainer
-        {
-            var parent = content.Parent;
-            while (parent != null)
-            {
-                if (parent is T casted)
-                    return casted;
-                parent = parent.Parent;
-            }
-
-            return null;
-        }
+       
     }
 }
