@@ -268,22 +268,26 @@ namespace Kexi.ViewModel
             return ActiveLister.SelectedItems.Cast<T>();
         }
 
-        public void Open(ILister lister)
+        public DocumentViewModel Open(ILister lister, bool isActive = true, bool selected = true)
         {
             lister.GotItems += Lister_GotItems;
             var ld = new DocumentViewModel
             {
                 CanClose   = true,
                 ContentId  = Guid.NewGuid().ToString(),
-                IsActive   = true,
-                IsSelected = true,
                 Content    = lister
             };
             ld.PropertyChanged += Ld_PropertyChanged;
             Docking.Files.Add(ld);
-            ActiveLayoutContent = ld;
+            ld.IsSelected = selected;
+            if (isActive)
+            {
+                ld.IsActive = true;
+                ActiveLayoutContent = ld;
+            }
             HasMultipleTabs     = Manager.Layout.Descendents().OfType<LayoutDocumentPane>().Count() > 1;
             SetTabsVisibility();
+            return ld;
         }
 
         private void Ld_PropertyChanged(object sender, PropertyChangedEventArgs e)

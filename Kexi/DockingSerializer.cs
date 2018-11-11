@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -77,36 +78,11 @@ namespace Kexi
                 case LayoutDocument document:
                 {
                     var lister = KexContainer.Resolve<FileLister>();
-
-
-                    e.Content = new DocumentViewModel
-                    {
-                        Content   = lister,
-                        ContentId = Guid.NewGuid().ToString()
-                    };
-                    await LoadIt(lister, document);
+                    e.Content =_workspace.Open(lister, document.IsLastFocusedDocument, document.IsSelected);
+                    lister.Path = document.ContentId;
+                    await lister.Refresh();
                     break;
                 }
-            }
-        }
-
-        private async Task LoadIt(ILister lister, LayoutDocument doc)
-        {
-            lister.Path = doc.ContentId;
-            if (doc.IsLastFocusedDocument)
-            {
-                lister.GotItems         += Lister_GotItems;
-                _workspace.ActiveLister =  lister;
-            }
-            await lister.Refresh(); //ensure this has a Task
-        }
-        private void Lister_GotItems(object sender, EventArgs e)
-        {
-            if (sender is ILister lister)
-            {
-                _workspace.NotificationHost.AddInfo("Focus");
-                lister.GotItems -= Lister_GotItems;
-                lister.View?.ListView?.Dispatcher?.BeginInvoke(DispatcherPriority.Background, (Action) (() => lister.View?.FocusCurrentOrFirst()));
             }
         }
     }
