@@ -25,7 +25,6 @@ namespace Kexi.ViewModel
     {
         public Workspace()
         {
-            Container             = KexContainer.Container;
             _renamePopupViewModel = new RenamePopupViewModel(this);
             Docking               = new DockViewModel(this);
             KeyDispatcher         = new KeyDispatcher(this);
@@ -94,23 +93,8 @@ namespace Kexi.ViewModel
             }
         }
 
-        public bool HasMultipleTabs
-        {
-            get => _hasMultipleTabs;
-            set
-            {
-                if (_hasMultipleTabs == value)
-                    return;
-
-                _hasMultipleTabs = value;
-                OnPropertyChanged();
-            }
-        }
-
         public TaskManager          TaskManager { get; }
         public DockingManager       Manager     { get; set; }
-        public LayoutAnchorablePane LeftPane    { get; set; }
-        public LayoutAnchorablePane RightPane   { get; set; }
 
         public DockViewModel Docking { get; }
 
@@ -144,8 +128,6 @@ namespace Kexi.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        public KexContainer Container { get; set; }
 
         protected LayoutDocumentPaneGroup CurrentDocumentPaneGroup => ActiveLayoutDocument == null
             ? Manager.Layout.Descendents().OfType<LayoutDocumentPaneGroup>().FirstOrDefault()
@@ -226,7 +208,6 @@ namespace Kexi.ViewModel
         private ILister                      _activeLister;
         private RecentLocationPopupViewModel _adressbarHistoryDatasource;
         private bool                         _commanderMode;
-        private bool                         _hasMultipleTabs;
         private PopupViewModel               _popupViewModel;
         private RenamePopupViewModel         _renamePopupViewModel;
         private RelayCommand                 _showAdressbarHistoryPopupCommand;
@@ -287,16 +268,15 @@ namespace Kexi.ViewModel
                 ld.IsActive = true;
                 ActiveLayoutContent = ld;
             }
-            HasMultipleTabs     = Manager.Layout.Descendents().OfType<LayoutDocumentPane>().Count() > 1;
             return ld;
         }
 
         private void Ld_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var ld = sender as DocumentViewModel;
-            if (e.PropertyName == nameof(DocumentViewModel.IsClosed))
-                if (ld.IsClosed)
-                    Docking.Files.Remove(ld);
+            if (sender is DocumentViewModel ld && e.PropertyName == nameof(DocumentViewModel.IsClosed) && ld.IsClosed)
+            {
+                Docking.Files.Remove(ld);
+            }
         }
 
         private void Lister_GotItems(object sender, EventArgs e)
@@ -339,18 +319,18 @@ namespace Kexi.ViewModel
         public void SplitHorizontal()
         {
             var content = Manager.Layout.ActiveContent;
-            ExecuteNewHorizontalTabGroupCommand(content, null);
+            ExecuteNewHorizontalTabGroupCommand(content);
         }
 
         public void SplitVertical()
         {
             var content = Manager.Layout.ActiveContent;
-            ExecuteNewVerticalTabGroupCommand(content, null);
+            ExecuteNewVerticalTabGroupCommand(content);
         }
 
         public void MoveToNextTab()
         {
-            if (!CanExecuteMoveToNextTabGroupCommand(null))
+            if (!CanExecuteMoveToNextTabGroupCommand())
                 return;
 
             var layoutElement = Manager.Layout.LastFocusedDocument;
@@ -369,7 +349,7 @@ namespace Kexi.ViewModel
             FocusCurrentOrFirst();
         }
 
-        private bool CanExecuteMoveToNextTabGroupCommand(object parameter)
+        private bool CanExecuteMoveToNextTabGroupCommand()
         {
             var layoutElement = Manager.Layout.LastFocusedDocument;
             var paneGroup     = layoutElement.FindParent<LayoutDocumentPaneGroup>();
@@ -384,7 +364,7 @@ namespace Kexi.ViewModel
 
         public void MoveToPreviousTab()
         {
-            if (!CanExecuteMoveToPreviousTabGroupCommand(null))
+            if (!CanExecuteMoveToPreviousTabGroupCommand())
                 return;
 
             var layoutElement = Manager.Layout.LastFocusedDocument;
@@ -403,7 +383,7 @@ namespace Kexi.ViewModel
             FocusCurrentOrFirst();
         }
 
-        private bool CanExecuteMoveToPreviousTabGroupCommand(object parameter)
+        private bool CanExecuteMoveToPreviousTabGroupCommand()
         {
             var layoutElement = Manager.Layout.LastFocusedDocument;
             var paneGroup     = layoutElement.FindParent<LayoutDocumentPaneGroup>();
@@ -415,7 +395,7 @@ namespace Kexi.ViewModel
             return false;
         }
 
-        private static void ExecuteNewHorizontalTabGroupCommand(LayoutContent lElement, object parameter)
+        private static void ExecuteNewHorizontalTabGroupCommand(LayoutContent lElement)
         {
             var layoutElement      = lElement;
             var documentPaneGroup1 = layoutElement.FindParent<LayoutDocumentPaneGroup>();
@@ -429,7 +409,7 @@ namespace Kexi.ViewModel
             layoutElement.Root.CollectGarbage();
         }
 
-        private void ExecuteNewVerticalTabGroupCommand(LayoutContent lElement, object parameter)
+        private void ExecuteNewVerticalTabGroupCommand(LayoutContent lElement)
         {
             var layoutElement       = lElement;
             var documentPaneGroup1  = layoutElement.FindParent<LayoutDocumentPaneGroup>();

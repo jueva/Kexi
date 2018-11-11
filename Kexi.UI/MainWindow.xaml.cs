@@ -23,8 +23,6 @@ namespace Kexi.UI
             Workspace.ThemeHandler.ChangeTheme(Workspace.Options.Theme);
             mainWindow.GotFocus += RegisterHotKey;
             Workspace.Manager   =  mainWindow.DockManager.DockingManager;
-            Workspace.LeftPane  =  mainWindow.DockManager.leftAnchorPane;
-            Workspace.RightPane =  mainWindow.DockManager.rightAnchorPane;
         }
 
         private static Workspace Workspace { get; set; }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Threading;
+﻿using System.Linq;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Dock;
@@ -45,7 +41,6 @@ namespace Kexi
             var serializer = new XmlLayoutSerializer(_dockingManager);
             serializer.LayoutSerializationCallback += Serializer_LayoutSerializationCallback;
             serializer.Deserialize(file);
-            _workspace.HasMultipleTabs = _dockingManager.Layout.Descendents().OfType<LayoutDocumentPane>().Count() > 1;
             if (_workspace.PopupViewModel?.IsOpen ?? false)
                 _workspace.PopupViewModel.IsOpen = false;
         }
@@ -62,22 +57,23 @@ namespace Kexi
                     {
                         case ToolExplorerViewModel.Identifier:
                             _workspace.Docking.ExplorerViewModel.IsVisible = anchorable.IsVisible;
-                            e.Content = _workspace.Docking.ExplorerViewModel;
+                            e.Content                                      = _workspace.Docking.ExplorerViewModel;
                             break;
                         case ToolDetailViewModel.Identifier:
                             _workspace.Docking.DetailViewModel.IsVisible = anchorable.IsVisible;
-                            e.Content = _workspace.Docking.DetailViewModel;
+                            e.Content                                    = _workspace.Docking.DetailViewModel;
                             break;
                         case ToolPreviewViewModel.Identifier:
                             _workspace.Docking.PreviewViewModel.IsVisible = anchorable.IsVisible;
-                            e.Content = _workspace.Docking.PreviewViewModel;
+                            e.Content                                     = _workspace.Docking.PreviewViewModel;
                             break;
                     }
+
                     break;
                 case LayoutDocument document:
                 {
                     var lister = KexContainer.Resolve<FileLister>();
-                    e.Content =_workspace.Open(lister, document.IsLastFocusedDocument, document.IsSelected);
+                    e.Content   = _workspace.Open(lister, document.IsLastFocusedDocument, document.IsSelected);
                     lister.Path = document.ContentId;
                     await lister.Refresh();
                     break;
