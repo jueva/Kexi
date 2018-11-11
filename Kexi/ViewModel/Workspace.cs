@@ -270,7 +270,9 @@ namespace Kexi.ViewModel
 
         public DocumentViewModel Open(ILister lister, bool isActive = true, bool selected = true)
         {
-            lister.GotItems += Lister_GotItems;
+            if (isActive)
+                lister.GotItems += Lister_GotItems;
+
             var ld = new DocumentViewModel
             {
                 CanClose   = true,
