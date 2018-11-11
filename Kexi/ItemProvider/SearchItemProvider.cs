@@ -12,7 +12,7 @@ using Kexi.ViewModel.Item;
 
 namespace Kexi.ItemProvider
 {
-    public class SearchItemProvider
+    public class SearchItemProvider : IDisposable
     {
         private readonly object _locker = new object();
         public CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
@@ -74,5 +74,10 @@ namespace Kexi.ItemProvider
 
         public event Action<FileItem> ItemAdded;
         public event Action SearchFinished;
+
+        public void Dispose()
+        {
+            CancellationTokenSource?.Dispose();
+        }
     }
 }
