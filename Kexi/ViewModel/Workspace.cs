@@ -288,7 +288,6 @@ namespace Kexi.ViewModel
                 ActiveLayoutContent = ld;
             }
             HasMultipleTabs     = Manager.Layout.Descendents().OfType<LayoutDocumentPane>().Count() > 1;
-            SetTabsVisibility();
             return ld;
         }
 
@@ -478,26 +477,14 @@ namespace Kexi.ViewModel
             if (lister == null)
                 throw new ArgumentNullException(nameof(lister));
 
-            var documents = Manager.Layout.Descendents().OfType<LayoutDocument>().OrderByDescending(d => d.LastActivationTimeStamp).ToArray();
-            if (documents.Length <= 1)
+            if (Docking.Files.Count <= 1)
                 return;
 
-            var current = documents.SingleOrDefault(d => d.Content == ActiveLayoutContent);
-            if (current == null)
-                return;
-            current.Close();
+            var current = Docking.Files.FirstOrDefault(f => f.Content == lister);
+            Docking.Files.Remove(current);
             lister.Dispose();
-            SetTabsVisibility();
         }
 
-        internal void SetTabsVisibility()
-        {
-            var active =
-                Manager.Layout.Descendents()
-                    .OfType<LayoutDocument>()
-                    .Count();
-            TabHeigth = active > 1 ? double.NaN : 0;
-        }
 
         private static T GetParent<T>(ILayoutElement content) where T : class, ILayoutContainer
         {

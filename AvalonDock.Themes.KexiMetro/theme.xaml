@@ -5,7 +5,8 @@
                     xmlns:avalonDockConverters="clr-namespace:Xceed.Wpf.AvalonDock.Converters;assembly=Xceed.Wpf.AvalonDock"
                     xmlns:avalonDockLayout="clr-namespace:Xceed.Wpf.AvalonDock.Layout;assembly=Xceed.Wpf.AvalonDock"
                     xmlns:avalonDockProperties="clr-namespace:Xceed.Wpf.AvalonDock.Properties;assembly=Xceed.Wpf.AvalonDock"
-                    xmlns:shell="clr-namespace:Microsoft.Windows.Shell;assembly=Xceed.Wpf.AvalonDock">
+                    xmlns:shell="clr-namespace:Microsoft.Windows.Shell;assembly=Xceed.Wpf.AvalonDock"
+                    xmlns:converter="clr-namespace:Kexi.Converter;assembly=Kexi">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -17,6 +18,8 @@
     <avalonDockConverters:NullToDoNothingConverter x:Key="NullToDoNothingConverter" />
     <avalonDockConverters:LayoutItemFromLayoutModelConverter x:Key="LayoutItemFromLayoutModelConverter" />
     <avalonDockConverters:ActivateCommandLayoutItemFromLayoutModelConverter x:Key="ActivateCommandLayoutItemFromLayoutModelConverter" />
+    <converter:AnyToHeightConverter x:Key="AnyToHeightConverter" />
+
     <Style x:Key="AvalonDock_ThemeMetro_ToolButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Control.Background" Value="Transparent" />
         <Setter Property="Control.BorderThickness" Value="1" />
@@ -149,7 +152,7 @@
                         SnapsToDevicePixels="true"
                         KeyboardNavigation.TabNavigation="Local">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding Workspace.TabHeigth}" />
+                        <RowDefinition Height="{Binding Workspace.Docking.Files, Converter={StaticResource AnyToHeightConverter}}" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <!--Following border is required to catch mouse events-->

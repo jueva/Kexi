@@ -46,7 +46,6 @@ namespace Kexi
             serializer.LayoutSerializationCallback += Serializer_LayoutSerializationCallback;
             serializer.Deserialize(file);
             _workspace.HasMultipleTabs = _dockingManager.Layout.Descendents().OfType<LayoutDocumentPane>().Count() > 1;
-            _workspace.SetTabsVisibility();
             if (_workspace.PopupViewModel?.IsOpen ?? false)
                 _workspace.PopupViewModel.IsOpen = false;
         }

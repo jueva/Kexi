@@ -126,6 +126,12 @@
     <None Include="packages.config" />
     <None Include="signed.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kexi\Kexi.csproj">
+      <Project>{4b251986-4de5-4837-968c-c538fb3eb549}</Project>
+      <Name>Kexi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
