@@ -92,12 +92,13 @@ namespace Kexi.Property
 
         public virtual async Task SetItem(T item)
         {
-            //TODO: Check if this has to be done over Dispatcher
             Item             = item;
-            Thumbnail = await GetThumbnail();
-            PropertiesTop    = await GetTopItems();
-            PropertiesBottom = await GetBottomItems();
+            var thumb = await GetThumbnail().ConfigureAwait(false);
+            var propertiesTop = await GetTopItems().ConfigureAwait(false);
+            var propertiesBottom = await GetBottomItems();
 
+            Thumbnail = thumb;
+            PropertiesTop = propertiesTop;
             var additional = KexContainer.Container.InnerCompositionContainer.GetExports<IExtendedPropertyProvider, IExportPropertyProviderMetadata>()
                 .Where(i => i.Metadata.TargetListerType == typeof(T));
 
@@ -105,8 +106,9 @@ namespace Kexi.Property
             {
                 var items = await provider.Value.GetItems(item);
                 foreach (var i in items)
-                    PropertiesBottom.Add(i);
+                    propertiesBottom.Add(i);
             }
+            PropertiesBottom = propertiesBottom;
         }
 
 
