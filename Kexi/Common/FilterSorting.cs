@@ -9,7 +9,7 @@ namespace Kexi.Common
     {
         public FilterSorting(string filter)
         {
-            _filter = filter;
+            _filter = filter ?? "";
         }
 
         public int Compare(object x, object y)
@@ -33,7 +33,7 @@ namespace Kexi.Common
             if (!bix.IsContainer && biy.IsContainer)
                 return 1;
 
-            return String.Compare(bix.FilterString, biy.FilterString, StringComparison.Ordinal);
+            return string.Compare(bix.FilterString, biy.FilterString, StringComparison.Ordinal);
         }
 
         private readonly string _filter;
