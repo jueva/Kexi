@@ -111,8 +111,6 @@ namespace Kexi.Property
             PropertiesBottom = propertiesBottom;
         }
 
-
-
         public BitmapSource Thumbnail
         {
             get => _thumbnail;

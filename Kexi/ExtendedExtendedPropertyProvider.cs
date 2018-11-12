@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Kexi.Common;
 using Kexi.Composition;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
@@ -11,16 +10,16 @@ using Microsoft.WindowsAPICodePack.Shell;
 namespace Kexi
 {
     [Export]
-    [ExportItemDetails(typeof(FileItem),"Windows Filesystem Properties")]
+    [ExportItemDetails(typeof(FileItem), "Windows Filesystem Properties")]
     public class ExtendedExtendedPropertyProvider : IExtendedPropertyProvider
     {
+        public bool   Active      => true;
         public string Description => "Returns Windows File System Properties";
-        public bool Active => true;
 
         public Task<IEnumerable<PropertyItem>> GetItems(IItem item)
         {
             var so = ShellObject.FromParsingName(item.Path);
-            var ret = 
+            var ret =
                 from sp in so.Properties.DefaultPropertyCollection
                 let nameClean = CleanupPropertyName(sp?.CanonicalName)
                 where !string.IsNullOrEmpty(sp?.CanonicalName) && sp.ValueAsObject != null
@@ -35,6 +34,5 @@ namespace Kexi
             var length = "System.".Length;
             return propertyName.Substring(length);
         }
-
     }
 }
