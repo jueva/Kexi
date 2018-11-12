@@ -92,7 +92,12 @@ namespace Kexi.ViewModel.Lister
         {
             Thumbnail = ShellNative.GetSmallBitmapSource(Path);
             _watcher?.ObservePath(value);
-            PathName = string.IsNullOrEmpty(_path) ? "My Computer" : System.IO.Path.GetFileName(_path);
+            if (string.IsNullOrEmpty(_path))
+                PathName = "My Computer";
+            else if (new DirectoryInfo(_path).Parent == null)
+                PathName = _path;
+            else
+                PathName = System.IO.Path.GetFileName(_path);
         }
 
         public override void Copy()
@@ -199,14 +204,14 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        protected override async Task<IEnumerable<FileItem>> GetItems()
+        protected override Task<IEnumerable<FileItem>> GetItems()
         {
             _itemProvider.CancelCurrentTasks();
             if (Path != null && new Uri(Path).IsUnc && !Directory.Exists(Path))
             {
-                return await NetworkShareProvider.GetItems(Path);
+                return  NetworkShareProvider.GetItems(Path);
             }
-            return await _itemProvider.GetItems(Path);
+            return  _itemProvider.GetItems(Path);
         }
 
         public override string GetStatusString()

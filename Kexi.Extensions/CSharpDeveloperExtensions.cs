@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Kexi.Composition;
 using Kexi.Interfaces;
@@ -20,37 +18,38 @@ namespace Kexi.Extensions
     {
         public string Description => "Extensions for CSharp Developers";
 
-        public async Task<IEnumerable<PropertyItem>> GetItems(IItem item)
+        public Task<IEnumerable<PropertyItem>> GetItems(IItem item)
         {
-            return await Task.Run(async () =>
+            return Task.Run(() =>
             {
-                var tempProp = new ObservableCollection<PropertyItem>();
                 if (item is FileItem fileItem && (fileItem.Extension == ".exe" || fileItem.Extension == ".dll"))
                 {
-                    var path = await PathResolved(fileItem);
+                    var path = fileItem.GetPathResolved();
                     if (IsNetAssembly(path))
                     {
-                        var assembly = AssemblyDefinition.ReadAssembly(path);
-                        tempProp.Add(new PropertyItem("Assembly Version", assembly.Name.Version));
-                        var description = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.Name == "AssemblyDescriptionAttribute");
-                        if (description != null)
-                            tempProp.Add(new PropertyItem("Description", description.ConstructorArguments.FirstOrDefault().Value));
-                        var debugModes = GetDebugInfo(assembly).ToList();
-                        if (debugModes.Any())
-                            tempProp.Add(new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes)));
-                        tempProp.Add(new PropertyItem("Runtime Version", assembly.MainModule.RuntimeVersion));
-                        tempProp.Add(new PropertyItem("References", string.Join(Environment.NewLine, assembly.MainModule.AssemblyReferences)));
-                        tempProp.Add(new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value))));
+                        return GetItemsInternal(path);
                     }
                 }
-
-                return tempProp;
+                return Enumerable.Empty<PropertyItem>();
             });
         }
 
-        private async Task<string> PathResolved(FileItem item)
+        private static IEnumerable<PropertyItem> GetItemsInternal(string path)
         {
-            return await Task.Run(() => item.GetPathResolved());
+            if (IsNetAssembly(path))
+            {
+                var assembly = AssemblyDefinition.ReadAssembly(path);
+                yield return new PropertyItem("Assembly Version", assembly.Name.Version);
+                var description = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.Name == "AssemblyDescriptionAttribute");
+                if (description != null)
+                    yield return new PropertyItem("Description", description.ConstructorArguments.FirstOrDefault().Value);
+                var debugModes = GetDebugInfo(assembly).ToList();
+                if (debugModes.Any())
+                    yield return new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes));
+                yield return new PropertyItem("Runtime Version", assembly.MainModule.RuntimeVersion);
+                yield return new PropertyItem("References", string.Join(Environment.NewLine, assembly.MainModule.AssemblyReferences));
+                yield return new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value)));
+            }
         }
 
         private static bool IsNetAssembly(string path)
@@ -60,7 +59,7 @@ namespace Kexi.Extensions
             return hr == 0;
         }
 
-        private static IEnumerable<string> GetDebugInfo(AssemblyDefinition assembly)
+        private static IEnumerable<string> GetDebugInfo(ICustomAttributeProvider assembly)
         {
             var debugAttribute = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.FullName == "System.Diagnostics.DebuggableAttribute");
             if (debugAttribute != null)

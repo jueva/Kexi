@@ -52,14 +52,14 @@ namespace Kexi.ViewModel.Lister
 
         public override bool ShowInMenu => false;
 
-        protected override async Task<IEnumerable<PropertyItem>> GetItems()
+        protected override Task<IEnumerable<PropertyItem>> GetItems()
         {
             if (FileItem == null)
                 return null;
 
             Path          = _fileItem.Path;
             PathName      = Title = ProtocolPrefix + "/" + $"{_fileItem.DisplayName}";
-            return await Task.Run(Parse);
+            return Task.Run(Parse);
         }
 
         private async Task<IEnumerable<PropertyItem>> Parse()
