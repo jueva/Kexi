@@ -347,6 +347,7 @@
     <Compile Include="ViewModel\Commands\ToggleStatusbarVisibilityCommand.cs" />
     <Compile Include="ViewModel\Commands\ToggleTreeViewVisibilityCommand.cs" />
     <Compile Include="ViewModel\Commands\ToggleViewModeCommand.cs" />
+    <Compile Include="ViewModel\Commands\UndoCommand.cs" />
     <Compile Include="ViewModel\Commands\ViewDetailsCommand.cs" />
     <Compile Include="ViewModel\Commands\ViewFileCommand.cs" />
     <Compile Include="ViewModel\Commands\ViewIconsCommand.cs" />

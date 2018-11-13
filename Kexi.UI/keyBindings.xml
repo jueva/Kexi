@@ -191,6 +191,12 @@
             <Group>FileLister</Group>
           </KexBinding>
           <KexBinding>
+            <CommandName>UndoCommand</CommandName>
+            <Modifier>Control</Modifier>
+            <Key>Z</Key>
+            <Group>FileLister</Group>
+          </KexBinding>
+          <KexBinding>
             <CommandName>GotoParentContainerCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>Back</Key>
