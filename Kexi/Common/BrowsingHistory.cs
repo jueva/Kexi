@@ -7,6 +7,13 @@ namespace Kexi.Common
     {
         public HistoryItem Current => _currentIndex < 0 ? null : Locations[_currentIndex];
 
+        public HistoryItem Peek()
+        {
+            return _currentIndex > 0 
+                ? Locations[_currentIndex - 1] 
+                : null;
+        }
+
         public HistoryItem Previous
         {
             get

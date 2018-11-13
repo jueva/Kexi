@@ -84,15 +84,23 @@ namespace Kexi.ViewModel.Popup
                 }
                 ea.Handled                                         = true;
             }
-            else if (ea.Key == Key.OemPeriod && Text == ".")
+            else if (ea.Key == Key.OemPeriod)
             {
                 if (Workspace.ActiveLister is IHistorisationProvider history)
                 {
-                    var filter = history.History.Previous.Filter;
-                    CommandRepository.GetCommandByName(nameof(HistoryBackKeepFilterCommand)).Execute();
-                    Text = filter;
-                    SelectAll();
-                    ea.Handled = true;
+                    if (Text == ".")
+                    {
+                        var previousItem = history.History.Peek();
+                        if (previousItem != null)
+                        {
+                            var filter = previousItem.Filter;
+                            CommandRepository.GetCommandByName(nameof(HistoryBackKeepFilterCommand)).Execute();
+                            Text = filter;
+                            SelectAll();
+                            _firstInput = true;
+                        }
+                        ea.Handled  = true;
+                    }
                 }
             }
             else
@@ -107,8 +115,7 @@ namespace Kexi.ViewModel.Popup
                 return;
 
             Workspace.ActiveLister.Filter           = filter;
-            var f                                   = await Task.Run(() => GetFilterPredicate(filter));
-            Workspace.ActiveLister.ItemsView.Filter = f;
+            Workspace.ActiveLister.ItemsView.Filter = await Task.Run(() => GetFilterPredicate(filter));
             ((ListCollectionView) Workspace.ActiveLister.ItemsView).CustomSort = new FilterSorting(filter);
         }
 
@@ -121,7 +128,7 @@ namespace Kexi.ViewModel.Popup
         {
             CommandRepository.GetCommandByName(nameof(DoActionCommand)).Execute();
             //avoid flickering on filter popup, when current list is filtered, filter is set to null
-            //and all items from current list are show before before refresh happens
+            //and all items from current list are shown before refresh happens
             _pauseFilter = true; 
             Text = "";
             _pauseFilter = false;
