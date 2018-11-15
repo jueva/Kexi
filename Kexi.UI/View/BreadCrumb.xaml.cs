@@ -65,7 +65,7 @@ namespace Kexi.UI.View
 
                     //TODO: Refactor
                     var protocol      = "file";
-                    var protocolIndex = path.IndexOf("://");
+                    var protocolIndex = path.IndexOf("://", StringComparison.Ordinal);
                     if (protocolIndex > -1)
                     {
                         protocol = path.Substring(0, protocolIndex).ToLower();
@@ -87,11 +87,11 @@ namespace Kexi.UI.View
                     e.Handled = true;
                     if (currentLister is IBreadCrumbProvider breadcrumbLister)
                     {
-                            if (!await breadcrumbLister.DoBreadcrumbAction(path))
-                            {
-                                text.Text = lastValidAdress;
-                            }
+                        if (!await breadcrumbLister.DoBreadcrumbAction(path))
+                        {
+                            text.Text = lastValidAdress;
                         }
+                    }
 
                     ViewModel.Options.RestoreAdressbarVisibility();
                     ViewModel.Mode = BreadcrumbMode.Breadcrumb;

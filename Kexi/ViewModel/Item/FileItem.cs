@@ -8,7 +8,6 @@ using Kexi.Files;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Kexi.ViewModel.Item
 {
@@ -18,7 +17,8 @@ namespace Kexi.ViewModel.Item
         {
             _itemProvider     = itemProvider;
             CancellationToken = _itemProvider?.CancellationTokenSource.Token;
-            if (name != null) _fetchDisplayName = name != ".." && !name.EndsWith(".lnk");
+            if (name != null) 
+                _fetchDisplayName = name != ".." && !name.EndsWith(".lnk");
             Path         = path;
             DisplayName  = name ?? System.IO.Path.GetFileName(path);
             FilterString = DisplayName;
@@ -97,7 +97,7 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-        public  bool IsFileShare { get; set; }
+        public bool   IsFileShare     { get; set; }
         public string AttributeString => _attributeString ?? (_attributeString = GetAttributeString());
 
         public string Name => System.IO.Path.GetFileName(Path);
@@ -128,24 +128,25 @@ namespace Kexi.ViewModel.Item
             return FileHelper.GetRenameSelectionBorder(this);
         }
 
+        private readonly bool _fetchDisplayName;
+
         private readonly FileItemProvider _itemProvider;
-        private readonly  bool             _fetchDisplayName;
 
         private FileAttributes? _attributes;
         private string          _attributeString;
 
         private FileDetailItem _details;
 
+        private FileInfo _fileInfo;
+
         private FileSystemInfo _fileSystemInfo;
         private bool           _isMarkedForMove;
         private bool           _isSystemOrHidden;
         private long           _length;
 
-        private FileInfo _fileInfo;
-
-        private async void SetDetails()
+        private async  void SetDetails()
         {
-            await SetDetailsAsync();
+             await SetDetailsAsync();
         }
 
         public async Task<FileDetailItem> SetDetailsAsync()
@@ -157,7 +158,7 @@ namespace Kexi.ViewModel.Item
             try
             {
                 var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
-                var token = CancellationToken ?? System.Threading.CancellationToken.None;
+                var token      = CancellationToken ?? System.Threading.CancellationToken.None;
                 await Task.Factory.StartNew(() =>
                 {
                     IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
@@ -165,9 +166,11 @@ namespace Kexi.ViewModel.Item
                     _details.Init(token);
                     _details.SetThumbs(token, largeThumb);
                 }, token);
-                if (_fetchDisplayName && !string.IsNullOrEmpty(Details.DisplayName))
-                    DisplayName = Details.DisplayName;
-                Details = _details;
+
+                if (_fetchDisplayName && !string.IsNullOrEmpty(_details.DisplayName))
+                    DisplayName = _details.DisplayName;
+
+                Details   = _details;
                 Thumbnail = _details.Thumbnail;
             }
             catch (TaskCanceledException)

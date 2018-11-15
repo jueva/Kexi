@@ -60,7 +60,7 @@ namespace Kexi.ViewModel.TreeView
         {
             return () =>
             {
-                var myComputer = new TreeViewItem(@"", ItemType.Container, "My Computer") {IsExpanded = true};
+                var myComputer = new TreeViewItem(@"", ItemType.Container, Constants.RootName) {IsExpanded = true};
                 var compi = new Shell32.Shell().NameSpace(ShellSpecialFolderConstants.ssfDRIVES);
                 var rootItems = compi.Items().Cast<FolderItem2>()
                     .Where(f => Directory.Exists(f.Path))

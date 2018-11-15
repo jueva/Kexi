@@ -56,7 +56,7 @@ namespace Kexi.UI.Converters
                 }
                 return parts;
             }
-            return new[] { new PathPart("My Computer", null) };
+            return new[] { new PathPart(Constants.RootName, null) };
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

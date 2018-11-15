@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Kexi.Common;
-using Kexi.Common.KeyHandling;
 using Kexi.Common.MultiSelection;
 using Kexi.Composition;
 using Kexi.Interfaces;
@@ -29,10 +28,10 @@ namespace Kexi.ViewModel.Lister
     {
         [ImportingConstructor]
         protected BaseLister(Workspace workspace, INotificationHost notificationHost, Options options,
-            CommandRepository          commandRepository)
+            CommandRepository commandRepository)
         {
             Workspace         =  workspace;
-            _SortHandler      =  new SortHandler(this);
+            SortHandler       =  new SortHandler(this);
             NotificationHost  =  notificationHost;
             GotView           += GotTheView;
             Options           =  options;
@@ -40,15 +39,8 @@ namespace Kexi.ViewModel.Lister
 
             PropertyProvider = GetPropertyProvider();
 
-            loadingSpinnerTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            loadingSpinnerTimer      =  new DispatcherTimer {Interval = TimeSpan.FromSeconds(1)};
             loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
-        }
-
-        private IPropertyProvider GetPropertyProvider()
-        {
-            var allProviders = KexContainer.Container.InnerCompositionContainer.GetExports<IPropertyProvider, IExportPropertyProviderMetadata>();
-            var propProvider = allProviders.SingleOrDefault(e => e.Metadata.TargetListerType == GetType());
-            return propProvider?.Value ?? new DefaultPropertyProvider(Workspace);
         }
 
         public Visibility LoadingSpinnerVisibility
@@ -77,7 +69,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public SortHandler SortHandler => _SortHandler;
+        public SortHandler SortHandler { get; }
 
         public virtual void Copy()
         {
@@ -254,11 +246,13 @@ namespace Kexi.ViewModel.Lister
                 LoadingStatus = LoadingStatus.Loading;
                 var items = await GetItems();
                 Items = new ObservableCollection<T>(items);
+
                 if (clearFilterAndGroup)
                 {
                     Filter  = null;
                     GroupBy = null;
                 }
+
                 SortHandler.ClearSort();
             }
             catch (Exception ex)
@@ -277,8 +271,6 @@ namespace Kexi.ViewModel.Lister
                 LoadingStatus = LoadingStatus.Loaded;
             }
         }
-
-        protected abstract Task<IEnumerable<T>> GetItems();
 
         public void DoAction(IItem item)
         {
@@ -305,26 +297,28 @@ namespace Kexi.ViewModel.Lister
         }
 
         IEnumerable<IItem> ILister.SelectedItems => SelectedItems;
-        public IEnumerable<T> SelectedItems => ItemsView.SelectedItems;
-        
+        public IEnumerable<T>      SelectedItems => ItemsView.SelectedItems;
+
         IEnumerable<IItem> ILister.Items => Items;
+
         public ObservableCollection<T> Items
         {
             get => _items;
             protected set
             {
-                _items    = value;
-                ItemsView = value == null 
-                    ? null 
+                _items = value;
+                ItemsView = value == null
+                    ? null
                     : new MultiSelectCollectionView<T>(_items);
                 OnNotifyPropertyChanged();
             }
         }
 
         ICollectionView ILister.ItemsView => ItemsView;
+
         public MultiSelectCollectionView<T> ItemsView
         {
-            get => _ItemsView;
+            get => _itemsView;
             set
             {
                 if (View?.ListView != null)
@@ -332,8 +326,8 @@ namespace Kexi.ViewModel.Lister
                 else
                     GotView += BaseLister_GotView;
 
-                _ItemsView = value;
-                _ItemsView?.MoveCurrentToFirst();
+                _itemsView = value;
+                _itemsView?.MoveCurrentToFirst();
                 OnNotifyPropertyChanged();
             }
         }
@@ -429,15 +423,20 @@ namespace Kexi.ViewModel.Lister
             return $"{Items.Count} Items, {count} selected";
         }
 
-        protected readonly SortHandler                  _SortHandler;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         protected readonly INotificationHost            NotificationHost;
         private            Style                        _currentContainerStyle;
-        protected          ViewType                     _currentViewMode;
+        private            ViewType                     _currentViewMode;
         private            string                       _filter;
         private            string                       _groupBy;
         private            string                       _highlightString;
         private            ObservableCollection<T>      _items;
-        private            MultiSelectCollectionView<T> _ItemsView;
+        private            MultiSelectCollectionView<T> _itemsView;
         private            Visibility                   _loadingSpinnerVisibility = Visibility.Collapsed;
         private            LoadingStatus                _loadingStatus;
         private            NotificationItem             _notification;
@@ -445,7 +444,7 @@ namespace Kexi.ViewModel.Lister
         private   string            _oldFilter;
         private   string            _oldGroupBy;
         private   SortDescription   _oldSortExpression;
-        protected string            _path;
+        private   string            _path;
         private   string            _pathName;
         private   IPropertyProvider _propertyProvider;
         private   string            _statusString;
@@ -453,7 +452,16 @@ namespace Kexi.ViewModel.Lister
         private   string            _title;
         private   IListerView       _view;
 
-        private  DispatcherTimer loadingSpinnerTimer;
+        private DispatcherTimer loadingSpinnerTimer;
+
+        private IPropertyProvider GetPropertyProvider()
+        {
+            var allProviders = KexContainer.Container.InnerCompositionContainer.GetExports<IPropertyProvider, IExportPropertyProviderMetadata>();
+            var propProvider = allProviders.SingleOrDefault(e => e.Metadata.TargetListerType == GetType());
+            return propProvider?.Value ?? new DefaultPropertyProvider(Workspace);
+        }
+
+        protected abstract Task<IEnumerable<T>> GetItems();
 
         private void LoadingSpinnerTimer_Tick(object sender, EventArgs e)
         {
@@ -474,7 +482,7 @@ namespace Kexi.ViewModel.Lister
             ContextMenuItems = KexContainer.Container.InnerCompositionContainer.GetExports<ICommand, IExportCommandMetadata>()
                 .Where(e => e.Metadata.TargetListerType == GetType())
                 .Select(e => new CommandBoundItem(e.Metadata.Name, e.Value))
-                .Concat(new []{new CommandBoundItem("Copy", new CopyCommand(Workspace))});
+                .Concat(new[] {new CommandBoundItem("Copy", new CopyCommand(Workspace))});
 
             CurrentViewMode = Options.DefaultViewMode;
         }
@@ -549,12 +557,6 @@ namespace Kexi.ViewModel.Lister
                     disposable.Dispose();
                 Items = null;
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         ~BaseLister()

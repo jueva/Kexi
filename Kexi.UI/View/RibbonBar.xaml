@@ -40,7 +40,7 @@
                 <fluent:Button Command="{Binding CommandRepository.Paste}" LargeIcon="{iconPacks1:FontAwesome PasteSolid}"> Paste </fluent:Button>
                 <fluent:Button Command="{Binding CommandRepository.Delete}" LargeIcon="{iconPacks1:FontAwesome TrashSolid}">Delete</fluent:Button>
             </fluent:RibbonGroupBox>
-            <fluent:RibbonGroupBox Header="Organzie" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
+            <fluent:RibbonGroupBox Header="Organize" Background="{DynamicResource ListerBackground}" Foreground="{DynamicResource ListerForeground}">
                 <fluent:Button Command="{Binding CommandRepository.Rename}" LargeIcon="{iconPacks1:FontAwesome RecycleSolid}">Rename</fluent:Button>
                 <fluent:Button Command="{Binding CommandRepository.Favorites}" LargeIcon="{iconPacks1:FontAwesome BookmarkSolid}">Favorites</fluent:Button>
             </fluent:RibbonGroupBox>

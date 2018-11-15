@@ -48,7 +48,7 @@
                 </Button>
                 <TextBlock Margin="10 2 2 2"
                            VerticalAlignment="Center"
-                           FontSize="16"
+                           FontSize="14"
                            Foreground="{DynamicResource ListerForeground}"
                            Text="{TemplateBinding Content}" />
             </StackPanel>

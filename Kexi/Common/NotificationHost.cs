@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
 using System.Windows.Threading;
@@ -30,6 +31,7 @@ namespace Kexi.Common
 
         public void AddError(string message, Exception ex)
         {
+
             AddError(message, ex.ToString());
         }
 
@@ -47,8 +49,8 @@ namespace Kexi.Common
         {
             if (Workspace.ActiveLister == null)
                 return;
-            var item = new NotificationItem(message, detailMessage, notificationType);
 
+            var item = new NotificationItem(message, detailMessage, notificationType);
             _notifications.Add(item);
 
             ClearCurrentMessage();
