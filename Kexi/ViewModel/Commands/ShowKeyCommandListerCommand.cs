@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         {
             var lister = KexContainer.Resolve<KeyCommandsLister>();
             _workspace.Open(lister);
-            await lister.Refresh();
+            await lister.Refresh().ConfigureAwait(false);
         }
 
         public event EventHandler  CanExecuteChanged;

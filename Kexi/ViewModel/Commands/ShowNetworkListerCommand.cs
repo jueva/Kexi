@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         {
             var network = KexContainer.Resolve<NetworkLister>();
             _workspace.Open(network);
-            await network.Refresh();
+            await network.Refresh().ConfigureAwait(false);
         }
 
         public event EventHandler  CanExecuteChanged;

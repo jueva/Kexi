@@ -16,17 +16,17 @@ namespace Kexi.Property
         {
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
+        protected override  Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
-            return await Task.Run(() => new ObservableCollection<PropertyItem>(new[]
+            return Task.Run(() => new ObservableCollection<PropertyItem>(new[]
             {
                 new PropertyItem("Name", Item.DisplayName)
             }));
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetBottomItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
                 new ObservableCollection<PropertyItem>(new[]
                 {
                     new PropertyItem("Type", Item.ServiceType),

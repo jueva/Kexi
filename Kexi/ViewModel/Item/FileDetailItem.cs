@@ -177,9 +177,9 @@ namespace Kexi.ViewModel.Item
             LargeThumbnail = await GetLargeThumbAsync();
         }
 
-        public async Task<BitmapSource> GetLargeThumbAsync()
+        public  Task<BitmapSource> GetLargeThumbAsync()
         {
-            return await Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(_fileItem.Path, 256, 256, ThumbnailOptions.None, _cancellationToken));
+            return Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(_fileItem.Path, 256, 256, ThumbnailOptions.None, _cancellationToken));
         }
 
         [NotifyPropertyChangedInvocator]

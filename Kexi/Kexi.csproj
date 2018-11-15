@@ -136,6 +136,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Constants.cs" />
     <Compile Include="Converter\AnyToHeightConverter.cs" />
     <Compile Include="DockingSerializer.cs" />
     <Compile Include="Column.cs" />

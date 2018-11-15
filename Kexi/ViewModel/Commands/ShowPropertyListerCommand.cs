@@ -28,7 +28,7 @@ namespace Kexi.ViewModel.Commands
                 var propLister = KexContainer.Resolve<PropertyLister>();
                 _workspace.Open(propLister);
                 propLister.FileItem = fileItem;
-                await propLister.Refresh();
+                await propLister.Refresh().ConfigureAwait(false);
             }
         }
 

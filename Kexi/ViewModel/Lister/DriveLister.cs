@@ -52,7 +52,7 @@ namespace Kexi.ViewModel.Lister
         private async Task Initialize(IEnumerable<DriveItem> it)
         {
             foreach (var d in it)
-                await GetDetails(d);
+                await GetDetails(d).ConfigureAwait(false);
         }
 
         private static List<DriveItem> GetDriveItems()
@@ -61,9 +61,9 @@ namespace Kexi.ViewModel.Lister
             return new List<DriveItem>(drives.Select(d => new DriveItem(d)));
         }
 
-        private async Task GetDetails(DriveItem drive)
+        private  Task GetDetails(DriveItem drive)
         {
-            await Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 var info = new DriveInfo(drive.DisplayName);
                 drive.Path        = info.RootDirectory.FullName;
@@ -95,7 +95,7 @@ namespace Kexi.ViewModel.Lister
             var fi = KexContainer.Resolve<FileLister>();
             fi.Path = item?.Path;
             Workspace.ReplaceCurrentLister(fi);
-            await fi.Refresh();
+            await fi.Refresh().ConfigureAwait(false);
         }
 
         public override string ProtocolPrefix => "Drives";

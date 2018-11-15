@@ -28,7 +28,7 @@ namespace Kexi.ViewModel.Commands
                 var referenceLister = KexContainer.Resolve<ReferenceLister>();
                 referenceLister.Path = fileItem.GetPathResolved();
                 _workspace.Open(referenceLister);
-                await referenceLister.Refresh();
+                await referenceLister.Refresh().ConfigureAwait(false);
             }
         }
 

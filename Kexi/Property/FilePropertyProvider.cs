@@ -24,7 +24,6 @@ namespace Kexi.Property
 
         private bool IsMusic    => "music".Equals(GetKind());
         private bool IsPicture  => "picture".Equals(GetKind());
-        private bool IsExeOrDll => Item?.Extension == ".exe" || Item?.Extension == ".dll";
 
         private ShellObject _shellObject;
 
@@ -52,28 +51,27 @@ namespace Kexi.Property
             }
         }
 
-        public override Task SetItem(FileItem item)
+        public override async Task SetItem(FileItem item)
         {
-            _shellObject = ShellObject.FromParsingName(item.Path);
-            return base.SetItem(item);
+            _shellObject = await Task.Factory.StartNew(() => ShellObject.FromParsingName(item.Path)).ConfigureAwait(false);
+            await base.SetItem(item).ConfigureAwait(false);
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
+        protected override  Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
             if (Item.IsFileShare)
             {
-                var nameOnly = new ObservableCollection<PropertyItem> {new PropertyItem("Name", Item.DisplayName)};
-                return await Task.FromResult(nameOnly);
+                return Task.FromResult(new ObservableCollection<PropertyItem> {new PropertyItem("Name", Item.Name)});
             }
 
             if (Item.IsNetwork())
-                return await GetNetworkTopItems();
+                return  GetNetworkTopItems();
 
             var tempProp = new ObservableCollection<PropertyItem>();
             if ((CancellationTokenSource?.IsCancellationRequested ?? true) || Item == null)
-                return tempProp;
+                return Task.FromResult(tempProp);
 
-            return await Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.DisplayName));
@@ -97,22 +95,19 @@ namespace Kexi.Property
 
             if (IsPicture)
                 ThumbMaxHeight = 120;
-            Item.Details.LargeThumbnail = await Item.Details.GetLargeThumbAsync();
+            Item.Details.LargeThumbnail = await Item.Details.GetLargeThumbAsync().ConfigureAwait(false);
             return Item.Details.LargeThumbnail;
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetBottomItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
-            if (CancellationTokenSource?.IsCancellationRequested ?? Item == null)
-                return new ObservableCollection<PropertyItem>();
-
-            if (Item.IsFileShare)
-                return new ObservableCollection<PropertyItem>();
+            if (Item.IsFileShare || (CancellationTokenSource?.IsCancellationRequested ?? Item == null))
+                return Task.FromResult(new ObservableCollection<PropertyItem>());
 
             if (Item.IsNetwork())
-                return await GetNetworkBottomItems();
+                return  GetNetworkBottomItems();
 
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var tempProp = new ObservableCollection<PropertyItem>
                 {
@@ -148,13 +143,13 @@ namespace Kexi.Property
             });
         }
 
-        private async Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
+        private Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
         {
             var tempProp = new ObservableCollection<PropertyItem>();
             if (CancellationTokenSource.IsCancellationRequested)
-                return tempProp;
+                return Task.FromResult(tempProp);
 
-            return await Task.Run(() =>
+            return  Task.Run(() =>
             {
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.Name));
@@ -163,12 +158,12 @@ namespace Kexi.Property
             }, CancellationTokenSource.Token);
         }
 
-        private async Task<ObservableCollection<PropertyItem>> GetNetworkBottomItems()
+        private Task<ObservableCollection<PropertyItem>> GetNetworkBottomItems()
         {
             if (CancellationTokenSource.IsCancellationRequested || Item == null)
-                return new ObservableCollection<PropertyItem>();
+                return Task.FromResult(new ObservableCollection<PropertyItem>());
 
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var tempProp = new ObservableCollection<PropertyItem>
                 {

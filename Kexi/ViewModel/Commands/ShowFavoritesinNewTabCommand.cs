@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Commands
             var favoriteLocation = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             var fileLister       = KexContainer.Resolve<FileLister>();
             fileLister.Path = favoriteLocation;
-            await fileLister.Refresh();
+            await fileLister.Refresh().ConfigureAwait(false);
             _workspace.Open(fileLister);
         }
 

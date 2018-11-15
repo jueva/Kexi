@@ -65,7 +65,7 @@ namespace Kexi.ViewModel.Lister
         private async Task<IEnumerable<PropertyItem>> Parse()
         {
             var it = new RangeObservableCollection<PropertyItem>();
-            it.AddRange(await _extendedPropertyProvider.GetItems(_fileItem));
+            it.AddRange(await _extendedPropertyProvider.GetItems(_fileItem).ConfigureAwait(false));
 
             await _contentProvider.SetItem(new FileItem(_fileItem.Path));
             it.AddRange(_contentProvider.PropertiesBottom);

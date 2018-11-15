@@ -40,7 +40,7 @@ namespace Kexi.ViewModel.Commands
             }
 
             _workspace.Open(fileLister);
-            await fileLister.Refresh();
+            await fileLister.Refresh().ConfigureAwait(false);
         }
 
         public event EventHandler  CanExecuteChanged;

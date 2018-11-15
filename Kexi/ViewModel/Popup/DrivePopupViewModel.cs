@@ -31,7 +31,7 @@ namespace Kexi.ViewModel.Popup
         private async void Initialize()
         {
             foreach (var d in BaseItems)
-                await getDetails(d);
+                await getDetails(d).ConfigureAwait(false);
         }
 
         private ObservableCollection<DriveItem> getDriveItems()
@@ -40,9 +40,9 @@ namespace Kexi.ViewModel.Popup
             return new ObservableCollection<DriveItem>(drives.Select(d => new DriveItem(d)));
         }
 
-        private async Task getDetails(DriveItem drive)
+        private Task getDetails(DriveItem drive)
         {
-            await Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 var info = new DriveInfo(drive.DisplayName);
                 drive.Path        = info.RootDirectory.FullName;

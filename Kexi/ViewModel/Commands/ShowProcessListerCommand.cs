@@ -27,7 +27,7 @@ namespace Kexi.ViewModel.Commands
             {
                 var processLister = KexContainer.Resolve<ProcessLister>();
                 _workspace.Open(processLister);
-                await processLister.Refresh();
+                await processLister.Refresh().ConfigureAwait(false);
             }
         }
 

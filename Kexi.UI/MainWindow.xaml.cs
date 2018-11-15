@@ -43,7 +43,7 @@ namespace Kexi.UI
             var fileLister = KexContainer.Resolve<FileLister>();
             fileLister.Path = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             Workspace.Open(fileLister);
-            await fileLister.Refresh();
+            await fileLister.Refresh().ConfigureAwait(false);
         }
 
         private void RegisterHotKey(object sender, EventArgs ea)

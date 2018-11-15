@@ -11,7 +11,7 @@ namespace Kexi.Interfaces
         GridViewColumnHeader CurrentSortColumn  { get; set; }
         SortAdorner          CurrentSortAdorner { get; set; }
         void FocusCurrentOrFirst();
-        Task ShowDetail();
+        void ShowDetail();
         void FocusItem(IItem selected);
     }
 }

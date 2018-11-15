@@ -36,7 +36,7 @@ namespace Kexi.ViewModel.Commands
             {
                 searchLister.SearchPattern = (string) parameter;
                 if (searchLister.View != null)
-                    await searchLister.Refresh();
+                    await searchLister.Refresh().ConfigureAwait(false);
                 else
                     searchLister.GotView += searchLister_GotView;
             }

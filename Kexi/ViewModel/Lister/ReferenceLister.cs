@@ -106,7 +106,7 @@ namespace Kexi.ViewModel.Lister
             {
                 History.Push(Path,Filter, GroupBy, SortHandler.CurrentSortDescription);
                 Path = item.TargetPath;
-                await Refresh();
+                await Refresh().ConfigureAwait(false);
             }
         }
 

@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         {
             var settingsLister = KexContainer.Resolve<SettingsLister>();
             _workspace.Open(settingsLister);
-            await settingsLister.Refresh();
+            await settingsLister.Refresh().ConfigureAwait(false);
         }
 
         public event EventHandler  CanExecuteChanged;

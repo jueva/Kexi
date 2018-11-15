@@ -102,13 +102,13 @@ namespace Kexi.ViewModel.Lister
             PathName = $"Search {SearchPattern} ({Items.Count})";
         }
 
-        public override async Task Refresh(bool clearFilterAndGroup = true)
+        public override Task Refresh(bool clearFilterAndGroup = true)
         {
             PathName        = "Search " + SearchPattern;
             HighlightString = SearchPattern;
             var pattern = SearchPattern;
             SearchItemProvider.ItemAdded += SearchItemProvider_ItemAdded;
-            await SearchItemProvider.GetItems(Path, pattern, Items);
+            return SearchItemProvider.GetItems(Path, pattern, Items);
         }
 
         protected override Task<IEnumerable<FileItem>> GetItems() => null;
@@ -135,7 +135,7 @@ namespace Kexi.ViewModel.Lister
                 var fileLister = KexContainer.Resolve<FileLister>();
                 fileLister.Path = fItem.Path;
                 Workspace.Open(fileLister);
-                await fileLister.Refresh();
+                await fileLister.Refresh().ConfigureAwait(false);
             }
         }
 

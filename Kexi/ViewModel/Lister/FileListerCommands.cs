@@ -67,7 +67,7 @@ namespace Kexi.ViewModel.Lister
                     var lister = KexContainer.Resolve<FileLister>();
                     lister.Path = new FileInfo(target.TargetPath).DirectoryName;
                     _workspace.Open(lister);
-                    await lister.Refresh();
+                    await lister.Refresh().ConfigureAwait(false);
                 }
                         );
             }

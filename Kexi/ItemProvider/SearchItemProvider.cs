@@ -24,7 +24,7 @@ namespace Kexi.ItemProvider
                 items.Clear();
                 BindingOperations.EnableCollectionSynchronization(items, _locker);
             }
-            await Task.Run(() => GetFilesSave(initialDirectory, searchPattern, items), CancellationTokenSource.Token);
+            await Task.Run(() => GetFilesSave(initialDirectory, searchPattern, items), CancellationTokenSource.Token).ConfigureAwait(false);
             SearchFinished?.Invoke();
         }
 

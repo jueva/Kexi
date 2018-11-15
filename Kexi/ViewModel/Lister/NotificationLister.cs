@@ -53,7 +53,7 @@ namespace Kexi.ViewModel.Lister
                 return _clearAllNotificationsCommand ?? (_clearAllNotificationsCommand = new RelayCommand(async c =>
                 {
                     NotificationHost.Notifications.Clear();
-                    await Refresh();
+                    await Refresh().ConfigureAwait(false);
                 }));
             }
         }

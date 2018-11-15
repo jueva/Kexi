@@ -82,11 +82,10 @@ namespace Kexi.ViewModel.Popup
             }
         }
 
-        private async void SetFilter(string filter)
+        private void SetFilter(string filter)
         {
             Workspace.ActiveLister.Filter = filter;
-            var f = await Task.Run(() => GetFilterPredicate(filter));
-            Workspace.ActiveLister.ItemsView.Filter = f;
+            Workspace.ActiveLister.ItemsView.Filter = item => new ItemFilter<IItem>(item as IItem, filter).Any();
 
             ((ListCollectionView) Workspace.ActiveLister.ItemsView).CustomSort = new FilterSorting(filter);
         }

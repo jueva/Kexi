@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Kexi.Annotations;
 using Kexi.Common;
 using Kexi.Files;
-using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
-using Kexi.ViewModel.TreeView;
 
 namespace Kexi.ViewModel
 {
@@ -22,16 +16,7 @@ namespace Kexi.ViewModel
         }
 
         public Workspace Workspace { get; }
-        public Options Options => Workspace.Options;
-
-        public async Task SetItem(FileItem fileItem)
-        {
-            var targetResolver = new FileItemTargetResolver(fileItem);
-            targetResolver.Parse();
-            await Task.Run(() => { Path = targetResolver.TargetPath; });
-        }
-
-        private string path;
+        public Options   Options   => Workspace.Options;
 
         public string Path
         {
@@ -45,6 +30,15 @@ namespace Kexi.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private string path;
+
+        public Task SetItem(FileItem fileItem)
+        {
+            var targetResolver = new FileItemTargetResolver(fileItem);
+            targetResolver.Parse();
+            return Task.Run(() => { Path = targetResolver.TargetPath; });
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

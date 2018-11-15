@@ -31,6 +31,7 @@ namespace Kexi.ViewModel
             CommanderbarViewModel = new CommanderbarViewModel(this);
             PopupViewModel        = new FilterPopupViewModel(this, new Options(), null);
             TaskManager           = new TaskManager(this);
+            _listers              = KexContainer.ResolveMany<ILister>();
         }
 
         public RenamePopupViewModel RenamePopupViewModel
@@ -93,8 +94,8 @@ namespace Kexi.ViewModel
             }
         }
 
-        public TaskManager          TaskManager { get; }
-        public DockingManager       Manager     { get; set; }
+        public TaskManager    TaskManager { get; }
+        public DockingManager Manager     { get; set; }
 
         public DockViewModel Docking { get; }
 
@@ -205,6 +206,8 @@ namespace Kexi.ViewModel
         public Border          TitleTextBorder { get; set; }
         public IDockingManager DockingMananger { get; set; }
 
+        private readonly IEnumerable<ILister> _listers;
+
         private ILister                      _activeLister;
         private RecentLocationPopupViewModel _adressbarHistoryDatasource;
         private bool                         _commanderMode;
@@ -217,7 +220,7 @@ namespace Kexi.ViewModel
         {
             var fileLister = KexContainer.Resolve<FileLister>();
             fileLister.Path = ActiveLister.Path;
-            await fileLister.Refresh();
+            await fileLister.Refresh().ConfigureAwait(false);
             Open(fileLister);
         }
 
@@ -256,18 +259,19 @@ namespace Kexi.ViewModel
 
             var ld = new DocumentViewModel
             {
-                CanClose   = true,
-                ContentId  = Guid.NewGuid().ToString(),
-                Content    = lister
+                CanClose  = true,
+                ContentId = Guid.NewGuid().ToString(),
+                Content   = lister
             };
             ld.PropertyChanged += Ld_PropertyChanged;
             Docking.Files.Add(ld);
             ld.IsSelected = selected;
             if (isActive)
             {
-                ld.IsActive = true;
+                ld.IsActive         = true;
                 ActiveLayoutContent = ld;
             }
+
             return ld;
         }
 
@@ -290,7 +294,7 @@ namespace Kexi.ViewModel
 
         public ILister CreateListerByProtocol(string protocol)
         {
-            return KexContainer.ResolveMany<ILister>().FirstOrDefault(l => l.ProtocolPrefix.ToLower() == protocol);
+            return _listers.FirstOrDefault(l => l.ProtocolPrefix.ToLower() == protocol);
         }
 
         public void ReplaceCurrentLister(ILister lister)
@@ -464,8 +468,5 @@ namespace Kexi.ViewModel
             Docking.Files.Remove(current);
             lister.Dispose();
         }
-
-
-       
     }
 }

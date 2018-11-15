@@ -101,9 +101,9 @@ namespace Kexi.Shell
             return GetBitMapSource(GetLargeIcon(fileName));
         }
 
-        public static async Task<BitmapSource> GetBitmapSourceAsync(string fileName)
+        public static Task<BitmapSource> GetBitmapSourceAsync(string fileName)
         {
-            return await Task.Run(() => GetSmallBitmapSource(fileName));
+            return Task.Run(() => GetSmallBitmapSource(fileName));
         }
 
         public static BitmapSource GetSmallBitmapSource(string fileName)

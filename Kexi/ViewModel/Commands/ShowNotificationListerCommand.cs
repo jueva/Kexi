@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         {
             var notifications = KexContainer.Resolve<NotificationLister>();
             _workspace.Open(notifications);
-            await notifications.Refresh();
+            await notifications.Refresh().ConfigureAwait(false);
         }
 
         public event EventHandler  CanExecuteChanged;

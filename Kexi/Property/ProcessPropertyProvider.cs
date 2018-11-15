@@ -31,7 +31,7 @@ namespace Kexi.Property
         protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
             if (Item.Details == null)
-                return Task.FromResult(new ObservableCollection<PropertyItem>());
+                return default; 
 
             var props = new ObservableCollection<PropertyItem>(new[]
             {
@@ -43,12 +43,11 @@ namespace Kexi.Property
             return Task.FromResult(props);
         }
 
-        protected override async Task<BitmapSource> GetThumbnail()
+        protected override  Task<BitmapSource> GetThumbnail()
         {
-            if (string.IsNullOrEmpty(Item?.FileName))
-                return default;
-
-            return await ThreadHelper.StartTaskWithSingleThreadAffinity(()=>ThumbnailProvider.GetThumbnailSource(Item.FileName, 256, 256, ThumbnailOptions.None, CancellationToken.None));
+            return string.IsNullOrEmpty(Item?.FileName) 
+                ? default 
+                : ThreadHelper.StartTaskWithSingleThreadAffinity(()=>ThumbnailProvider.GetThumbnailSource(Item.FileName, 256, 256, ThumbnailOptions.None, CancellationToken.None));
         }
     }
 }

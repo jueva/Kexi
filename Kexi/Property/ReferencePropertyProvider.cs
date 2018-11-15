@@ -17,20 +17,20 @@ namespace Kexi.Property
         {
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
-            return await Task.Run(() => new ObservableCollection<PropertyItem>(new[]
+            return Task.Run(() => new ObservableCollection<PropertyItem>(new[]
             {
                 new PropertyItem("Name", Item?.DisplayName)
             }));
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetBottomItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
             if (Item == null)
-                return new ObservableCollection<PropertyItem>();
+                return Task.FromResult(new ObservableCollection<PropertyItem>());
 
-            return await Task.Run(() =>
+            return  Task.Run(() =>
                 new ObservableCollection<PropertyItem>(new[]
                 {
                     new PropertyItem("Assembly", Item.Assembly),
@@ -41,11 +41,10 @@ namespace Kexi.Property
                 }));
         }
 
-        protected override async Task<BitmapSource> GetThumbnail()
+        protected override Task<BitmapSource> GetThumbnail()
         {
             var fi = new FileItem(Item?.AssemblyPath);
-            fi.Details.LargeThumbnail = await fi.Details.GetLargeThumbAsync();
-            return fi.Details.LargeThumbnail;
+            return  fi.Details.GetLargeThumbAsync();
         }
     }
 }

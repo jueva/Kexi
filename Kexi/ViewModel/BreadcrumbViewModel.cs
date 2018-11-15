@@ -95,7 +95,7 @@ namespace Kexi.ViewModel
             Items = Directory.EnumerateDirectories(SeparatorPopupPath).Select(i => new FileItem(i, ItemType.Container));
             foreach (var i in Items)
             {
-                await i.SetDetailsAsync();
+                await i.SetDetailsAsync().ConfigureAwait(false);
             }
         }
 

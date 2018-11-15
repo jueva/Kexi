@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kexi.Common;
@@ -14,7 +14,6 @@ using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
 using Kexi.ViewModel.Item;
-using Microsoft.WindowsAPICodePack.Shell;
 using Clipboard = System.Windows.Clipboard;
 using LengthConverter = Kexi.Converter.LengthConverter;
 
@@ -35,7 +34,7 @@ namespace Kexi.ViewModel.Lister
             _watcher = new FilesystemChangeWatcher(this);
             _watcher.Register();
             _itemProvider =  new FileItemProvider(workspace);
-            PathChanged   += FileLister_PathChanging;
+            PathChanged   += FileLister_PathChanged;
         }
 
         public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
@@ -57,30 +56,40 @@ namespace Kexi.ViewModel.Lister
 
         public async Task<bool> DoBreadcrumbAction(string breadPath)
         {
-            //TODO: Move to Lister.Path, Refactor that shit
-            if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
+            //TODO: Move to Lister.Path??
+            var uri = new Uri(breadPath);
+            if (uri.IsUnc)
+            {
+                try
+                {
+                    LoadingStatus = LoadingStatus.Loading;
+                    var valid = await IsValidNetworkLocation(uri).ConfigureAwait(false);
+                    if (valid)
+                    {
+                        Path = breadPath;
+                    }
+                }
+                finally
+                {
+                    LoadingStatus = LoadingStatus.Loaded;
+                }
+            }
+            else if (File.Exists(breadPath) || breadPath.EndsWith("\\") && Directory.Exists(breadPath))
             {
                 var path = System.IO.Path.GetDirectoryName(breadPath);
                 Path = path;
-                await Refresh();
             }
             else if (Directory.Exists(breadPath + "\\"))
             {
                 var path = System.IO.Path.GetDirectoryName(breadPath + "\\");
                 Path = path;
-                await Refresh();
-            }
-            else if (breadPath.StartsWith(@"\\") && ShellObject.FromParsingName(breadPath) != null)
-            {
-                Path = breadPath;
-                await Refresh();
             }
             else
             {
                 NotificationHost.AddError(breadPath + " could not be found.");
                 return false;
             }
-
+            await Refresh().ConfigureAwait(false);
             return true;
         }
 
@@ -88,16 +97,51 @@ namespace Kexi.ViewModel.Lister
         private readonly FileItemProvider        _itemProvider;
         private          FilesystemChangeWatcher _watcher;
 
-        private void FileLister_PathChanging(string value)
+        private async Task<bool> IsValidNetworkLocation(Uri uri)
         {
-            Thumbnail = ShellNative.GetSmallBitmapSource(Path);
-            _watcher?.ObservePath(value);
-            if (string.IsNullOrEmpty(_path))
-                PathName = "My Computer";
-            else if (new DirectoryInfo(_path).Parent == null)
-                PathName = _path;
+            try
+            {
+                if (uri.Segments.Length == 1)
+                {
+                    await Dns.GetHostEntryAsync(uri.Host).ConfigureAwait(false);
+                    return true;
+                }
+
+                return Directory.Exists(uri.OriginalString);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async void FileLister_PathChanged(string value)
+        {
+            if (value != null)
+            {
+                try
+                {
+                    Thumbnail = await Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(value, 32, 32, ThumbnailOptions.IconOnly));
+                    _watcher?.ObservePath(value);
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+            }
+
+            if (string.IsNullOrEmpty(value))
+                PathName = Constants.RootName;
             else
-                PathName = System.IO.Path.GetFileName(_path);
+            {
+                var uri = new Uri(value);
+                if (uri.IsUnc && uri.Segments.Length == 1)
+                    PathName = value;
+                else if (!uri.IsUnc && new DirectoryInfo(value).Parent == null)
+                    PathName = $"Drive {value}";
+                else
+                    PathName = System.IO.Path.GetFileName(value);
+            }
         }
 
         public override void Copy()
@@ -136,12 +180,9 @@ namespace Kexi.ViewModel.Lister
             if (!Clipboard.ContainsFileDropList())
                 return;
 
-            var items = Clipboard.GetFileDropList();
+            var items    = Clipboard.GetFileDropList();
             var copyTask = new TaskItem("Copying");
-            await Workspace.TaskManager.RunAsync(copyTask, () =>
-            {
-                new FilesystemAction(NotificationHost).Paste(Path, items, action);
-            });
+            await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();
@@ -160,7 +201,7 @@ namespace Kexi.ViewModel.Lister
                 if (result != null)
                 {
                     Path = result;
-                    await Refresh();
+                    await Refresh().ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -209,9 +250,10 @@ namespace Kexi.ViewModel.Lister
             _itemProvider.CancelCurrentTasks();
             if (Path != null && new Uri(Path).IsUnc && !Directory.Exists(Path))
             {
-                return  NetworkShareProvider.GetItems(Path);
+                return NetworkShareProvider.GetItems(Path);
             }
-            return  _itemProvider.GetItems(Path);
+
+            return _itemProvider.GetItems(Path);
         }
 
         public override string GetStatusString()
@@ -242,7 +284,7 @@ namespace Kexi.ViewModel.Lister
         protected override void Dispose(bool disposing)
         {
             _watcher    =  null;
-            PathChanged -= FileLister_PathChanging;
+            PathChanged -= FileLister_PathChanged;
             _itemProvider.Dispose();
             base.Dispose(disposing);
         }

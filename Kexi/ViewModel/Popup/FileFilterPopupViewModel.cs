@@ -50,12 +50,12 @@ namespace Kexi.ViewModel.Popup
             _firstInput = false;
         }
 
-        public override async void TextChanged(object sender, TextChangedEventArgs ea)
+        public override void TextChanged(object sender, TextChangedEventArgs ea)
         {
             var currentItem = Workspace.CurrentItem;
             if (currentItem != null)
                 Workspace.ActiveLister.SetSelection(currentItem, false);
-            await SetFilter(Text);
+             SetFilter(Text);
             Workspace.ActiveLister.ItemsView.MoveCurrentToFirst();
         }
 
@@ -109,19 +109,14 @@ namespace Kexi.ViewModel.Popup
             }
         }
 
-        private async Task SetFilter(string filter)
+        private void SetFilter(string filter)
         {
             if (_pauseFilter)
                 return;
 
             Workspace.ActiveLister.Filter           = filter;
-            Workspace.ActiveLister.ItemsView.Filter = await Task.Run(() => GetFilterPredicate(filter));
+            Workspace.ActiveLister.ItemsView.Filter = item => new ItemFilter<IItem>(item as IItem, filter).Any();
             ((ListCollectionView) Workspace.ActiveLister.ItemsView).CustomSort = new FilterSorting(filter);
-        }
-
-        private static Predicate<object> GetFilterPredicate(string filter)
-        {
-            return item => new ItemFilter<IItem>(item as IItem, filter).Any();
         }
 
         protected override void ItemSelected(IItem selectedItem)

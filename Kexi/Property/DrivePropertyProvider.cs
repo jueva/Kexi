@@ -19,23 +19,23 @@ namespace Kexi.Property
         {
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetTopItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
             if (Item == null)
                 return default;
 
-            return await Task.Run(() => new ObservableCollection<PropertyItem>(new[]
+            return Task.Run(() => new ObservableCollection<PropertyItem>(new[]
             {
                 new PropertyItem("Name", Item.DisplayName)
             }));
         }
 
-        protected override async Task<ObservableCollection<PropertyItem>> GetBottomItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
         {
             if (Item == null)
                 return default;
 
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var info = new DriveInfo(Item.DriveLetter);
 
@@ -52,9 +52,9 @@ namespace Kexi.Property
                 return props;
             });
         }
-        protected override async Task<BitmapSource> GetThumbnail()
+        protected override  Task<BitmapSource> GetThumbnail()
         {
-            return  await Task.Run(() => ThumbnailProvider.GetThumbnailSource(Item.Path, 256, 256, ThumbnailOptions.None));
+            return Task.Run(() => ThumbnailProvider.GetThumbnailSource(Item.Path, 256, 256, ThumbnailOptions.None));
         }
     }
 }

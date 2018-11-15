@@ -104,10 +104,9 @@ namespace Kexi.ViewModel
             LoadingStatus = LoadingStatus.Loaded;
         }
 
-        protected override async Task<IEnumerable<ServiceItem>> GetItems()
+        protected override  Task<IEnumerable<ServiceItem>> GetItems()
         {
-            var services = await GetServices();
-            return services;
+            return GetServices();
         }
 
         private void ItemsView_CurrentChanged(object sender, EventArgs e)

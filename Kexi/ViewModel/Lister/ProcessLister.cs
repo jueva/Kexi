@@ -98,9 +98,9 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        protected override async Task<IEnumerable<ProcessItem>> GetItems()
+        protected override Task<IEnumerable<ProcessItem>> GetItems()
         {
-            return await Task.Run(() => Process.GetProcesses().Select(p => new ProcessItem(p)));
+            return Task.Run(() => Process.GetProcesses().Select(p => new ProcessItem(p)));
         }
     }
 }

@@ -40,9 +40,9 @@ namespace Kexi.ItemProvider
             CancellationTokenSource = new CancellationTokenSource();
         }
 
-        public async Task<IEnumerable<FileItem>> GetItems(string path)
+        public Task<IEnumerable<FileItem>> GetItems(string path)
         {
-            return await Task.Run(() =>
+            return  Task.Run(() =>
             {
                 if (string.IsNullOrEmpty(path))
                     return GetRootItems().Items;

@@ -85,9 +85,9 @@ namespace Kexi.Property
             return Task.CompletedTask;
         }
 
-        public async Task SetItem(IItem item)
+        public Task SetItem(IItem item)
         {
-            await SetItem(item as T);
+            return SetItem(item as T);
         }
 
         public virtual async Task SetItem(T item)
@@ -104,7 +104,7 @@ namespace Kexi.Property
 
             foreach (var provider in additional)
             {
-                var items = await provider.Value.GetItems(item);
+                var items = await provider.Value.GetItems(item).ConfigureAwait(false);
                 foreach (var i in items)
                     propertiesBottom.Add(i);
             }
