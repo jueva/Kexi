@@ -167,15 +167,13 @@
         <avalonDock:LayoutRoot>
             <avalonDock:LayoutPanel Orientation="Horizontal">
                 <avalonDock:LayoutAnchorablePane Name="LeftAnchorPane"
-                                                 x:Name="leftAnchorPane"
                                                  DockMinWidth="200"
                                                  DockWidth="250"
                                                  FloatingWidth="100"/>
                 <avalonDock:LayoutDocumentPaneGroup>
-                    <avalonDock:LayoutDocumentPane x:Name="docPane" />
+                    <avalonDock:LayoutDocumentPane />
                 </avalonDock:LayoutDocumentPaneGroup>
                 <avalonDock:LayoutAnchorablePane Name="RightAnchorPane"
-                                                 x:Name="rightAnchorPane"
                                                  DockMinWidth="200"
                                                  DockWidth="250"
                                                  FloatingWidth="100" />

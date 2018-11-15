@@ -51,7 +51,7 @@ namespace Kexi.UI.View
 
         public SortAdorner CurrentSortAdorner { get; set; }
 
-        public async Task ShowDetail()
+        public void ShowDetail()
         {
             var lister = ViewModel;
             if (CurrentItem == null || lister == null)
@@ -64,7 +64,7 @@ namespace Kexi.UI.View
                 var provider = lister.PropertyProvider;
                 if (provider != null && lister.SelectedItems.Count() > 1)
                 {
-                    await provider.SetSelection(lister.SelectedItems);
+                     provider.SetSelection(lister.SelectedItems);
                 }
                 else if (provider != null && !Equals(provider.Item, CurrentItem))
                     try
@@ -74,7 +74,7 @@ namespace Kexi.UI.View
 
                         _cancellationTokenSource         = new CancellationTokenSource();
                         provider.CancellationTokenSource = _cancellationTokenSource;
-                        await provider.SetItem(CurrentItem);
+                        provider.SetItem(CurrentItem);
                     }
                     catch (TaskCanceledException)
                     {
@@ -85,7 +85,7 @@ namespace Kexi.UI.View
             {
                 if (CurrentItem is FileItem fileItem)
                     if (Workspace.Docking.PreviewViewModel.Content is PreviewContentView content)
-                        await content.SetItem(fileItem);
+                        content.SetItem(fileItem);
             }
         }
 
@@ -138,10 +138,10 @@ namespace Kexi.UI.View
 
         private MouseHandler _mouseHandler;
 
-        private async void DetailTimer_Tick(object sender, EventArgs e)
+        private void DetailTimer_Tick(object sender, EventArgs e)
         {
             _detailTimer.Stop();
-            await ShowDetail();
+            ShowDetail();
         }
 
         private void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -160,7 +160,7 @@ namespace Kexi.UI.View
             }
         }
 
-        private async void ListerView_Loaded(object sender, RoutedEventArgs e)
+        private void ListerView_Loaded(object sender, RoutedEventArgs e)
         {
             if (ViewModel.Loaded)
             {
@@ -175,7 +175,7 @@ namespace Kexi.UI.View
                 FocusCurrentOrFirst();
             }
 
-            await ShowDetail();
+            ShowDetail();
         }
 
         private void ListerView_MouseMove(object sender, MouseEventArgs e)

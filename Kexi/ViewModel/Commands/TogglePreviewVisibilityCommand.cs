@@ -21,16 +21,28 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            if (_workspace.Docking.PreviewViewModel.IsVisible && !_workspace.Docking.PreviewViewModel.IsSelected)
+            if (_workspace.Docking.PreviewViewModel == null)
+                return;
+
+            if (!_workspace.Docking.PreviewViewModel.IsVisible)
             {
+                _workspace.Docking.PreviewViewModel.IsVisible = true;
+                _workspace.Docking.PreviewViewModel.IsActive = false;
                 _workspace.Docking.PreviewViewModel.IsSelected = true;
                 return;
             }
 
-            _workspace.Docking.PreviewViewModel.IsVisible = !_workspace.Docking.PreviewViewModel.IsVisible;
-            if (_workspace.Docking.PreviewViewModel.IsVisible)
+            if (_workspace.Docking.PreviewViewModel.IsVisible && !_workspace.Docking.PreviewViewModel.IsSelected)
             {
+                _workspace.Docking.PreviewViewModel.IsActive = true;
                 _workspace.Docking.PreviewViewModel.IsSelected = true;
+                return;
+            }
+
+            if (_workspace.Docking.PreviewViewModel.IsVisible && _workspace.Docking.PreviewViewModel.IsSelected)
+            {
+                _workspace.Docking.PreviewViewModel.IsVisible = false;
+                _workspace.Docking.PreviewViewModel.IsSelected = false;
             }
         }
 

@@ -6,27 +6,27 @@ namespace Kexi.UI.Base
 {
     internal class PanesStyleSelector : StyleSelector
     {
-        public Style DocumentStyle     { get; set; }
-        public Style ToolDetailStyle   { get; set; }
-        public Style ToolExplorerStyle { get; set; }
-        public Style ToolPreviewStyle  { get; set; }
+        public Style DocumentStyle     { private get; set; }
+        public Style ToolDetailStyle   { private get; set; }
+        public Style ToolExplorerStyle { private get; set; }
+        public Style ToolPreviewStyle  { private get; set; }
 
 
         public override Style SelectStyle(object item, DependencyObject container)
         {
-            if (item is DocumentViewModel)
-                return DocumentStyle;
-
-            if (item is ToolDetailViewModel)
-                return ToolDetailStyle;
-
-            if (item is ToolExplorerViewModel)
-                return ToolExplorerStyle;
-
-            if (item is ToolPreviewViewModel)
-                return ToolPreviewStyle;
-
-            return base.SelectStyle(item, container);
+            switch (item)
+            {
+                case DocumentViewModel _:
+                    return DocumentStyle;
+                case ToolDetailViewModel _:
+                    return ToolDetailStyle;
+                case ToolExplorerViewModel _:
+                    return ToolExplorerStyle;
+                case ToolPreviewViewModel _:
+                    return ToolPreviewStyle;
+                default:
+                    return base.SelectStyle(item, container);
+            }
         }
     }
 }

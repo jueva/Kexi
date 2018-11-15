@@ -6,29 +6,29 @@ namespace Kexi.UI.Base
 {
     internal class PanesTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate ListerTemplate { get; set; }
+        public DataTemplate ListerTemplate { private get; set; }
 
-        public DataTemplate ToolDetailTemplate { get; set; }
+        public DataTemplate ToolDetailTemplate { private get; set; }
 
-        public DataTemplate ToolExplorerTemplate { get; set; }
+        public DataTemplate ToolExplorerTemplate { private get; set; }
 
-        public DataTemplate ToolPreviewTemplate  { get; set; }
+        public DataTemplate ToolPreviewTemplate  { private get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is DocumentViewModel)
-                return ListerTemplate;
-
-            if (item is ToolDetailViewModel)
-                return ToolDetailTemplate;
-
-            if (item is ToolExplorerViewModel)
-                return ToolExplorerTemplate;
-
-            if (item is ToolPreviewViewModel)
-                return ToolPreviewTemplate;
-
-            return base.SelectTemplate(item, container);
+            switch (item)
+            {
+                case DocumentViewModel _:
+                    return ListerTemplate;
+                case ToolDetailViewModel _:
+                    return ToolDetailTemplate;
+                case ToolExplorerViewModel _:
+                    return ToolExplorerTemplate;
+                case ToolPreviewViewModel _:
+                    return ToolPreviewTemplate;
+                default:
+                    return base.SelectTemplate(item, container);
+            }
         }
     }
 }

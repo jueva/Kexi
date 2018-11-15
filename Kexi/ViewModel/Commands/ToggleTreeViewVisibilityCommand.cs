@@ -21,7 +21,30 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.Docking.ExplorerViewModel.IsVisible = !_workspace.Docking.ExplorerViewModel.IsVisible;
+            if (_workspace.Docking.ExplorerViewModel == null)
+                return;
+
+            if (!_workspace.Docking.ExplorerViewModel.IsVisible)
+            {
+                _workspace.Docking.ExplorerViewModel.IsVisible = true;
+                _workspace.Docking.PreviewViewModel.IsActive = false;
+                _workspace.Docking.ExplorerViewModel.IsSelected = true;
+                return;
+            }
+
+            if (_workspace.Docking.ExplorerViewModel.IsVisible && !_workspace.Docking.ExplorerViewModel.IsSelected)
+            {
+                _workspace.Docking.ExplorerViewModel.IsActive = true;
+                _workspace.Docking.ExplorerViewModel.IsSelected = true;
+                return;
+            }
+
+            if (_workspace.Docking.ExplorerViewModel.IsVisible && _workspace.Docking.ExplorerViewModel.IsSelected)
+            {
+                _workspace.Docking.ExplorerViewModel.IsVisible = false;
+                _workspace.Docking.ExplorerViewModel.IsSelected = false;
+            }
+
         }
 
         public event EventHandler  CanExecuteChanged;

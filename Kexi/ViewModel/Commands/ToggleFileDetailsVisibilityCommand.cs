@@ -19,22 +19,30 @@ namespace Kexi.ViewModel.Commands
             return true;
         }
 
-        public async void Execute(object parameter)
+        public void Execute(object parameter)
         {
             if (_workspace.Docking.DetailViewModel == null)
                 return;
 
-            if (_workspace.Docking.DetailViewModel.IsVisible && !_workspace.Docking.DetailViewModel.IsSelected)
+            if (!_workspace.Docking.DetailViewModel.IsVisible)
             {
+                _workspace.Docking.DetailViewModel.IsVisible  = true;
+                _workspace.Docking.DetailViewModel.IsActive = false;
                 _workspace.Docking.DetailViewModel.IsSelected = true;
                 return;
             }
 
-            _workspace.Docking.DetailViewModel.IsVisible = !_workspace.Docking.DetailViewModel.IsVisible;
-            if (_workspace.Docking.DetailViewModel.IsVisible)
+            if (_workspace.Docking.DetailViewModel.IsVisible && !_workspace.Docking.DetailViewModel.IsSelected)
             {
-                await _workspace.ActiveLister.View.ShowDetail();
+                _workspace.Docking.DetailViewModel.IsActive = true;
                 _workspace.Docking.DetailViewModel.IsSelected = true;
+                return;
+            }
+
+            if (_workspace.Docking.DetailViewModel.IsVisible && _workspace.Docking.DetailViewModel.IsSelected)
+            {
+                _workspace.Docking.DetailViewModel.IsVisible  = false;
+                _workspace.Docking.DetailViewModel.IsSelected = false;
             }
         }
 
