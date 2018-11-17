@@ -47,6 +47,11 @@ namespace Kexi.ViewModel.Lister
 
         protected override Task<IEnumerable<SecurityItem>> GetItems()
         {
+            if (Path == null)
+            {
+                Workspace.NotificationHost.AddError("Pfad nicht gesetzt");
+                return Task.FromResult(Enumerable.Empty<SecurityItem>());
+            }
             var f   = File.GetAccessControl(Path);
             var acl = f.GetAccessRules(true, true, typeof(NTAccount));
 
