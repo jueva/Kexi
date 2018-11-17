@@ -43,6 +43,7 @@ namespace Kexi.Extensions
                 var description = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.Name == "AssemblyDescriptionAttribute");
                 if (description != null)
                     yield return new PropertyItem("Description", description.ConstructorArguments.FirstOrDefault().Value);
+                yield return new PropertyItem("Public Key Token:", GetPublicKeyToken(assembly));
                 var debugModes = GetDebugInfo(assembly).ToList();
                 if (debugModes.Any())
                     yield return new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes));
@@ -50,6 +51,11 @@ namespace Kexi.Extensions
                 yield return new PropertyItem("References", string.Join(Environment.NewLine, assembly.MainModule.AssemblyReferences));
                 yield return new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value)));
             }
+        }
+
+        private static string GetPublicKeyToken(AssemblyDefinition assembly)
+        {
+            return string.Join("", assembly.Name.PublicKeyToken.Select(b => b.ToString("x2").ToUpperInvariant()));
         }
 
         private static bool IsNetAssembly(string path)
