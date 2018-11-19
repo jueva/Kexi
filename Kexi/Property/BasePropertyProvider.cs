@@ -93,21 +93,33 @@ namespace Kexi.Property
         public virtual async Task SetItem(T item)
         {
             Item             = item;
-            var thumb = await GetThumbnail().ConfigureAwait(false);
             var propertiesTop = await GetTopItems().ConfigureAwait(false);
             var propertiesBottom = await GetBottomItems();
 
-            Thumbnail = thumb;
-            PropertiesTop = propertiesTop;
+            BitmapSource thumb = null;
             var additional = KexContainer.Container.InnerCompositionContainer.GetExports<IExtendedPropertyProvider, IExportPropertyProviderMetadata>()
-                .Where(i => i.Metadata.TargetListerType == typeof(T));
+                .Where(i => i.Metadata.TargetListerType == typeof(T)).Select(p => p.Value).Where(p => p.IsMatch(item));
 
             foreach (var provider in additional)
             {
-                var items = await provider.Value.GetItems(item).ConfigureAwait(false);
+                var value = provider;
+                var items = await value.GetItems(item).ConfigureAwait(false);
+                
                 foreach (var i in items)
-                    propertiesBottom.Add(i);
+                {
+                    if (i.Key == "Thumbnail")
+                    {
+                        thumb = i.OriginalValue as BitmapSource;
+                        ThumbMaxHeight = 160;
+                    }
+                    else
+                        propertiesBottom.Add(i);
+                }
             }
+
+            Thumbnail = thumb ?? await GetThumbnail().ConfigureAwait(false);
+            PropertiesTop = propertiesTop;
+
             PropertiesBottom = propertiesBottom;
         }
 

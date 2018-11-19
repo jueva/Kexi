@@ -20,14 +20,17 @@ namespace Kexi.ViewModel.Item
         {
             DisplayName = key;
             _key = key;
+            OriginalValue = val;
             _value = val == null ? "" : val.ToString();
         }
+
+        public object OriginalValue { get; }
 
         private string _key;
 
         public string Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 if (_key == value)

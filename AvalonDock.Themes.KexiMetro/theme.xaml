@@ -156,9 +156,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <!--Following border is required to catch mouse events-->
-                    <Border Grid.RowSpan="2"/>
-                    <Grid Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type avalonDockControls:LayoutDocumentPaneControl}}, Path=Model.ShowHeader, Converter={StaticResource BoolToVisibilityConverter}}"
-                          Panel.ZIndex="1" >
+                    <Border Grid.RowSpan="2" BorderBrush="Red" />
+                    <Grid Panel.ZIndex="1" Grid.Row="0">
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition />
                           <ColumnDefinition Width="Auto" />
@@ -176,6 +175,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
                             Margin="0"
+                            Padding="0"
                             Background="{DynamicResource ListerStatusbarBackground}"
                             Grid.Column="0"
                             KeyboardNavigation.DirectionalNavigation="Contained"

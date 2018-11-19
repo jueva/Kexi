@@ -27,6 +27,11 @@ namespace Kexi
             return Task.FromResult(ret);
         }
 
+        public bool IsMatch(IItem item)
+        {
+            return true;
+        }
+
         private string CleanupPropertyName(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))

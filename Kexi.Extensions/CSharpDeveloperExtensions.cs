@@ -22,7 +22,7 @@ namespace Kexi.Extensions
         {
             return Task.Run(() =>
             {
-                if (item is FileItem fileItem && (fileItem.Extension == ".exe" || fileItem.Extension == ".dll"))
+                if (item is FileItem fileItem)
                 {
                     var path = fileItem.GetPathResolved();
                     if (IsNetAssembly(path))
@@ -32,6 +32,11 @@ namespace Kexi.Extensions
                 }
                 return Enumerable.Empty<PropertyItem>();
             });
+        }
+
+        public bool IsMatch(IItem item)
+        {
+            return item is FileItem fileItem && (fileItem.Extension == ".exe" || fileItem.Extension == ".dll");
         }
 
         private static IEnumerable<PropertyItem> GetItemsInternal(string path)

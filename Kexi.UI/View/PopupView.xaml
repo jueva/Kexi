@@ -34,10 +34,6 @@
                 Padding="0"
                 >
 
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="5" Opacity="0.5"/>
-            </Border.Effect>    
-
             <Grid x:Name="grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

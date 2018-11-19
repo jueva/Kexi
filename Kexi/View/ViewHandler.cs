@@ -58,6 +58,7 @@ namespace Kexi.View
         {
             var lister      = _lister;
             var gridView    = new GridView();
+            
             var headerStyle = _listView.FindResource("gridHeaderStyle") as Style;
             gridView.ColumnHeaderContainerStyle = headerStyle;
             if (lister != null)
