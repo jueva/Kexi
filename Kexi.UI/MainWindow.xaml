@@ -10,14 +10,15 @@
                       xmlns:view1="clr-namespace:Kexi.UI.View"
                       xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
                       xmlns:view="clr-namespace:Kexi.View"
+                      xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
+                      xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
                       x:Name="mainWindow"
                       Width="1200"
                       Height="600"
                       d:DataContext="{d:DesignInstance d:Type=viewModel1:Workspace}"
                       AllowDrop="True"
-                      Background="{DynamicResource InputTextBackground}"
+                      Background="Transparent"
                       BorderThickness="1"
-                      BorderBrush="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"
                       Foreground="{DynamicResource ListerForeground}"
                       ResizeMode="CanResizeWithGrip"
                       TitleForeground="{DynamicResource ListerForeground}"
@@ -107,47 +108,66 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" /> <!--  Ribbon  -->
-            <RowDefinition Height="Auto" /> <!--  Adressbar  -->
-            <RowDefinition Height="*" /> <!--  Dockbar  -->
-            <RowDefinition Height="Auto" /> <!--  Statusbar  -->
-            <RowDefinition Height="Auto" /> <!--  CommanderBar  -->
-            <RowDefinition Height="0" /> <!-- Popup -->
-            <RowDefinition Height="0" /> <!-- RenamePopup -->
-        </Grid.RowDefinitions>
+    <Grid Background="Transparent">
+        <Rectangle
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="{DynamicResource ListerBackground}"
+            Opacity="0.6">
+            <Rectangle.Effect>
+                <acrylicWpf:NoiseEffect Ratio="0.25" />
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid>
 
-        <view1:RibbonBar x:Name="RibbonBar"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!--  Ribbon  -->
+                <RowDefinition Height="Auto" />
+                <!--  Adressbar  -->
+                <RowDefinition Height="*" />
+                <!--  Dockbar  -->
+                <RowDefinition Height="Auto" />
+                <!--  Statusbar  -->
+                <RowDefinition Height="Auto" />
+                <!--  CommanderBar  -->
+                <RowDefinition Height="0" />
+                <!-- Popup -->
+                <RowDefinition Height="0" />
+                <!-- RenamePopup -->
+            </Grid.RowDefinitions>
+
+            <view1:RibbonBar x:Name="RibbonBar"
                          Grid.Row="0"
                          Margin="0,0,0,0"
                          DataContext="{Binding RibbonViewModel}"
                          Visibility="{Binding RibbonVisible,
                          Converter={StaticResource BoolToVisibilityConverter}}" />
-        <view1:AdressBar x:Name="AdressBar"
+            <view1:AdressBar x:Name="AdressBar"
                          Grid.Row="1"
                          x:FieldModifier="public"
                          Margin="0"
                          DataContext="{Binding AdressbarViewModel}"/>
-        <view1:DockManager x:Name="DockManager"
+            <view1:DockManager x:Name="DockManager"
                            Grid.Row="2"
                            Margin="0"
+                           Background="Transparent"
                            DataContext="{Binding Docking}"
                            Style="{StaticResource dockmanagerStyle}" />
-        <view1:StatusBarView x:Name="StatusBar"
+            <view1:StatusBarView x:Name="StatusBar"
                              Grid.Row="3"
                              DataContext="{Binding ActiveLister}" />
-        <view1:CommanderBar x:Name="CommanderBar"
+            <view1:CommanderBar x:Name="CommanderBar"
                             Grid.Row="4"
                             DataContext="{Binding CommanderbarViewModel}" />
-        <view1:PopupView x:Name="Popup"
+            <view1:PopupView x:Name="Popup"
                          Grid.Row="5"
                          DataContext="{Binding PopupViewModel}"
                          Visibility="Hidden" />
-        <view1:RenamePopup x:Name="RenamePopup"
+            <view1:RenamePopup x:Name="RenamePopup"
                           Grid.Row="6"
                           DataContext="{Binding RenamePopupViewModel}"
                           Visibility="Hidden" />
+        </Grid>
     </Grid>
-
 </controls:MetroWindow>

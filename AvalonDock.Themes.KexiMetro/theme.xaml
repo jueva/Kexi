@@ -292,6 +292,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutAnchorablePaneControl}">
                     <Grid KeyboardNavigation.TabNavigation="Local"
+                            Background="Transparent"
                           UIElement.ClipToBounds="true"
                           UIElement.SnapsToDevicePixels="true">
                         <Grid.RowDefinitions>
@@ -302,7 +303,7 @@
                         <Border x:Name="ContentPanel"
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Background="{TemplateBinding Control.Background}"
+                                Background="Transparent"
                                 BorderBrush="{TemplateBinding Control.BorderBrush}"
                                 BorderThickness="{TemplateBinding Control.BorderThickness}"
                                 KeyboardNavigation.DirectionalNavigation="Contained"
@@ -937,7 +938,7 @@
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDock:DockingManager}">
-                    <Border Background="{TemplateBinding Control.Background}"
+                    <Border Background="Transparent"
                             BorderBrush="{TemplateBinding Control.BorderBrush}"
                             BorderThickness="{TemplateBinding Control.BorderThickness}"
                             Padding="0">
@@ -1046,18 +1047,18 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutAnchorableControl}">
                     <Border x:Name="Bd"
-                            Background="{TemplateBinding Control.Background}"
+                            Background="Transparent"
                             BorderBrush="{TemplateBinding Control.BorderBrush}"
                             BorderThickness="{TemplateBinding Control.BorderThickness}">
-                        <Grid>
+                        <Grid Background="Transparent">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Border x:Name="Header" Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor16}">
+                            <Border x:Name="Header" Background="Transparent">
                                 <avalonDockControls:AnchorablePaneTitle Model="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Border>
-                            <ContentPresenter Grid.Row="1"
+                            <ContentPresenter Grid.Row="1" 
                                               Content="{Binding LayoutItem.View,
                                                                 RelativeSource={RelativeSource TemplatedParent}}"
                                               FlowDirection="{TemplateBinding FrameworkElement.FlowDirection}" />
