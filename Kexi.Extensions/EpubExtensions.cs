@@ -18,23 +18,20 @@ namespace Kexi.Extensions
     {
         public string Description => "Additional informations for epub files";
 
-        public  Task<IEnumerable<PropertyItem>> GetItems(IItem item)
+        public async Task<IEnumerable<PropertyItem>> GetItems(IItem item)
         {
-            return Task.Run(async () =>
-            {
-                var book = await EpubReader.OpenBookAsync(item.Path).ConfigureAwait(false);
-                var cover = await book.ReadCoverAsync().ConfigureAwait(false);
+            var book = await EpubReader.OpenBookAsync(item.Path).ConfigureAwait(false);
+            var cover = await book.ReadCoverAsync().ConfigureAwait(false);
 
-                var properties = new List<PropertyItem>()
-                {
-                    new PropertyItem("Title", book.Title),
-                    new PropertyItem("Authors", string.Join(Environment.NewLine, book.AuthorList)),
-                };
-                if (cover != null)
-                    properties.Add(new PropertyItem("Thumbnail", ImageFromBuffer(cover)));
-                
-                return properties.AsEnumerable();
-            });
+            var properties = new List<PropertyItem>()
+            {
+                new PropertyItem("Title", book.Title),
+                new PropertyItem("Authors", string.Join(Environment.NewLine, book.AuthorList)),
+            };
+            if (cover != null)
+                properties.Add(new PropertyItem("Thumbnail", ImageFromBuffer(cover)));
+            
+            return properties.AsEnumerable();
         }
 
         public bool IsMatch(IItem item)
@@ -42,8 +39,7 @@ namespace Kexi.Extensions
             return item is FileItem fileItem && (fileItem.Extension == ".epub");
         }
 
-
-        public BitmapImage ImageFromBuffer(byte[] bytes)
+        private BitmapImage ImageFromBuffer(byte[] bytes)
         {
             if (bytes == null)
                 return null;

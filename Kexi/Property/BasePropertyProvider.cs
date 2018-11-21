@@ -24,6 +24,7 @@ namespace Kexi.Property
         }
 
         // ReSharper disable once MemberCanBeProtected.Global, used in Databinding
+        // ReSharper disable once MemberCanBePrivate.Global, used in Databinding
         // ReSharper disable once UnusedAutoPropertyAccessor.Global, used in Databinding
         public Workspace Workspace { get; }
 
@@ -59,7 +60,7 @@ namespace Kexi.Property
         public T Item
         {
             get => _item;
-            protected set
+            private set
             {
                 if (Equals(value, _item))
                     return;
@@ -110,7 +111,7 @@ namespace Kexi.Property
                     if (i.Key == "Thumbnail")
                     {
                         thumb = i.OriginalValue as BitmapSource;
-                        ThumbMaxHeight = 160;
+                        ThumbMaxHeight = double.NaN;
                     }
                     else
                         propertiesBottom.Add(i);
@@ -119,7 +120,6 @@ namespace Kexi.Property
 
             Thumbnail = thumb ?? await GetThumbnail().ConfigureAwait(false);
             PropertiesTop = propertiesTop;
-
             PropertiesBottom = propertiesBottom;
         }
 
