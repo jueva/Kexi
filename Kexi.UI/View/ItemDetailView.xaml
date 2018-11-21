@@ -12,7 +12,7 @@
              d:DataContext="{d:DesignInstance d:Type=interfaces:IPropertyProvider}"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             Background="{DynamicResource ListerBackground}"
+             Background="Transparent"
              Foreground="{DynamicResource ListerForeground}"
              FontFamily="{Binding Workspace.Options.FontFamily}"
              FontSize="{Binding Workspace.Options.FontSize}"
@@ -24,7 +24,7 @@
         <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
 
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -33,14 +33,14 @@
         <ScrollViewer x:Name="scrollViewer"
                       Grid.Row="0"
                       Focusable="False"
-                      Background="{DynamicResource ListerBackground}"
+                      Background="Transparent"
                       HorizontalScrollBarVisibility="Disabled"
                       Padding="5 0 5 5"
                       VerticalScrollBarVisibility="Auto">
 
             <ScrollViewer.Template>
                 <ControlTemplate>
-                    <Grid>
+                    <Grid Background="Transparent">
                         <ScrollContentPresenter CanContentScroll="True" Content="{TemplateBinding ScrollViewer.Content}" />
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    HorizontalAlignment="Right"
@@ -129,22 +129,5 @@
                     </ItemsControl>
                 </Grid>
         </ScrollViewer>
-        <!--<StackPanel Grid.Row="1"
-                    Margin="0"
-                    Background="{DynamicResource ListerBackground}"
-                    Orientation="Vertical"
-                    Visibility="{Binding Lister.Options.StatusbarVisible,
-                                         Converter={StaticResource InvertBoolToVisibilityConverter}}">
-            <TextBlock Padding="5 0 0 0" Text="{Binding Lister.StatusString}" />
-            <StackPanel Background="{DynamicResource KexSelectionBackground}"
-                        Orientation="Horizontal"
-                        Visibility="{Binding Lister.Filter,
-                                             Converter={StaticResource anyToVisibility}}">
-                <TextBlock Foreground="White" Text=" Filter: " />
-                <TextBlock Foreground="White"
-                           Padding="2,0,2,0"
-                           Text="{Binding Lister.Filter}" />
-            </StackPanel>
-        </StackPanel>-->
     </Grid>
 </UserControl>

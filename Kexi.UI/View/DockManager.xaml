@@ -94,7 +94,7 @@
                     <DataTemplate>
                         <view1:ItemDetailView
                             DataContext="{Binding Workspace.ActiveLister.PropertyProvider}" 
-                            Background="{DynamicResource ListerBackground}"/>
+                            Background="Transparent"/>
                     </DataTemplate>
                 </base:PanesTemplateSelector.ToolDetailTemplate>
 
