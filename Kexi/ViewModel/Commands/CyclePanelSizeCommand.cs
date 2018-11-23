@@ -22,7 +22,8 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.Docking.DockWidth = Math.Abs(_workspace.Docking.DockWidth.Value - 750) < 0.1 ? new GridLength(250) : new GridLength(750);
+            var half = Application.Current.MainWindow.ActualWidth / 2;
+            _workspace.Docking.DockWidth = Math.Abs(_workspace.Docking.DockWidth.Value - 250) < 0.1 ? new GridLength(half) : new GridLength(250);
         }
 
         public event EventHandler  CanExecuteChanged;
