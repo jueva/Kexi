@@ -81,19 +81,6 @@ namespace Kexi.ViewModel
         [Import]
         public RibbonViewModel RibbonViewModel { get; private set; }
 
-
-        public double TabHeigth
-        {
-            get => _tabHeight;
-            set
-            {
-                if (Math.Abs(_tabHeight - value) < 0.1)
-                    return;
-                _tabHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
         public TaskManager    TaskManager { get; }
         public DockingManager Manager     { get; set; }
 

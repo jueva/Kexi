@@ -114,6 +114,7 @@
     <Style x:Key="ListViewItemDetailStyle" TargetType="{x:Type ListBoxItem}">
         <Style.Setters>
             <!--  Wichtig damit TextAlignment=right funktioniert  -->
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusStyle}" />
             <Setter Property="Template" Value="{StaticResource ResourceKey=KexiItemTemplate}" />

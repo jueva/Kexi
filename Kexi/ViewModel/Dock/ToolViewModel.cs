@@ -30,8 +30,6 @@ namespace Kexi.ViewModel.Dock
             }
         }
 
-     
-
         private object _content;
 
         #region IsVisible

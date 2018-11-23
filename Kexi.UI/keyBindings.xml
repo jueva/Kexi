@@ -97,6 +97,14 @@
             <SecondModifier>None</SecondModifier>
           </KexBinding>
           <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>CyclePanelSizeCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>V</Key>
+            <Group/>
+            <SecondKey>L</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
             <CommandName>MoveToNextTemporaryBookmarkCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>T</Key>

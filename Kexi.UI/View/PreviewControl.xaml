@@ -7,14 +7,64 @@
              xmlns:winforms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              xmlns:common="clr-namespace:Kexi.Common"
+             xmlns:view="clr-namespace:Kexi.View;assembly=Kexi"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <DockPanel>
-            <DockPanel x:Name="dockPreviewer"  VerticalAlignment="Stretch" DockPanel.Dock="Top" Background="{DynamicResource ListerBackground}">
-                <WindowsFormsHost Name="wfh1" Width="{Binding ActualWidth, ElementName=dockPreviewer, Mode=OneWay}"  >
-                    <common:PreviewHandlerHost x:Name="previewHandlerHost1" Dock="Fill" />
-                </WindowsFormsHost>
-            </DockPanel>
-        </DockPanel>
+
+    <Grid Background="LightGray">
+
+  <ScrollViewer x:Name="scrollViewer"
+                      Grid.Row="0"
+                      Focusable="False"
+                      Background="Transparent"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="5 0 5 5"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ScrollViewer.Template>
+                <ControlTemplate>
+                    <Grid Background="Transparent">
+                        <ScrollContentPresenter CanContentScroll="True" Content="{TemplateBinding ScrollViewer.Content}" />
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   HorizontalAlignment="Right"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                                   Minimum="0"
+                                   Opacity="0.9"
+                                   Orientation="Vertical"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                                   Value="{TemplateBinding ScrollViewer.VerticalOffset}" />
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   VerticalAlignment="Bottom"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                                   Minimum="0"
+                                   Orientation="Horizontal"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                                   Value="{TemplateBinding ScrollViewer.HorizontalOffset}" />
+                    </Grid>
+                </ControlTemplate>
+            </ScrollViewer.Template>
+
+
+        <ItemsControl Grid.Row="0"
+                      Margin="0"
+                      ItemsSource="{Binding Path=Items}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock view:TextBlockExtensions.BindableInlines="{Binding RtfRuns}"
+                               Margin="0" Padding="0"
+                               Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}"
+                               Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}"
+                    >
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
     </Grid>
 </UserControl>

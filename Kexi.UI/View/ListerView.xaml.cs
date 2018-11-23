@@ -83,9 +83,8 @@ namespace Kexi.UI.View
 
             if (Workspace.Docking.PreviewViewModel.IsVisible)
             {
-                if (CurrentItem is FileItem fileItem)
-                    if (Workspace.Docking.PreviewViewModel.Content is PreviewContentView content)
-                        content.SetItem(fileItem);
+                var content = Workspace.Docking.PreviewViewModel.Content as PreviewContentView;
+                content?.SetItem(CurrentItem);
             }
         }
 

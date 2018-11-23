@@ -19,6 +19,7 @@
                       AllowDrop="True"
                       Background="Transparent"
                       BorderThickness="1"
+                      BorderBrush="{DynamicResource KexSelectionBackground}"
                       Foreground="{DynamicResource ListerForeground}"
                       ResizeMode="CanResizeWithGrip"
                       TitleForeground="{DynamicResource ListerForeground}"
@@ -113,13 +114,14 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Fill="{DynamicResource ListerBackground}"
-            Opacity="0.6">
+            Opacity="0.65">
             <Rectangle.Effect>
                 <acrylicWpf:NoiseEffect Ratio="0.25" />
             </Rectangle.Effect>
         </Rectangle>
-        <Grid>
-
+        <!-- Transparent for Acryl -->
+        <!-- <Grid Background="{DynamicResource ListerBackground}"> -->
+        <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <!--  Ribbon  -->

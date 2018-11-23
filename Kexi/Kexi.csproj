@@ -200,6 +200,7 @@
     <Compile Include="ViewModel\Commands\CommanderMoveCommand.cs" />
     <Compile Include="ViewModel\Commands\CreateShortcutInFavoritesCommand.cs" />
     <Compile Include="ViewModel\Commands\CutCommand.cs" />
+    <Compile Include="ViewModel\Commands\CyclePanelSizeCommand.cs" />
     <Compile Include="ViewModel\Commands\CycleTabsBackwardsCommand.cs" />
     <Compile Include="ViewModel\Commands\CycleThemeCommand.cs" />
     <Compile Include="ViewModel\Commands\CycleTabsCommand.cs" />

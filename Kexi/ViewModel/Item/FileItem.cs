@@ -118,6 +118,8 @@ namespace Kexi.ViewModel.Item
             }
         }
 
+        public bool IsBinary { get; set; }
+
         public void Rename(string newName)
         {
             FileHelper.Rename(this, newName);

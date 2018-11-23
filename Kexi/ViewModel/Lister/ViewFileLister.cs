@@ -72,19 +72,27 @@ namespace Kexi.ViewModel.Lister
             return null;
         }
 
-        private Encoding GetEncoding()
+        public Encoding GetEncoding()
         {
             try
             {
-                var detector = new CharsetDetector();
-                detector.Feed(File.OpenRead(Path));
-                detector.DataEnd();
-                return detector.Charset == null ? null : Encoding.GetEncoding(detector.Charset);
+                return GetEncoding(Path);
             }
             catch (Exception ex)
             {
                 NotificationHost.AddError("Fehler beim Ermitteln des Encodings", ex);
                 return Encoding.Default;
+            }
+        }
+
+        private static Encoding GetEncoding(string path)
+        {
+            using (var stream = File.OpenRead(path))
+            {
+                var detector = new CharsetDetector();
+                detector.Feed(stream);
+                detector.DataEnd();
+                return detector.Charset == null ? null : Encoding.GetEncoding(detector.Charset);
             }
         }
 

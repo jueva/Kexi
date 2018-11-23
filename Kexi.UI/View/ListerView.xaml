@@ -12,7 +12,7 @@
                  Margin="0"
                  d:DesignHeight="300"
                  d:DesignWidth="300"
-                 Background="{DynamicResource InputTextBackground}"
+                 Background="Transparent"
                  BorderThickness="0"
                  KeyDown="ListerView_OnKeyDown"
                  mc:Ignorable="d">
@@ -22,7 +22,7 @@
         </UserControl.Resources>
 
         <view1:KexiListView x:Name="_ListView"
-                       Background="{DynamicResource ListerBackground}"
+                       Background="Transparent"
                        Foreground="{DynamicResource ListerForeground}"
                        ItemsSource="{Binding ItemsView}"
                        ItemContainerStyle="{Binding CurrentContainerStyle}"
@@ -41,8 +41,6 @@
                        VirtualizingPanel.IsVirtualizing="true"
                        VirtualizingPanel.IsVirtualizingWhenGrouping="true"
                        VirtualizingPanel.ScrollUnit="Pixel"
-                       VirtualizingPanel.CacheLength="1"
-                       VirtualizingPanel.CacheLengthUnit="Page"
                        FocusVisualStyle="{x:Null}"
                        VirtualizingPanel.VirtualizationMode="Recycling">
                        

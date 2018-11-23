@@ -28,7 +28,7 @@
                          ActiveContent="{Binding ActiveLayoutContent, Mode=TwoWay}"
                          AllowMixedOrientation="False"
                          AnchorablesSource="{Binding Tools}"
-                         Background="{DynamicResource ListerBackground}"
+                         Background="Transparent"
                          BorderBrush="Transparent"
                          BorderThickness="0"
                          DocumentsSource="{Binding Files, Mode=TwoWay}">
@@ -78,13 +78,13 @@
 
                 <base:PanesTemplateSelector.ListerTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Background="Transparent">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <view1:ListerView Grid.Row="0" DataContext="{Binding Content}" Margin="0" /> 
+                            <view1:ListerView Grid.Row="0" DataContext="{Binding Content}" Margin="0" Background="Transparent"/> 
                             <view1:NotificationBar Grid.Row="1" DataContext="{Binding Content}" />
                         </Grid>
                     </DataTemplate>
@@ -166,16 +166,14 @@
 
         <avalonDock:LayoutRoot>
             <avalonDock:LayoutPanel Orientation="Horizontal">
-                <avalonDock:LayoutAnchorablePane Name="LeftAnchorPane"
+                <avalonDock:LayoutAnchorablePane Name="LeftAnchorPane" x:Name="LeftAnchorPane"
                                                  DockMinWidth="200"
-                                                 DockWidth="250"
                                                  FloatingWidth="100"/>
                 <avalonDock:LayoutDocumentPaneGroup>
                     <avalonDock:LayoutDocumentPane />
                 </avalonDock:LayoutDocumentPaneGroup>
-                <avalonDock:LayoutAnchorablePane Name="RightAnchorPane"
+                <avalonDock:LayoutAnchorablePane Name="RightAnchorPane" x:Name="RightAnchorPane"
                                                  DockMinWidth="200"
-                                                 DockWidth="250"
                                                  FloatingWidth="100" />
             </avalonDock:LayoutPanel>
         </avalonDock:LayoutRoot>

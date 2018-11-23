@@ -22,7 +22,27 @@ namespace Kexi.UI.View
         {
             InitializeComponent();
             dockingManager.DocumentClosing += DockingManager_DocumentClosing;
+            this.DataContextChanged += DockManager_DataContextChanged;
         }
+
+        private void DockManager_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (oldModel != null)
+                oldModel.PropertyChanged -= ViewModel_PropertyChanged;
+            oldModel = viewModel;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DockViewModel.DockWidth))
+            {
+                LeftAnchorPane.DockWidth = RightAnchorPane.DockWidth = viewModel.DockWidth;
+            }
+        }
+
+        private DockViewModel viewModel => DataContext as DockViewModel;
+        private DockViewModel oldModel;
 
         private void DockingManager_DocumentClosing(object sender, DocumentClosingEventArgs e)
         {

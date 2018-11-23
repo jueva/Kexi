@@ -1,4 +1,5 @@
-﻿using System.Windows.Documents;
+﻿using System.Threading.Tasks;
+using System.Windows.Documents;
 using Kexi.Common.Syntaxhighlighting;
 
 namespace Kexi.ViewModel.Item

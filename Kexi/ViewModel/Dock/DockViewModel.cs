@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using Kexi.Common;
 
 namespace Kexi.ViewModel.Dock
@@ -12,6 +13,7 @@ namespace Kexi.ViewModel.Dock
             ExplorerViewModel = new ToolExplorerViewModel(workspace);
             PreviewViewModel = new ToolPreviewViewModel(workspace);
             Tools = new ToolViewModel[] { DetailViewModel, ExplorerViewModel, PreviewViewModel };
+            DockWidth = new GridLength(250);
         }
 
         public ObservableCollection<DocumentViewModel> Files
@@ -51,5 +53,18 @@ namespace Kexi.ViewModel.Dock
         public  ToolPreviewViewModel                    PreviewViewModel { get; }
         private object                                  _activeLayoutContent;
         private ObservableCollection<DocumentViewModel> _files = new ObservableCollection<DocumentViewModel>();
+
+        private GridLength _dockWidth;
+
+        public GridLength DockWidth
+        {
+            get => _dockWidth;
+            set
+            {
+                if (value.Equals(_dockWidth)) return;
+                _dockWidth = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

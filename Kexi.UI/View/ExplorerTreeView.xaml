@@ -8,7 +8,7 @@
              Margin="0"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             Background="{DynamicResource ListerBackground}"
+             Background="Transparent"
              Foreground="{DynamicResource ListerForeground}"
              mc:Ignorable="d">
 
@@ -48,7 +48,7 @@
     </UserControl.Resources>
 
     <TreeView x:Name="TreeView"
-              Background="{DynamicResource ListerBackground}"
+              Background="Transparent"
               BorderThickness="0"
               FocusVisualStyle="{x:Null}"
               ItemTemplate="{StaticResource NavTreeTempl}"
