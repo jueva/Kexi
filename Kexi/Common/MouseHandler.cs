@@ -1,61 +1,78 @@
-﻿using System;
+﻿using Kexi.Files;
+using Kexi.Interfaces;
+using Kexi.ViewModel;
+using Kexi.ViewModel.Commands;
+using Kexi.ViewModel.Item;
+using Kexi.ViewModel.Lister;
+using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Kexi.Files;
-using Kexi.Interfaces;
-using Kexi.ViewModel;
-using Kexi.ViewModel.Commands;
-using Kexi.ViewModel.Item;
-using Kexi.ViewModel.Lister;
 
 namespace Kexi.Common
 {
     [Export]
     public class MouseHandler : IDisposable
     {
-        private readonly CommandRepository _commandRepository;
-        private readonly string _dragFormat = DataFormats.FileDrop;
-        private readonly INotificationHost _notificationHost;
-        private readonly Options _options;
-        private readonly SortHandler _sortHandler;
-        private readonly Workspace _workspace;
-
-        private ListView _listView;
-        private DispatcherTimer _clickTimer;
-        private bool dragCanceled;
-        private Point? dragStart;
-
         [ImportingConstructor]
         public MouseHandler(Workspace workspace)
         {
-            _workspace = workspace;
-            _options = workspace.Options;
-            _sortHandler = new SortHandler(workspace.ActiveLister);
+            _workspace         = workspace;
+            _options           = workspace.Options;
+            _sortHandler       = new SortHandler(workspace.ActiveLister);
             _commandRepository = workspace.CommandRepository;
-            _notificationHost = workspace.NotificationHost;
+            _notificationHost  = workspace.NotificationHost;
         }
 
         public bool Dragged { get; set; }
+
+        public void Dispose()
+        {
+            _listView.Drop                       -= DropList_Drop;
+            _listView.DragEnter                  -= DropList_DragEnter;
+            _listView.QueryContinueDrag          -= _listView_QueryContinueDrag;
+            _listView.PreviewMouseLeftButtonDown -= List_PreviewMouseLeftButtonDown;
+            _listView.PreviewMouseMove           -= List_MouseMove;
+            _listView.MouseUp                    -= _listView_MouseUp;
+            _listView                            =  null;
+            _clickTimer?.Stop();
+            _clickTimer = null;
+        }
+
+        private readonly CommandRepository _commandRepository;
+        private readonly string            _dragFormat = DataFormats.FileDrop;
+        private readonly INotificationHost _notificationHost;
+        private readonly Options           _options;
+        private readonly SortHandler       _sortHandler;
+        private readonly Workspace         _workspace;
+        private          DispatcherTimer   _clickTimer;
+
+        private ListView _listView;
+        private bool     _dragCanceled;
+        private Point?   _dragStart;
+        private bool     _mouseupSinceRenameInit;
+        private bool     _multipleItemsClicked;
+
+        private ModifierKeys _multipleItemsClickedModifier;
+        private bool         _showRenameOnMouseup;
 
         public void RegisterTo(ListView listerView)
         {
             if (Equals(listerView, _listView))
                 return;
-            _listView = listerView;
-            _listView.Drop += DropList_Drop;
-            _listView.DragEnter += DropList_DragEnter;
-            _listView.QueryContinueDrag += _listView_QueryContinueDrag;
+            _listView                            =  listerView;
+            _listView.Drop                       += DropList_Drop;
+            _listView.DragEnter                  += DropList_DragEnter;
+            _listView.QueryContinueDrag          += _listView_QueryContinueDrag;
             _listView.PreviewMouseLeftButtonDown += List_PreviewMouseLeftButtonDown;
-            _listView.PreviewMouseLeftButtonUp += _listView_PreviewMouseLeftButtonUp;
-            _listView.PreviewMouseMove += List_MouseMove;
-            _listView.MouseUp += _listView_MouseUp;
+            _listView.PreviewMouseLeftButtonUp   += _listView_PreviewMouseLeftButtonUp;
+            _listView.PreviewMouseMove           += List_MouseMove;
+            _listView.MouseUp                    += _listView_MouseUp;
 
             _clickTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(_options.DoubleClickTime),
@@ -70,7 +87,7 @@ namespace Kexi.Common
         {
             if (e.OriginalSource is Visual visual)
             {
-                var header =  visual as GridViewColumnHeader ?? Utils.FindParent<GridViewColumnHeader>(visual);
+                var header = visual as GridViewColumnHeader ?? Utils.FindParent<GridViewColumnHeader>(visual);
                 if (header != null)
                 {
                     var clickPos = e.GetPosition(header).X;
@@ -90,7 +107,7 @@ namespace Kexi.Common
             if (item == null && e.ChangedButton == MouseButton.Left)
                 return;
 
-            dragStart = null;
+            _dragStart = null;
             switch (e.ChangedButton)
             {
                 case MouseButton.Left:
@@ -99,7 +116,7 @@ namespace Kexi.Common
                 case MouseButton.Middle:
                     _workspace.ActiveLister.Path = _workspace.ActiveLister.GetParentContainer();
                     _workspace.ActiveLister.Refresh();
-                    e.Handled                    = true;
+                    e.Handled = true;
                     break;
                 case MouseButton.Right:
                     _workspace.ActiveLister.ShowContextMenu();
@@ -118,9 +135,9 @@ namespace Kexi.Common
 
             //Multiple Items 
             //Action is not performed in previewhandler because click could be strg/shift + drag operation
-            if (multipleItemsClicked)
+            if (_multipleItemsClicked)
             {
-                switch (multipleItemsClickedModifier)
+                switch (_multipleItemsClickedModifier)
                 {
                     case ModifierKeys.Control:
                         _workspace.ActiveLister.SetSelection(item, false);
@@ -144,26 +161,23 @@ namespace Kexi.Common
                         break;
                 }
 
-                multipleItemsClicked         = false;
-                multipleItemsClickedModifier = ModifierKeys.None;
+                _multipleItemsClicked         = false;
+                _multipleItemsClickedModifier = ModifierKeys.None;
             }
 
             if (_clickTimer.Tag != null)
             {
-                mouseupSinceRenameInit = true;
+                _mouseupSinceRenameInit = true;
             }
-            if (showRenameOnMouseup)
+
+            if (_showRenameOnMouseup)
             {
-                showRenameOnMouseup = false;
+                _showRenameOnMouseup = false;
                 _commandRepository.GetCommandByName(nameof(RenameFileItemCommand)).Execute(_clickTimer.Tag);
                 _clickTimer.Tag = null;
             }
         }
 
-        private ModifierKeys multipleItemsClickedModifier;
-        private bool multipleItemsClicked;
-        private bool mouseupSinceRenameInit;
-        private bool showRenameOnMouseup;
         private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is Visual visual)
@@ -179,31 +193,40 @@ namespace Kexi.Common
             var dataItem = Utils.GetDataContextFromOriginalSource(e.OriginalSource);
             if (!(dataItem is IItem item))
             {
-                dragStart = null;
-                dragCanceled = true;
+                if (e.ClickCount == 2) //Click on empty area -> go back
+                {
+                    _workspace.CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
+                    e.Handled = true;
+                }
+                else
+                {
+                    _dragStart    = null;
+                    _dragCanceled = true;
+                }
+
                 return;
             }
 
             if (e.ClickCount < 2)
             {
                 _clickTimer.Stop();
-                dragStart = e.GetPosition(_listView);
-                dragCanceled = false;
-                Dragged = false;
+                _dragStart    = e.GetPosition(_listView);
+                _dragCanceled = false;
+                Dragged      = false;
                 //TODO: Dont check for Fileitem introduce IRenameable
                 if (_workspace.ActiveLister.SelectedItems.Contains(item) && item is IRenameable)
                 {
                     var selected = _workspace.ActiveLister.SelectedItems.Count();
                     if (selected > 1)
                     {
-                        multipleItemsClicked = true;
-                        multipleItemsClickedModifier = Keyboard.Modifiers;
-                        e.Handled = true;
+                        _multipleItemsClicked         = true;
+                        _multipleItemsClickedModifier = Keyboard.Modifiers;
+                        e.Handled                    = true;
                     }
                     else if (selected == 1)
                     {
-                        mouseupSinceRenameInit = false;
-                        _clickTimer.Tag = item;
+                        _mouseupSinceRenameInit = false;
+                        _clickTimer.Tag        = item;
                         _clickTimer.Start();
                     }
                 }
@@ -228,8 +251,8 @@ namespace Kexi.Common
         {
             if (e.EscapePressed)
             {
-                e.Action = DragAction.Cancel;
-                dragCanceled = true;
+                e.Action     = DragAction.Cancel;
+                _dragCanceled = true;
             }
         }
 
@@ -243,14 +266,14 @@ namespace Kexi.Common
 
         private void DropList_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(_dragFormat) && !dragCanceled)
+            if (e.Data.GetDataPresent(_dragFormat) && !_dragCanceled)
             {
                 var files = (string[]) e.Data.GetData(DataFormats.FileDrop);
-                if (!files.Any())
+                if (files == null || !files.Any())
                     return;
 
-                string destination = null;
-                var listViewItem = FindAnchestor<ListViewItem>(e.OriginalSource);
+                string destination  = null;
+                var    listViewItem = FindAnchestor<ListViewItem>(e.OriginalSource);
 
                 if (listViewItem?.Content is FileItem item)
                 {
@@ -277,7 +300,7 @@ namespace Kexi.Common
                         FilesystemAction.SetClipboard<IItem>(fileAction, files);
 
                     var action = new FilesystemAction(_notificationHost);
-                    var items = Clipboard.GetFileDropList();
+                    var items  = Clipboard.GetFileDropList();
                     Task.Factory.StartNew(() => { action.Paste(destination, items, fileAction); });
                     if (fileAction == FileAction.Move)
                         Clipboard.Clear();
@@ -288,38 +311,38 @@ namespace Kexi.Common
 
         private void ClickTimer_Tick(object sender, EventArgs ea)
         {
-            if (mouseupSinceRenameInit)
+            if (_mouseupSinceRenameInit)
             {
                 _commandRepository.GetCommandByName(nameof(RenameFileItemCommand)).Execute(_clickTimer.Tag);
                 _clickTimer.Tag = null;
             }
             else
-                showRenameOnMouseup = true;
+                _showRenameOnMouseup = true;
 
             _clickTimer.Stop();
         }
 
         private void List_MouseMove(object sender, MouseEventArgs e)
         {
-            if (dragStart == null)
+            if (_dragStart == null)
                 return;
 
             var mousePos = e.GetPosition(_listView);
-            var diff = dragStart.Value - mousePos;
+            var diff     = _dragStart.Value - mousePos;
 
             if (e.LeftButton == MouseButtonState.Pressed &&
                 (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+                    Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 _clickTimer.Stop();
-                _clickTimer.Tag = null;
-                showRenameOnMouseup = false;
-                Dragged = true;
+                _clickTimer.Tag     = null;
+                _showRenameOnMouseup = false;
+                Dragged             = true;
                 var listViewItem = FindAnchestor<ListViewItem>(e.OriginalSource);
 
                 if (listViewItem != null)
                 {
-                    var view = _listView;
+                    var view     = _listView;
                     var dragData = new DataObject(_dragFormat, view.SelectedItems.OfType<FileItem>().Select(i => i.Path).ToArray());
                     DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link);
                 }
@@ -328,26 +351,17 @@ namespace Kexi.Common
 
         private static T FindAnchestor<T>(object obj) where T : DependencyObject
         {
-            var current = obj as DependencyObject;
+            if (!(obj is DependencyObject current))
+                return null;
+
             do
             {
-                if (current is T variable) return variable;
-                    current = VisualTreeHelper.GetParent(current);
+                if (current is T variable) 
+                    return variable;
+                current = VisualTreeHelper.GetParent(current);
             } while (current != null);
-            return null;
-        }
 
-        public void Dispose()
-        {
-            _listView.Drop                       -= DropList_Drop;
-            _listView.DragEnter                  -= DropList_DragEnter;
-            _listView.QueryContinueDrag          -= _listView_QueryContinueDrag;
-            _listView.PreviewMouseLeftButtonDown -= List_PreviewMouseLeftButtonDown;
-            _listView.PreviewMouseMove           -= List_MouseMove;
-            _listView.MouseUp                    -= _listView_MouseUp;
-            _listView                            =  null;
-            _clickTimer?.Stop();
-            _clickTimer = null;
+            return null;
         }
     }
 }
