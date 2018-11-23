@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows.Controls;
-using System.Windows.Input;
 using Kexi.Common;
 using Kexi.Interfaces;
 
@@ -52,8 +50,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.GroupBy  =  _currentHistoryItem.GroupBy;
 
             var selected = _workspace.ActiveLister.ItemsView.SourceCollection.Cast<IItem>().FirstOrDefault(f => f.Path == _currentHistoryItem.SelectedPath);
-            var item     = _workspace.ActiveLister.View.ListView.ItemContainerGenerator.ContainerFromItem(selected) as ListViewItem;
-            Keyboard.Focus(item);
+            _workspace.FocusItem(selected);
         }
     }
 }
