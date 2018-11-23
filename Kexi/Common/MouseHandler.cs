@@ -141,18 +141,8 @@ namespace Kexi.Common
                 {
                     case ModifierKeys.Control:
                         _workspace.ActiveLister.SetSelection(item, false);
-                        //Keyboard.Focus(_listView.ItemContainerGenerator.ContainerFromItem(item) as IInputElement);
                         break;
                     case ModifierKeys.Shift:
-                        //var found = false;
-                        //foreach (var i in _workspace.ActiveLister.SelectedItems)
-                        //{
-                        //    if (found)
-                        //        _workspace.ActiveLister.SetSelection(item, false);
-                        //    else if (Equals(i, item))
-                        //        found = true;
-                        //}
-                        //Keyboard.Focus(_listView.ItemContainerGenerator.ContainerFromItem(item) as IInputElement);
                         break;
                     default:
                         _workspace.ActiveLister.ClearSelection();

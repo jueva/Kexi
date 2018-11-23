@@ -96,6 +96,7 @@ namespace Kexi.Common.KeyHandling
                             args.Handled = true;
                             var newArgs = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource ?? throw new InvalidOperationException(), 0, Key.Down) {RoutedEvent = Keyboard.KeyDownEvent};
                             InputManager.Current.ProcessInput(newArgs);
+                            EnsureFocus();
                             return true;
                         }
                         case nameof(MoveCursorUpCommand):
@@ -103,6 +104,7 @@ namespace Kexi.Common.KeyHandling
                             args.Handled = true;
                             var newArgs = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource ?? throw new InvalidOperationException(), 0, Key.Up) {RoutedEvent = Keyboard.KeyDownEvent};
                             InputManager.Current.ProcessInput(newArgs);
+                            EnsureFocus();
                             return true;
                         }
                     }
@@ -122,5 +124,10 @@ namespace Kexi.Common.KeyHandling
             return false;
         }
 
+        private void EnsureFocus()
+        {
+            if (!_workspace.GetSelection<IItem>().Any())
+                _workspace.FocusCurrentOrFirst();
+        }
     }
 }
