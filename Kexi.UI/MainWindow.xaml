@@ -12,6 +12,7 @@
                       xmlns:view="clr-namespace:Kexi.View"
                       xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
                       xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
+                      xmlns:converters="clr-namespace:Kexi.UI.Converters"
                       x:Name="mainWindow"
                       Width="1200"
                       Height="600"
@@ -32,6 +33,9 @@
                       FontSize="{Binding Options.FontSize}"
                       FontFamily="{Binding Options.FontFamily}"
                       mc:Ignorable="d">
+    <controls:MetroWindow.Resources>
+        <converters:TransparencyConverter x:Key="TransparencyConverter"/>
+    </controls:MetroWindow.Resources>
 
     <controls:MetroWindow.Title>
         <MultiBinding Converter="{StaticResource WindowTitleConverter}">
@@ -121,7 +125,13 @@
         </Rectangle>
         <!-- Transparent for Acryl -->
         <!-- <Grid Background="{DynamicResource ListerBackground}"> -->
-        <Grid Background="Transparent">
+        <Grid >
+            <Grid.Background>
+                <MultiBinding  Converter="{StaticResource TransparencyConverter}">
+                    <Binding Path="Options.TransparentBackground"></Binding>
+                    <Binding Path="Options.Theme"></Binding>
+                </MultiBinding>
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <!--  Ribbon  -->

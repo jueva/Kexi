@@ -50,6 +50,7 @@ namespace Kexi.ViewModel.Commands
             _workspace.ActiveLister.GroupBy  =  _currentHistoryItem.GroupBy;
 
             var selected = _workspace.ActiveLister.ItemsView.SourceCollection.Cast<IItem>().FirstOrDefault(f => f.Path == _currentHistoryItem.SelectedPath);
+            _workspace.ActiveLister.ClearSelection();
             _workspace.FocusItem(selected);
         }
     }

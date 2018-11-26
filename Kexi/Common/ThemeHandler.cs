@@ -51,8 +51,10 @@ namespace Kexi.Common
             {
                 Source = new Uri(theme.FullName, UriKind.Absolute)
             };
-            Options.WriteToConfig("Theme", Path.GetFileNameWithoutExtension(theme.FullName));
+            var th = Path.GetFileNameWithoutExtension(theme.FullName);
+            Options.WriteToConfig("Theme", th);
             Application.Current.Resources.MergedDictionaries.Add(dict);
+            Options.Theme = th;
             NotificationHost.AddInfo("Theme changed to " + themeName);
         }
 

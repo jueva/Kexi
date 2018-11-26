@@ -43,6 +43,18 @@ namespace Kexi.Common
         private string _viewClipboardHotKey;
         private KeyMode _keyMode;
         private bool _showSearchStringInClassicMode;
+        private bool _transparentBackground;
+
+        public bool TransparentBackground
+        {
+            get => _transparentBackground;
+            set
+            {
+                if (value == _transparentBackground) return;
+                _transparentBackground = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Options()
         {
@@ -73,6 +85,7 @@ namespace Kexi.Common
             CenterPopup = (bool) settings.GetValue("CenterPopup", typeof(bool));;
             AdressbarVisible = true;
             Highlights = (bool) settings.GetValue("Highlights", typeof(bool));
+            TransparentBackground = (bool) settings.GetValue("TransparentBackground", typeof(bool));
 
             ShowSearchStringInClassicMode = (bool) settings.GetValue("ShowSearchStringInClassicMode", typeof(bool));
             var keyString = (string) settings.GetValue("KeyMode", typeof(string));

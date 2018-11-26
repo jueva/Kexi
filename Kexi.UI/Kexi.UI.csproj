@@ -124,6 +124,7 @@
     <Compile Include="Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Converters\SubDirectoriesToVisibilityConverter.cs" />
     <Compile Include="Converters\ThemeConverter.cs" />
+    <Compile Include="Converters\TransparencyConverter.cs" />
     <Compile Include="Converters\UniquePathConverter.cs" />
     <Compile Include="Converters\ViewTypeBackgroundConverter.cs" />
     <Compile Include="Converters\ViewTypeConverter.cs" />
