@@ -191,6 +191,7 @@
     <Compile Include="ViewModel\Commands\AdjustListerWidthCommand.cs" />
     <Compile Include="ViewModel\Commands\AvalonDumpManagerCommand.cs" />
     <Compile Include="ViewModel\Commands\BreakConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\ChangeBackgroundTransparencyCommand.cs" />
     <Compile Include="ViewModel\Commands\ChangeDocumentLaneCommand.cs" />
     <Compile Include="ViewModel\Commands\ClearFilterCommand.cs" />
     <Compile Include="ViewModel\Commands\ClearSortingCommand.cs" />

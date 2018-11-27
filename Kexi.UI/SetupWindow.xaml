@@ -19,11 +19,11 @@
                  ShowMinButton="False"
                  ShowMaxRestoreButton="False"
                  mc:Ignorable="d"
-                 Title="Welcome. Please select" Height="340" Width="450">
+                 Title="Welcome. Please select" Width="600" Height="380">
 
     <StackPanel Orientation="Vertical" Margin="10" Background="{DynamicResource ListerBackground}">
         <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold">Theme</Label>
-        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" x:Name="DarkThemeButton"
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winDark'}">Dark</RadioButton>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winLight'}">Light</RadioButton>
@@ -31,6 +31,9 @@
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='solarizedDark'}">Solarized Dark</RadioButton>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='solarizedLight'}">Solarized Light</RadioButton>
+
+        <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold">Transparent Background</Label>
+        <CheckBox Foreground="{DynamicResource ListerForeground}" IsChecked="{Binding TransparentBackground}"/>
 
         <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold" Margin="0 10 0 0">Key Mode</Label>
         <RadioButton  Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
@@ -50,5 +53,12 @@
 
         <Button Margin="0 10 0 0" Command="{Binding OkButtonCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}">Ok</Button>
     </StackPanel>
+
+    <mah:MetroWindow.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding OkButtonCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}"></KeyBinding>
+        <KeyBinding Key="Escape" Command="{Binding CancelCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}"></KeyBinding>
+        <KeyBinding Key="J" Command="{Binding FocusNextCommand, Mode=OneWay}"></KeyBinding>
+        <KeyBinding Key="K" Command="{Binding FocusPreviousCommand, Mode=OneWay}"></KeyBinding>
+    </mah:MetroWindow.InputBindings>
 
 </mah:MetroWindow>

@@ -13,7 +13,7 @@
                       xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
                       xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
                       xmlns:converters="clr-namespace:Kexi.UI.Converters"
-                      x:Name="mainWindow"
+                      x:Name="KexiWindow"
                       Width="1200"
                       Height="600"
                       d:DataContext="{d:DesignInstance d:Type=viewModel1:Workspace}"
@@ -33,8 +33,9 @@
                       FontSize="{Binding Options.FontSize}"
                       FontFamily="{Binding Options.FontFamily}"
                       mc:Ignorable="d">
+
     <controls:MetroWindow.Resources>
-        <converters:TransparencyConverter x:Key="TransparencyConverter"/>
+        <converters:TransparencyConverter x:Key="TransparencyConverter" />
     </controls:MetroWindow.Resources>
 
     <controls:MetroWindow.Title>
@@ -83,7 +84,8 @@
                         </TextBox>
                     </StackPanel>
                 </Border>
-                <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" CommandParameter="FromButton" Focusable="False"
+                <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" CommandParameter="FromButton"
+                        Focusable="False"
                         Margin="0 2 3 3"
                         Style="{StaticResource CommandButtonStyle}">
 
@@ -114,7 +116,7 @@
     </controls:MetroWindow.RightWindowCommands>
 
     <Grid Background="Transparent">
-        <Rectangle
+        <Rectangle x:Name="TransparentRect"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Fill="{DynamicResource ListerBackground}"
@@ -122,16 +124,44 @@
             <Rectangle.Effect>
                 <acrylicWpf:NoiseEffect Ratio="0.25" />
             </Rectangle.Effect>
+            <Rectangle.Style>
+                <Style TargetType="Rectangle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Options.TransparentBackground}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
+                                        From="1.0" To="0.65" Duration="0:0:0.5"
+                                    />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
+                                        From="0.65" To="1.0" Duration="0:0:0.5"
+                                    />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+
+                </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
         </Rectangle>
-        <!-- Transparent for Acryl -->
-        <!-- <Grid Background="{DynamicResource ListerBackground}"> -->
-        <Grid >
-            <Grid.Background>
-                <MultiBinding  Converter="{StaticResource TransparencyConverter}">
-                    <Binding Path="Options.TransparentBackground"></Binding>
-                    <Binding Path="Options.Theme"></Binding>
+        <Grid>
+            <Grid.Background>Transparent</Grid.Background>
+            <!--<Grid.Background>
+                <MultiBinding Converter="{StaticResource TransparencyConverter}">
+                    <Binding Path="Options.TransparentBackground" />
+                    <Binding Path="Options.Theme" />
                 </MultiBinding>
-            </Grid.Background>
+            </Grid.Background>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <!--  Ribbon  -->
@@ -150,36 +180,36 @@
             </Grid.RowDefinitions>
 
             <view1:RibbonBar x:Name="RibbonBar"
-                         Grid.Row="0"
-                         Margin="0,0,0,0"
-                         DataContext="{Binding RibbonViewModel}"
-                         Visibility="{Binding RibbonVisible,
+                             Grid.Row="0"
+                             Margin="0,0,0,0"
+                             DataContext="{Binding RibbonViewModel}"
+                             Visibility="{Binding RibbonVisible,
                          Converter={StaticResource BoolToVisibilityConverter}}" />
             <view1:AdressBar x:Name="AdressBar"
-                         Grid.Row="1"
-                         x:FieldModifier="public"
-                         Margin="0"
-                         DataContext="{Binding AdressbarViewModel}"/>
+                             Grid.Row="1"
+                             x:FieldModifier="public"
+                             Margin="0"
+                             DataContext="{Binding AdressbarViewModel}" />
             <view1:DockManager x:Name="DockManager"
-                           Grid.Row="2"
-                           Margin="0"
-                           Background="Transparent"
-                           DataContext="{Binding Docking}"
-                           Style="{StaticResource dockmanagerStyle}" />
+                               Grid.Row="2"
+                               Margin="0"
+                               Background="Transparent"
+                               DataContext="{Binding Docking}"
+                               Style="{StaticResource dockmanagerStyle}" />
             <view1:StatusBarView x:Name="StatusBar"
-                             Grid.Row="3"
-                             DataContext="{Binding ActiveLister}" />
+                                 Grid.Row="3"
+                                 DataContext="{Binding ActiveLister}" />
             <view1:CommanderBar x:Name="CommanderBar"
-                            Grid.Row="4"
-                            DataContext="{Binding CommanderbarViewModel}" />
+                                Grid.Row="4"
+                                DataContext="{Binding CommanderbarViewModel}" />
             <view1:PopupView x:Name="Popup"
-                         Grid.Row="5"
-                         DataContext="{Binding PopupViewModel}"
-                         Visibility="Hidden" />
+                             Grid.Row="5"
+                             DataContext="{Binding PopupViewModel}"
+                             Visibility="Hidden" />
             <view1:RenamePopup x:Name="RenamePopup"
-                          Grid.Row="6"
-                          DataContext="{Binding RenamePopupViewModel}"
-                          Visibility="Hidden" />
+                               Grid.Row="6"
+                               DataContext="{Binding RenamePopupViewModel}"
+                               Visibility="Hidden" />
         </Grid>
     </Grid>
 </controls:MetroWindow>

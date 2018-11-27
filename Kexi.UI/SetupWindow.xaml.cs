@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Kexi.ViewModel;
-using MahApps.Metro.Controls;
+﻿using Kexi.ViewModel;
 
 namespace Kexi.UI
 {
     /// <summary>
     /// Interaction logic for SetupWindow.xaml
     /// </summary>
-    public partial class SetupWindow : MetroWindow
+    public partial class SetupWindow
     {
         public SetupWindow(Workspace workspace)
         {
             InitializeComponent();
+            Loaded += SetupWindow_Loaded;
             DataContext = new SetupViewModel(workspace);
+        }
+
+        private void SetupWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DarkThemeButton.Focus();
         }
     }
 }

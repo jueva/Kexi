@@ -13,7 +13,8 @@ namespace Kexi.UI.Converters
             var transparent = false;
             if (values[0] is bool t)
                 transparent = t;
-            return transparent  ? Brushes.Transparent : Application.Current.FindResource("ListerBackground");
+
+            return transparent ? Brushes.Transparent : Application.Current.FindResource("ListerBackground");
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

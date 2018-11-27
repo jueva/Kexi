@@ -58,8 +58,8 @@ namespace Kexi.UI
             Workspace   = workspace;
             DataContext = workspace;
             Workspace.ThemeHandler.ChangeTheme(Workspace.Options.Theme);
-            mainWindow.GotFocus += RegisterHotKey;
-            Workspace.Manager   =  mainWindow.DockManager.DockingManager;
+            KexiWindow.GotFocus += RegisterHotKey;
+            Workspace.Manager   =  KexiWindow.DockManager.DockingManager;
             Loaded += MainWindow_Loaded1;
         }
 
@@ -91,14 +91,14 @@ namespace Kexi.UI
 
         private void RegisterHotKey(object sender, EventArgs ea)
         {
-            new GlobalHotkeyHandler(mainWindow, Workspace).Register();
-            mainWindow.GotFocus -= RegisterHotKey;
+            new GlobalHotkeyHandler(KexiWindow, Workspace).Register();
+            KexiWindow.GotFocus -= RegisterHotKey;
         }
 
         private void RegisterNotification(object sender, EventArgs ea)
         {
-            new WinNotificationHandler(mainWindow, Workspace.NotificationHost).Register();
-            mainWindow.SourceInitialized -= RegisterNotification;
+            new WinNotificationHandler(KexiWindow, Workspace.NotificationHost).Register();
+            KexiWindow.SourceInitialized -= RegisterNotification;
         }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
