@@ -141,6 +141,8 @@ namespace Kexi.ViewModel.Lister
                 else
                     PathName = System.IO.Path.GetFileName(value);
             }
+
+            Title = value;
         }
 
         public override void Copy()
