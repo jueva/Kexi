@@ -183,7 +183,9 @@ namespace Kexi.Common
                     _workspace.CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
                     e.Handled = true;
                 }
-                else if (!_listView.IsKeyboardFocusWithin) //Breadcrumbpopup hatte Focus, Click außerhalb der Gridzeilen
+                //Breadcrumbpopup hatte Focus, Click außerhalb der Gridzeilen
+                //carefull when scrollbar from other splitted lister is clicked
+                else if (!_listView.IsKeyboardFocusWithin && FindAnchestor<ListView>(e.OriginalSource) == _workspace.ActiveLister.View.ListView) 
                 {
                     _workspace.FocusListView();
                     e.Handled = true;

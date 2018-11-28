@@ -167,18 +167,46 @@
                         </Grid.RowDefinitions>
                         <!--Following border is required to catch mouse events-->
                         <Border Grid.RowSpan="2" />
-                        <Grid Panel.ZIndex="1" Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <!--Replacing xcad:DocumentPaneTabPanel for a WrapPanel-->
-                            <WrapPanel x:Name="HeaderPanel"
-                                       Grid.Column="0"
-                                       IsItemsHost="true"
-                                       Grid.Row="0"
-                                       KeyboardNavigation.TabIndex="1" />
-                        </Grid>
+            <Grid  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type avalonDockControls:LayoutDocumentPaneControl}}, Path=Model.ShowHeader, Converter={StaticResource BoolToVisibilityConverter}}"
+                   Panel.ZIndex="1">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <avalonDockControls:DocumentPaneTabPanel x:Name="HeaderPanel"
+                                                       Grid.Column="0"
+                                                       IsItemsHost="true"
+                                                       Margin="2,0,2,0"
+                                                       Grid.Row="0"
+                                                       KeyboardNavigation.TabIndex="1" />
+              <avalonDockControls:DropDownButton x:Name="MenuDropDownButton"
+                                                 Style="{StaticResource AvalonDock_ThemeMetro_ToolButtonStyle}"
+                                                 Focusable="False"
+                                                 VerticalAlignment="Center"
+                                                 Grid.Column="1">
+                <avalonDockControls:DropDownButton.DropDownContextMenu>
+                  <avalonDockControls:ContextMenuEx ItemsSource="{Binding Model.ChildrenSorted, RelativeSource={RelativeSource TemplatedParent}}">
+                    <avalonDockControls:ContextMenuEx.ItemContainerStyle>
+                      <Style TargetType="{x:Type avalonDockControls:MenuItemEx}"
+                             BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="HeaderTemplate"
+                                Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplate}" />
+                        <Setter Property="HeaderTemplateSelector"
+                                Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplateSelector}" />
+                        <Setter Property="IconTemplate"
+                                Value="{Binding Path=Root.Manager.IconContentTemplate}" />
+                        <Setter Property="IconTemplateSelector"
+                                Value="{Binding Path=Root.Manager.IconContentTemplateSelector}" />
+                        <Setter Property="Command"
+                                Value="{Binding Path=., Converter={StaticResource ActivateCommandLayoutItemFromLayoutModelConverter}}" />
+                      </Style>
+                    </avalonDockControls:ContextMenuEx.ItemContainerStyle>
+                  </avalonDockControls:ContextMenuEx>
+                </avalonDockControls:DropDownButton.DropDownContextMenu>
+                <Image Source="Images/PinDocMenu.png" >
+                </Image>
+              </avalonDockControls:DropDownButton>
+            </Grid>
                         <Border x:Name="ContentPanel"
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
