@@ -47,7 +47,7 @@ namespace Kexi.ViewModel.Lister
         string GetParentContainer();
         void DoAction(IItem item);
         event Action<string> PathChanged;
-        void ShowContextMenu();
+        void ShowContextMenu(IEnumerable<IItem> selectedItems);
         event Action<ILister> GotView;
         string GetStatusString();
 

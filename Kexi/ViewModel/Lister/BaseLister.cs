@@ -203,7 +203,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public virtual void ShowContextMenu()
+        public virtual void ShowContextMenu(IEnumerable<IItem> selectedItems)
         {
             CommandRepository.GetCommandByName(nameof(ShowListerContextMenuPopupCommand)).Execute(true);
         }

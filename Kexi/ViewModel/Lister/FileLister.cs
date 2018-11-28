@@ -217,17 +217,17 @@ namespace Kexi.ViewModel.Lister
             return FileItemProvider.GetParentContainer(Path);
         }
 
-        public override void ShowContextMenu()
+        public override void ShowContextMenu(IEnumerable<IItem> selectedItems)
         {
             var scm = new ShellContextMenu();
-            if (Workspace.CurrentItem == null && Path != null)
+            if (selectedItems == null && Path != null)
             {
                 var dirInfo = new[] {new DirectoryInfo(Path)};
                 scm.ShowContextMenu(dirInfo, Cursor.Position);
             }
             else
             {
-                var fileInfos = SelectedItems.Select(getFileInfo).Where(i => i != null).ToArray();
+                var fileInfos = selectedItems.Select(getFileInfo).Where(i => i != null).ToArray();
                 scm.ShowContextMenu(fileInfos, Cursor.Position);
             }
         }

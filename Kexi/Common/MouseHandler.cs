@@ -119,7 +119,8 @@ namespace Kexi.Common
                     e.Handled = true;
                     break;
                 case MouseButton.Right:
-                    _workspace.ActiveLister.ShowContextMenu();
+                    var items = item == null ? null : _workspace.GetSelection<IItem>();
+                    _workspace.ActiveLister.ShowContextMenu(items);
                     e.Handled = true;
                     break;
             }
@@ -127,12 +128,6 @@ namespace Kexi.Common
 
         private void HandleLeftButtonUp(MouseButtonEventArgs e, IItem item)
         {
-            if (!_listView.IsKeyboardFocusWithin) //Breadcrumbpopup hatte Focus, Click außerhalb der Gridzeilen
-            {
-                _workspace.FocusListView();
-                e.Handled = true;
-            }
-
             //Multiple Items 
             //Action is not performed in previewhandler because click could be strg/shift + drag operation
             if (_multipleItemsClicked)
@@ -186,6 +181,11 @@ namespace Kexi.Common
                 if (e.ClickCount == 2) //Click on empty area -> go back
                 {
                     _workspace.CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
+                    e.Handled = true;
+                }
+                else if (!_listView.IsKeyboardFocusWithin) //Breadcrumbpopup hatte Focus, Click außerhalb der Gridzeilen
+                {
+                    _workspace.FocusListView();
                     e.Handled = true;
                 }
                 else
