@@ -8,8 +8,9 @@
                  xmlns:viewModel="clr-namespace:Kexi.ViewModel;assembly=Kexi"
                  xmlns:converters="clr-namespace:Kexi.UI.Converters"
                  xmlns:keyHandling="clr-namespace:Kexi.Common.KeyHandling;assembly=Kexi"
+                 xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
                  d:DataContext="{d:DesignInstance d:Type=viewModel:SetupViewModel}"
-                 Background="{DynamicResource ListerBackground}"
+                 Background="Transparent"
                  Foreground="{DynamicResource ListerForeground}"
                  BorderThickness="1"
                  BorderBrush="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"
@@ -20,8 +21,18 @@
                  ShowMaxRestoreButton="False"
                  mc:Ignorable="d"
                  Title="Welcome. Please select" Width="600" Height="380">
-
-    <StackPanel Orientation="Vertical" Margin="10" Background="{DynamicResource ListerBackground}">
+    <Grid Background="Transparent">
+        <Rectangle
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="{DynamicResource ListerBackground}"
+            Style="{StaticResource TransparentRectangle}"
+            >
+            <Rectangle.Effect>
+                <acrylicWpf:NoiseEffect Ratio="0.25" />
+            </Rectangle.Effect>
+        </Rectangle>
+    <StackPanel Orientation="Vertical" Margin="10" Background="Transparent">
         <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold">Theme</Label>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" x:Name="DarkThemeButton"
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winDark'}">Dark</RadioButton>
@@ -46,19 +57,20 @@
         </RadioButton>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="keymode" 
                      IsChecked="{Binding KeyMode, Converter={converters:EnumToBool}, ConverterParameter={x:Static keyHandling:KeyMode.ViStyle}}">
-            Vi Mode (Somehow Vi-ish. Press w or / to filter, e for context menu, move with j/k, ...)
+            Vi Mode (Somehow Vi-ish. Press w or / to filter/navigate, e for context menu, move with j/k, ...)
         </RadioButton>
         <Label Foreground="{DynamicResource ListerForeground}">Press ? in any keymode to explore/change shortcuts</Label>
         <Label Foreground="{DynamicResource ListerForeground}">Press F1 to show all commands</Label>
 
         <Button Margin="0 10 0 0" Command="{Binding OkButtonCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}">Ok</Button>
     </StackPanel>
-
+</Grid>
     <mah:MetroWindow.InputBindings>
         <KeyBinding Key="Return" Command="{Binding OkButtonCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}"></KeyBinding>
         <KeyBinding Key="Escape" Command="{Binding CancelCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Setup}"></KeyBinding>
         <KeyBinding Key="J" Command="{Binding FocusNextCommand, Mode=OneWay}"></KeyBinding>
         <KeyBinding Key="K" Command="{Binding FocusPreviousCommand, Mode=OneWay}"></KeyBinding>
     </mah:MetroWindow.InputBindings>
+    
 
 </mah:MetroWindow>

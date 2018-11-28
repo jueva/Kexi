@@ -12,7 +12,7 @@ namespace Kexi.UI.Converters
         {
             var path      = values[0] as string;
             var workspace = values[1] as Workspace;
-            if (path != null && workspace?.Options != null && workspace.Options.AdressbarVisible)
+            if (path != null && workspace?.Options != null && workspace.Options.AddressbarVisible)
             {
                 if (!string.IsNullOrEmpty(workspace.ActiveLister.ProtocolPrefix) && path.StartsWith(workspace.ActiveLister.ProtocolPrefix))
                 {

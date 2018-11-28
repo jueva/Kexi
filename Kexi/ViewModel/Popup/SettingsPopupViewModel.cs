@@ -23,7 +23,7 @@ namespace Kexi.ViewModel.Popup
             BaseItems = typeof(Options).GetProperties().OrderBy(p => p.Name).Select(p => 
                 new SettingItem(p.Name)
                 {
-                    DisplayName = $"{p.Name} ({GetValue(p.Name).ToString() })"
+                    DisplayName = $"{p.Name} ({GetCurrentValue(p.Name).ToString() })"
                 }
             );
             SetHeaderIconByKey("appbar_control_settings");
@@ -36,7 +36,7 @@ namespace Kexi.ViewModel.Popup
             DoAction(selectedItem);
         }
 
-        private object GetValue(string propertyName)
+        private object GetCurrentValue(string propertyName)
         {
             var prop = typeof(Options).GetProperty(propertyName);
             return prop == null ? null : prop.GetValue(Options);

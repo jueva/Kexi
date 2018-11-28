@@ -15,7 +15,7 @@ namespace Kexi.Common
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class Options : INotifyPropertyChanged
     {
-        private bool _adressbarVisible;
+        private bool _addressbarVisible;
         private bool _anchorablesMoveable;
 
         private double _anchorableWidth;
@@ -44,6 +44,7 @@ namespace Kexi.Common
         private KeyMode _keyMode;
         private bool _showSearchStringInClassicMode;
         private bool _transparentBackground;
+        private bool _headersVisible;
 
         public bool TransparentBackground
         {
@@ -82,11 +83,11 @@ namespace Kexi.Common
             ExtentedNavigationIcons = false;
             ShowPathPartDividers = true;
             StatusbarVisible = true;
-            CenterPopup = (bool) settings.GetValue("CenterPopup", typeof(bool));;
-            AdressbarVisible = true;
+            CenterPopup = (bool) settings.GetValue("CenterPopup", typeof(bool));
+            AddressbarVisible = true;
             Highlights = (bool) settings.GetValue("Highlights", typeof(bool));
             TransparentBackground = (bool) settings.GetValue("TransparentBackground", typeof(bool));
-
+            HeadersVisible = (bool) settings.GetValue("HeadersVisible", typeof(bool));
             ShowSearchStringInClassicMode = (bool) settings.GetValue("ShowSearchStringInClassicMode", typeof(bool));
             var keyString = (string) settings.GetValue("KeyMode", typeof(string));
             KeyMode = Enum.TryParse<KeyMode>(keyString, true, out var mode) 
@@ -268,13 +269,13 @@ namespace Kexi.Common
             }
         }
 
-        public bool AdressbarVisible
+        public bool AddressbarVisible
         {
-            get => _adressbarVisible;
+            get => _addressbarVisible;
             set
             {
-                if (value.Equals(_adressbarVisible)) return;
-                _adressbarVisible = value;
+                if (value.Equals(_addressbarVisible)) return;
+                _addressbarVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -286,7 +287,7 @@ namespace Kexi.Common
             {
                 if (value.Equals(_globalAdressebarVisible)) return;
                 _globalAdressebarVisible = value;
-                AdressbarVisible = value;
+                AddressbarVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -298,6 +299,16 @@ namespace Kexi.Common
             {
                 if (value.Equals(_statusbarVisible)) return;
                 _statusbarVisible = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool HeadersVisible
+        {
+            get => _headersVisible;
+            set
+            {
+                if (value.Equals(_headersVisible)) return;
+                _headersVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -420,8 +431,8 @@ namespace Kexi.Common
 
         public void RestoreAdressbarVisibility()
         {
-            if (GlobalAdressbarVisible != AdressbarVisible)
-                AdressbarVisible = GlobalAdressbarVisible;
+            if (GlobalAdressbarVisible != AddressbarVisible)
+                AddressbarVisible = GlobalAdressbarVisible;
         }
 
         [NotifyPropertyChangedInvocator]

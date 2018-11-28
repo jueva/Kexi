@@ -148,7 +148,7 @@ namespace Kexi.ViewModel.Item
                 Length = _fileItem.FileInfo.Length;
             }
 
-            if (_fileItem.FileSystemInfo != null)
+            if (_fileItem.FileInfo != null)
             {
                 LastModified   = _fileItem.FileSystemInfo.LastWriteTime;
                 LastAccessTime = _fileItem.FileSystemInfo.LastAccessTime;

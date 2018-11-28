@@ -22,7 +22,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.Options.AdressbarVisible = true;
+            _workspace.Options.AddressbarVisible = true;
             _workspace.BreadcrumbViewModel.Mode = BreadcrumbMode.Adressbox;
         }
 

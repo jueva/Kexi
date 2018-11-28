@@ -56,7 +56,6 @@ namespace Kexi.ViewModel.Lister
 
         public async Task<bool> DoBreadcrumbAction(string breadPath)
         {
-            //TODO: Move to Lister.Path??
             var uri = new Uri(breadPath);
             if (uri.IsUnc)
             {
@@ -248,7 +247,11 @@ namespace Kexi.ViewModel.Lister
         protected override Task<IEnumerable<FileItem>> GetItems()
         {
             _itemProvider.CancelCurrentTasks();
-            if (Path != null && new Uri(Path).IsUnc && !Directory.Exists(Path))
+            if (string.IsNullOrEmpty(Path))
+            {
+                PathName = Constants.RootName;
+            }
+            else if (new Uri(Path).IsUnc && !Directory.Exists(Path))
             {
                 return NetworkShareProvider.GetItems(Path);
             }

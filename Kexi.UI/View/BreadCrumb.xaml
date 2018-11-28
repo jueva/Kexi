@@ -67,7 +67,7 @@
                                         />
                                 <Button Margin="1 0 0 0"
                                         Background="{DynamicResource KexSelectionBackground}"
-                                        Command="{Binding Path=ViewModel.PathPartSelectedCommand,
+                                        Command="{Binding Path=ViewModel.LastPathPartSelectedCommand,
                                                           ElementName=breadControl}"
                                         CommandParameter="{Binding Path}"
                                         Content="{Binding Path=Name}"

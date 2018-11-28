@@ -56,12 +56,14 @@ namespace Kexi.View
 
         public GridView GetDetailView()
         {
-            var lister      = _lister;
-            var gridView    = new GridView();
-            
-            var headerStyle = _listView.FindResource("gridHeaderStyle") as Style;
-            gridView.ColumnHeaderContainerStyle = headerStyle;
+            var lister   = _lister;
+            var gridView = new GridView();
+
             if (lister != null)
+            {
+                var st          = lister.Options.HeadersVisible ? "gridHeaderStyle" : "gridHeaderHiddenStyle";
+                var headerStyle = _listView.FindResource(st) as Style;
+                gridView.ColumnHeaderContainerStyle = headerStyle;
                 foreach (var col in lister.Columns)
                 {
                     var gc = new GridViewColumn();
@@ -69,50 +71,62 @@ namespace Kexi.View
                     var header = new GridViewColumnHeader();
                     header.Content = col.Header;
                     gc.Header      = header;
-                    if (col.Type == ColumnType.Image)
+                    switch (col.Type)
                     {
-                        gc.CellTemplate = GetImageDataTemplate(col);
-                        if (col.BindingExpression == "Thumbnail" || col.BindingExpression == "Details.Thumbnail")
+                        case ColumnType.Image:
                         {
-                            gc.Width = lister.Workspace.Options.FontSize * 1.8;
-                        }
-                    }
-                    else if (col.Type == ColumnType.Bool)
-                        gc.CellTemplate = GetBoolCellTemplate(col);
-                    else if (col.Type == ColumnType.Number || col.Type == ColumnType.RightAligned)
-                        gc.CellTemplate = GetRightAlignDataTemplate(col);
-                    else if (col.Type == ColumnType.Highlightable)
-                        gc.CellTemplate = GetHighlightableTemplate(col);
-                    else if (col.Type == ColumnType.SyntaxHighlighted)
-                        gc.CellTemplate = GetSyntaxHighlightedTemplate(col);
-                    else
-                        gc.DisplayMemberBinding = GetBinding(col);
+                            gc.CellTemplate = GetImageDataTemplate(col);
+                            if (col.BindingExpression == "Thumbnail" || col.BindingExpression == "Details.Thumbnail")
+                            {
+                                gc.Width = lister.Options.FontSize * 1.8;
+                            }
 
-                    if (col.Size == ColumnSize.FullWidth)
-                    {
-                        //TODO: Hack
-                        var width = Application.Current.MainWindow.Width - 60;
-                        gc.Width = width;
+                            break;
+                        }
+                        case ColumnType.Bool:
+                            gc.CellTemplate = GetBoolCellTemplate(col);
+                            break;
+                        case ColumnType.Number:
+                        case ColumnType.RightAligned:
+                            gc.CellTemplate = GetRightAlignDataTemplate(col);
+                            break;
+                        case ColumnType.Highlightable:
+                            gc.CellTemplate = GetHighlightableTemplate(col);
+                            break;
+                        case ColumnType.SyntaxHighlighted:
+                            gc.CellTemplate = GetSyntaxHighlightedTemplate();
+                            break;
+                        default:
+                            gc.DisplayMemberBinding = GetBinding(col);
+                            break;
                     }
-                    else if (col.Size == ColumnSize.Auto)
+
+                    switch (col.Size)
                     {
-                        gc.Width = double.NaN;
+                        case ColumnSize.FullWidth:
+                        {
+                            //TODO: Hack
+                            if (Application.Current.MainWindow != null)
+                            {
+                                gc.Width = Application.Current.MainWindow.Width - 60;
+                            }
+
+                            break;
+                        }
+                        case ColumnSize.Auto:
+                            gc.Width = double.NaN;
+                            break;
                     }
 
                     if (col.Width.HasValue) gc.Width = col.Width.Value;
                     gridView.Columns.Add(gc);
                 }
-
+            }
             return gridView;
+
         }
 
-        private DataTemplate GetRtfTemplate(Column col)
-        {
-            var template = Application.Current.FindResource("RtfTemplate") as DataTemplate;
-            return template;
-        }
-
-        private DataTemplate GetSyntaxHighlightedTemplate(Column col)
+        private DataTemplate GetSyntaxHighlightedTemplate()
         {
             var template = Application.Current.FindResource("SyntaxHighlightingTemplate") as DataTemplate;
             return template;

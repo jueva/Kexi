@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Kexi.Annotations;
+using Kexi.Common;
 using Kexi.Common.KeyHandling;
 
 namespace Kexi.ViewModel
@@ -12,6 +13,7 @@ namespace Kexi.ViewModel
         public SetupViewModel(Workspace workspace)
         {
             _workspace      = workspace;
+            Options = _workspace.Options;
             OkButtonCommand = new RelayCommand(OkButtonClicked);
 
             CancelCommand = new RelayCommand((o) =>
@@ -51,6 +53,8 @@ namespace Kexi.ViewModel
                 _workspace.Options.TransparentBackground = value;
             }
         }
+
+        public Options Options { get; }
 
         public KeyMode KeyMode
         {

@@ -71,6 +71,13 @@ namespace Kexi.ViewModel
                 }, a => Workspace.ActiveLister is IBreadCrumbProvider);
             }
         }
+        public RelayCommand LastPathPartSelectedCommand
+        {
+            get
+            {
+                return new RelayCommand(c => { Mode = BreadcrumbMode.Adressbox; }, a => Workspace.ActiveLister is IBreadCrumbProvider);
+            }
+        }
 
         public RelayCommand PathSeparatorSelectedCommand
         {

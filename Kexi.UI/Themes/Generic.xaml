@@ -496,6 +496,10 @@
         </Setter>
     </Style>
 
+    <Style x:Key="gridHeaderHiddenStyle" TargetType="{x:Type GridViewColumnHeader}">
+        <Setter Property="Visibility" Value="Collapsed" />
+    </Style>
+
     <Style x:Key="gridHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource ListerForeground}" />
@@ -713,4 +717,30 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="Rectangle" x:Key="TransparentRectangle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Options.TransparentBackground}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
+                                From="1.0" To="0.65" Duration="0:0:0.5"
+                            />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
+                                From="0.65" To="1.0" Duration="0:0:0.5"
+                            />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

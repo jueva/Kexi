@@ -1,18 +1,12 @@
 ﻿<controls:MetroWindow x:Class="Kexi.UI.MainWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:common="clr-namespace:Kexi.Common;assembly=Kexi"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:fluent="urn:fluent-ribbon"
-                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:view1="clr-namespace:Kexi.UI.View"
+                      xmlns:view="clr-namespace:Kexi.UI.View"
                       xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
-                      xmlns:view="clr-namespace:Kexi.View"
-                      xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
                       xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
-                      xmlns:converters="clr-namespace:Kexi.UI.Converters"
                       x:Name="KexiWindow"
                       Width="1200"
                       Height="600"
@@ -34,31 +28,29 @@
                       FontFamily="{Binding Options.FontFamily}"
                       mc:Ignorable="d">
 
-    <controls:MetroWindow.Resources>
-        <converters:TransparencyConverter x:Key="TransparencyConverter" />
-    </controls:MetroWindow.Resources>
-
     <controls:MetroWindow.Title>
         <MultiBinding Converter="{StaticResource WindowTitleConverter}">
             <Binding Path="ActiveLister.Path" />
             <Binding Path="ActiveLister.Workspace" />
-            <Binding Path="ActiveLister.Options.AdressbarVisible" /> <!-- needed for propchanged -->
+            <Binding Path="ActiveLister.Options.AddressbarVisible" /> <!-- needed for propchanged -->
         </MultiBinding>
     </controls:MetroWindow.Title>
 
     <controls:MetroWindow.TitleTemplate>
         <DataTemplate>
-            <StackPanel Margin="5 2 2 2" Orientation="Horizontal">
-                <Button Background="{DynamicResource ListerBackground}" BorderThickness="0" Focusable="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Background="{DynamicResource ListerBackground}" BorderThickness="0" Focusable="False" Grid.Column="0">
                     <Image
                         Source="{Binding Path=DataContext.ActiveLister.Thumbnail, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                 </Button>
-                <TextBlock Margin="10 2 2 2"
-                           VerticalAlignment="Center"
-                           FontSize="14"
-                           Foreground="{DynamicResource ListerForeground}"
-                           Text="{TemplateBinding Content}" />
-            </StackPanel>
+
+            <view:AdressBar Margin="0 0 50 0" Grid.Column="1" 
+                             DataContext="{Binding Path=DataContext.AddressbarViewModel, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+            </Grid>
         </DataTemplate>
     </controls:MetroWindow.TitleTemplate>
 
@@ -69,7 +61,7 @@
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <StackPanel Orientation="Horizontal">
-                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 3 0">
+                <Border Visibility="Collapsed" Margin="0 0 3 0">
                     <StackPanel Orientation="Horizontal">
                         <TextBox x:Name="TitleText" MinWidth="130"
                                  TextWrapping="WrapWithOverflow"
@@ -116,43 +108,16 @@
     </controls:MetroWindow.RightWindowCommands>
 
     <Grid Background="Transparent">
-        <Rectangle x:Name="TransparentRect"
+        <Rectangle
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Fill="{DynamicResource ListerBackground}"
+            Style="{StaticResource TransparentRectangle}"
             Opacity="0.65">
             <Rectangle.Effect>
                 <acrylicWpf:NoiseEffect Ratio="0.25" />
             </Rectangle.Effect>
-            <Rectangle.Style>
-                <Style TargetType="Rectangle">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Options.TransparentBackground}" Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
-                                        From="1.0" To="0.65" Duration="0:0:0.5"
-                                    />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        Storyboard.TargetProperty="Opacity" DecelerationRatio="0.3"
-                                        From="0.65" To="1.0" Duration="0:0:0.5"
-                                    />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
 
-                </Style.Triggers>
-                </Style>
-            </Rectangle.Style>
         </Rectangle>
         <Grid>
             <Grid.Background>Transparent</Grid.Background>
@@ -179,34 +144,29 @@
                 <!-- RenamePopup -->
             </Grid.RowDefinitions>
 
-            <view1:RibbonBar x:Name="RibbonBar"
-                             Grid.Row="0"
+            <view:RibbonBar Grid.Row="0"
                              Margin="0,0,0,0"
                              DataContext="{Binding RibbonViewModel}"
                              Visibility="{Binding RibbonVisible,
                          Converter={StaticResource BoolToVisibilityConverter}}" />
-            <view1:AdressBar x:Name="AdressBar"
+            <!--<view1:AdressBar
                              Grid.Row="1"
-                             x:FieldModifier="public"
-                             Margin="0"
-                             DataContext="{Binding AdressbarViewModel}" />
-            <view1:DockManager x:Name="DockManager"
+                             Margin="0 0 50 0"
+                             DataContext="{Binding AdressbarViewModel}" />-->
+            <view:DockManager x:Name="DockManager"
                                Grid.Row="2"
                                Margin="0"
                                Background="Transparent"
                                DataContext="{Binding Docking}"
                                Style="{StaticResource dockmanagerStyle}" />
-            <view1:StatusBarView x:Name="StatusBar"
-                                 Grid.Row="3"
+            <view:StatusBarView Grid.Row="3"
                                  DataContext="{Binding ActiveLister}" />
-            <view1:CommanderBar x:Name="CommanderBar"
-                                Grid.Row="4"
+            <view:CommanderBar Grid.Row="4"
                                 DataContext="{Binding CommanderbarViewModel}" />
-            <view1:PopupView x:Name="Popup"
-                             Grid.Row="5"
+            <view:PopupView Grid.Row="5"
                              DataContext="{Binding PopupViewModel}"
                              Visibility="Hidden" />
-            <view1:RenamePopup x:Name="RenamePopup"
+            <view:RenamePopup 
                                Grid.Row="6"
                                DataContext="{Binding RenamePopupViewModel}"
                                Visibility="Hidden" />

@@ -110,7 +110,7 @@ namespace Kexi.ItemProvider
             {
                 var compi = new Shell32.Shell().NameSpace(ShellSpecialFolderConstants.ssfDRIVES);
                 rootItems = compi.Items().Cast<FolderItem2>()
-                    .Where(f => Directory.Exists(f.Path))
+                    //.Where(f => Directory.Exists(f.Path))
                     .Select(i => new FileItem(i.Path, i.IsFolder ? ItemType.Container : ItemType.Item, i.Name));
                 path = compi.Title;
 

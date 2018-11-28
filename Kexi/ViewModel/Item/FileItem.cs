@@ -17,7 +17,7 @@ namespace Kexi.ViewModel.Item
         {
             _itemProvider     = itemProvider;
             CancellationToken = _itemProvider?.CancellationTokenSource.Token;
-            if (name != null) 
+            if (name != null)
                 _fetchDisplayName = name != ".." && !name.EndsWith(".lnk");
             Path         = path;
             DisplayName  = name ?? System.IO.Path.GetFileName(path);
@@ -46,9 +46,26 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-        public FileInfo FileInfo => _fileInfo ?? (_fileInfo = string.IsNullOrEmpty(Path) ? null : new FileInfo(Path));
+        public FileInfo FileInfo {
+            get
+            {
+                if (_fileInfo == null)
+                {
+                    try
+                    {
+                        _fileInfo = (_fileInfo = string.IsNullOrEmpty(Path) ? null : new FileInfo(Path));
+                    }
+                    catch
+                    {
+                        //handle
+                    }
+                }
 
-        public FileSystemInfo FileSystemInfo
+                return _fileInfo;
+            }
+        }
+
+    public FileSystemInfo FileSystemInfo
             =>
                 _fileSystemInfo ??
                 (_fileSystemInfo = string.IsNullOrEmpty(Path)
@@ -163,10 +180,10 @@ namespace Kexi.ViewModel.Item
                 var token      = CancellationToken ?? System.Threading.CancellationToken.None;
                 await Task.Factory.StartNew(() =>
                 {
-                    IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
                     SetTargetType();
                     _details.Init(token);
                     _details.SetThumbs(token, largeThumb);
+                    IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
                 }, token);
 
                 if (_fetchDisplayName && !string.IsNullOrEmpty(_details.DisplayName))

@@ -24,8 +24,21 @@ namespace Kexi.Common
                 return bix == null && biy == null ? 0 : -1;
 
             if (bix.FilterString.StartsWith(_filter, StringComparison.CurrentCultureIgnoreCase) && !biy.FilterString.StartsWith(_filter, StringComparison.CurrentCultureIgnoreCase))
+            {
                 return -1;
+            }
+
             if (!bix.FilterString.StartsWith(_filter, StringComparison.CurrentCultureIgnoreCase) && biy.FilterString.StartsWith(_filter, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return 1;
+            }
+
+            if (bix.FilterString == _filter)
+            {
+                return -1;
+            }
+
+            if (biy.FilterString == _filter)
                 return 1;
 
             if (bix.IsContainer && !biy.IsContainer) return -1;

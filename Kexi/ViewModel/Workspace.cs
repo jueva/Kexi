@@ -70,7 +70,7 @@ namespace Kexi.ViewModel
         public CommandRepository CommandRepository { get; private set; }
 
         [Import]
-        public AdressbarViewModel AdressbarViewModel { get; private set; }
+        public AdressbarViewModel AddressbarViewModel { get; private set; }
 
         [Import]
         public BreadcrumbViewModel BreadcrumbViewModel { get; private set; }
@@ -201,7 +201,6 @@ namespace Kexi.ViewModel
         private PopupViewModel               _popupViewModel;
         private RenamePopupViewModel         _renamePopupViewModel;
         private RelayCommand                 _showAdressbarHistoryPopupCommand;
-        private double                       _tabHeight;
 
         private async void RefreshLister()
         {

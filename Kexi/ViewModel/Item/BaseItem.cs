@@ -16,11 +16,15 @@ namespace Kexi.ViewModel.Item
             TargetType       = () => ItemType.Item;
         }
 
-        public BaseItem(string name) : this()
+        public BaseItem(string name) : this(name, name, name)
+        {
+        }
+
+        public BaseItem(string name, string filter, string path) : this()
         {
             DisplayName  = name;
-            FilterString = name;
-            Path         = name;
+            FilterString = filter;
+            Path         = path;
         }
 
         public virtual BitmapSource Thumbnail
