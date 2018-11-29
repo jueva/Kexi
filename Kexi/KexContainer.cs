@@ -62,9 +62,9 @@ namespace Kexi
             return CompositionContainer.GetExports<T>().Select(i => i.Value);
         }
 
-        public static IEnumerable<Lazy<T1>> ResolveMany<T1, T2>()
+        public static IEnumerable<Lazy<T1>> ResolveManyLazy<T1>()
         {
-            return CompositionContainer.GetExports<T1, T2>();
+            return CompositionContainer.GetExports<T1>();
         }
     }
 }

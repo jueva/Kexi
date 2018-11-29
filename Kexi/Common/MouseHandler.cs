@@ -180,8 +180,8 @@ namespace Kexi.Common
             {
                 if (e.ClickCount == 2) //Click on empty area -> go back
                 {
-                    _workspace.CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
                     e.Handled = true;
+                    _workspace.CommandRepository.GetCommandByName(nameof(HistoryBackCommand)).Execute();
                 }
                 //Breadcrumbpopup hatte Focus, Click außerhalb der Gridzeilen
                 //carefull when scrollbar from other splitted lister is clicked

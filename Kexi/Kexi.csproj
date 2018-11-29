@@ -308,6 +308,8 @@
     <Compile Include="ViewModel\Commands\RestartAsAdminCommand.cs" />
     <Compile Include="ViewModel\Commands\SaveKeybindingsCommand.cs" />
     <Compile Include="ViewModel\Commands\SaveLayoutCommand.cs" />
+    <Compile Include="ViewModel\Commands\ScrollSelectedPanelDownCommand.cs" />
+    <Compile Include="ViewModel\Commands\ScrollSelectedPanelUpCommand.cs" />
     <Compile Include="ViewModel\Commands\SelectAllCommand.cs" />
     <Compile Include="ViewModel\Commands\SelectAllOfSameTypeCommand.cs" />
     <Compile Include="ViewModel\Commands\ShowBrowsingPopupCommand.cs" />

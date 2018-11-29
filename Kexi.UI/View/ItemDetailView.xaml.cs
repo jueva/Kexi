@@ -1,19 +1,22 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using Kexi.Common;
-using Kexi.Interfaces;
-using Kexi.View;
+﻿using Kexi.ViewModel.Dock;
 
 namespace Kexi.UI.View
 {
-    /// <summary>
-    /// Interaction logic for FileDetailinfoView.xaml
-    /// </summary>
-    public partial class ItemDetailView : UserControl
+    public partial class ItemDetailView
     {
         public ItemDetailView()
         {
             InitializeComponent();
+            DataContextChanged += ItemDetailView_DataContextChanged;
+        }
+
+        private void ItemDetailView_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is ToolDetailViewModel detail)
+            {
+                detail.ScrollDownAction = () => scrollViewer.PageDown();
+                detail.ScrollUpAction   = () => scrollViewer.PageUp();
+            }
         }
     }
 }

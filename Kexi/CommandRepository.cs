@@ -16,11 +16,14 @@ namespace Kexi
 
         public CommandRepository()
         {
-            CommandCache = new Lazy<Dictionary<string, IKexiCommand>>(() => { return KexiCommands.ToDictionary(c => c.GetType().Name); });
+            CommandCache = new Lazy<Dictionary<string, IKexiCommand>>(() =>
+            {
+                return KexiCommands.ToDictionary(c => c.Value.GetType().Name, c => c.Value);
+            });
         }
 
         [ImportMany]
-        private IEnumerable<IKexiCommand> KexiCommands { get; set; }
+        private IEnumerable<Lazy<IKexiCommand>> KexiCommands { get; set; }
 
         public ICommand ToggleMenuPopup => GetCommandByName(nameof(ToggleMenuPopupCommand));
         public ICommand HistoryBack         => GetCommandByName(nameof(HistoryBackCommand));

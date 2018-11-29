@@ -7,6 +7,7 @@
                       xmlns:view="clr-namespace:Kexi.UI.View"
                       xmlns:viewModel1="clr-namespace:Kexi.ViewModel;assembly=Kexi"
                       xmlns:acrylicWpf="clr-namespace:AcrylicWPF"
+                      xmlns:converters="clr-namespace:Kexi.UI.Converters"
                       x:Name="KexiWindow"
                       Width="1200"
                       Height="600"
@@ -28,6 +29,11 @@
                       FontFamily="{Binding Options.FontFamily}"
                       mc:Ignorable="d">
 
+    <controls:MetroWindow.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
+    </controls:MetroWindow.Resources>
+
     <controls:MetroWindow.Title>
         <MultiBinding Converter="{StaticResource WindowTitleConverter}">
             <Binding Path="ActiveLister.Path" />
@@ -42,13 +48,22 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Background="{DynamicResource ListerBackground}" BorderThickness="0" Focusable="False" Grid.Column="0" Padding="5 0 0 0">
-                    <Image Height="23" Source="{Binding Path=DataContext.ActiveLister.Thumbnail, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                <Button x:Name="ImageButton" Background="{DynamicResource ListerBackground}" BorderThickness="0" Focusable="False" Grid.Column="0" Padding="5 0 0 0">
+                    <Image Height="20" Source="{Binding Path=DataContext.ActiveLister.Thumbnail, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                    <!--<Image Height="{Binding ElementName=ImageButton, Path=Height}" Source="{Binding Path=DataContext.ActiveLister.Thumbnail, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />-->
                 </Button>
 
-            <view:AdressBar Margin="0 0 50 0" Grid.Column="1" 
+            <view:AdressBar Margin="0 0 50 0" Grid.Column="1" Visibility="{Binding Options.AddressbarVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                              DataContext="{Binding Path=DataContext.AddressbarViewModel, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+
+            <TextBlock Margin="10 2 2 2" Grid.Column="2"
+                       VerticalAlignment="Center"
+                       FontSize="14" 
+                       Visibility="{Binding Path=DataContext.Options.AddressbarVisible, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                       Foreground="{DynamicResource ListerForeground}"
+                       Text="{TemplateBinding Content}" />
             </Grid>
         </DataTemplate>
     </controls:MetroWindow.TitleTemplate>
@@ -114,7 +129,7 @@
             Style="{StaticResource TransparentRectangle}"
             Opacity="0.65">
             <Rectangle.Effect>
-                <acrylicWpf:NoiseEffect Ratio="0.25" />
+                <acrylicWpf:NoiseEffect Ratio="0.15" />
             </Rectangle.Effect>
 
         </Rectangle>

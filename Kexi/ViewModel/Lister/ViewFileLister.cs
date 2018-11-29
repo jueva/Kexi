@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kexi.Common;
@@ -37,24 +36,19 @@ namespace Kexi.ViewModel.Lister
             new Column("", "RtfRuns", ColumnType.SyntaxHighlighted, ColumnSize.FullWidth)
         };
 
-        public override string StatusString => null;
-
         protected override async Task<IEnumerable<LineItem>> GetItems()
         {
             Title            = Path;
             Thumbnail        = ShellNative.GetLargeBitmapSource(Path);
-            var i            = 1;
             PathName         = System.IO.Path.GetFileName(Path);
             var    extension = System.IO.Path.GetExtension(Path);
             var encoding = GetEncoding();
             _syntaxHighlighter = new SyntaxHighlighter(encoding);
             if (encoding == null)
-                await Task.Run(() => _syntaxHighlighter.Init(Path, extension));
-            else
-                _syntaxHighlighter.Init(Path, extension); //Avalonedit Textdocument must be on same thread
-
-            var lines = _syntaxHighlighter.Text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-            return lines.Select(l => new LineItem(_syntaxHighlighter, l, i++));
+            {
+                return await Task.Run(() => _syntaxHighlighter.InitBinary(Path));
+            }
+            return await _syntaxHighlighter.Init(Path, extension);
         }
 
         public override void DoAction(LineItem lineItem)
@@ -62,17 +56,14 @@ namespace Kexi.ViewModel.Lister
             if (lineItem == null)
                 return;
 
-            var psi       = new ProcessStartInfo(_options.PreferredEditorLocation);
-            psi.Arguments = $"+{lineItem.LineNumber} {Path}";
+            var psi = new ProcessStartInfo(_options.PreferredEditorLocation)
+            {
+                Arguments = $"+{lineItem.LineNumber} {Path}"
+            };
             Process.Start(psi);
         }
 
-        public override string GetParentContainer()
-        {
-            return null;
-        }
-
-        public Encoding GetEncoding()
+        private Encoding GetEncoding()
         {
             try
             {

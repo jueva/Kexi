@@ -4,6 +4,8 @@ namespace Kexi.ViewModel.Item
 {
     public class KexBindingItem : BaseItem
     {
+        private KexBinding _binding;
+
         public KexBindingItem(KexBinding binding) : this(binding.CommandName, binding.Group)
         {
             Binding     = binding;
@@ -15,7 +17,18 @@ namespace Kexi.ViewModel.Item
             Lister      = lister;
         }
 
-        public KexBinding Binding     { get; }
+        public KexBinding Binding   
+        {
+            get => _binding;
+            set
+            {
+                if (Equals(value, _binding)) return;
+                _binding = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Key));
+            }
+        }
+
         public string Key => Binding?.ToString() ?? "None";
         public string     CommandName { get; }
         public string     Lister      { get; }

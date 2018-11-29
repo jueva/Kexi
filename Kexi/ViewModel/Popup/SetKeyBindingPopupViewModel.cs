@@ -23,9 +23,10 @@ namespace Kexi.ViewModel.Popup
             TitleVisible       = true;
         }
 
-        public  KexBinding SourceBinding { get; set; }
+        public KexBindingItem BindingItem { get; set; }
+        public KexBinding SourceBinding => BindingItem.Binding;
+        public string CommandName => BindingItem.CommandName;
         public  KexBinding Binding       { get; set; }
-        public  string     CommandName   { get; set; }
         public  string     Group         { get; set; }
         private bool       _bindingSet;
 
@@ -33,20 +34,22 @@ namespace Kexi.ViewModel.Popup
         {
             Title = "Press Key then Return to finish";
             BaseItems = null;
+            Text = null;
             _bindingSet = false;
             base.Open();
         }
 
         [SuppressMessage("ReSharper", "SwitchStatementMissingSomeCases")]
         public override void PreviewKeyDown(object sender, KeyEventArgs ea)
-        {
-            if (ea.Key.IsModifier() || _bindingSet)
+        {            
+            var key = (ea.Key == Key.System ? ea.SystemKey : ea.Key);
+            if (key.IsModifier() || _bindingSet)
             {
                 base.PreviewKeyDown(sender, ea);
                 return;
             }
 
-            switch (ea.Key)
+            switch (key)
             {
                 case Key.Escape:
                     Binding = null;
@@ -56,15 +59,15 @@ namespace Kexi.ViewModel.Popup
                     SelectListers();
                     break;
                 default:
-                    Text += $"{ea.KeyboardDevice.Modifiers}+{ea.Key}";
+                    Text += $"{ea.KeyboardDevice.Modifiers}+{key}";
                     if (Binding == null)
                     {
-                        Binding =  new KexBinding(Group, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                        Binding =  new KexBinding(Group, key, ea.KeyboardDevice.Modifiers, CommandName, null);
                         Text    += ", ";
                     }
                     else
                     {
-                        Binding = new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, ea.Key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                        Binding = new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, key, ea.KeyboardDevice.Modifiers, CommandName, null);
                     }
 
                     SetCaret(Text.Length);
@@ -88,7 +91,7 @@ namespace Kexi.ViewModel.Popup
 
             var items =  new[] {new BaseItem("None"){Path = null}}.Concat(allListers).ToList();
             BaseItems = items;
-            var index = items.FindIndex(i => i.Path == SourceBinding.Group);
+            var index = items.FindIndex(i => i.Path == SourceBinding?.Group);
             ItemsView.MoveCurrentToPosition(index);
         }
 
@@ -108,6 +111,11 @@ namespace Kexi.ViewModel.Popup
                 }
 
                 sourceBindings.Add(Binding);
+            }
+
+            if (BindingItem != null)
+            {
+                BindingItem.Binding = Binding;
             }
 
             KeyConfigurationSerializer.SaveConfiguration(keyConfiguration);

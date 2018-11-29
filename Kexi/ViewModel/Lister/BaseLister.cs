@@ -114,23 +114,15 @@ namespace Kexi.ViewModel.Lister
                     return;
 
                 OnPathChanging(value);
-
-                var history = this as IHistorisationProvider;
-                if (history != null)
-                {
-                    _oldFilter         = Filter;
-                    _oldSortExpression = SortHandler.CurrentSortDescription;
-                    _oldGroupBy        = GroupBy;
-                }
-
+                PreviousPath = _path;
                 _path = value;
-
                 OnPathChanged(value);
-                history?.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
 
                 OnNotifyPropertyChanged();
             }
         }
+
+        protected string PreviousPath;
 
         public event EventHandler GotItems;
 
@@ -247,6 +239,14 @@ namespace Kexi.ViewModel.Lister
                 var items = await GetItems();
                 Items = new ObservableCollection<T>(items);
 
+                if (this is IHistorisationProvider history)
+                {
+                    _oldFilter         = Filter;
+                    _oldSortExpression = SortHandler.CurrentSortDescription;
+                    _oldGroupBy = GroupBy;
+                    history?.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
+                }
+
                 if (clearFilterAndGroup)
                 {
                     Filter  = null;
@@ -260,7 +260,8 @@ namespace Kexi.ViewModel.Lister
                 NotificationHost.AddError(ex.Message, ex.ToString());
                 if (this is IHistorisationProvider history && history.History.Current != null)
                 {
-                    history.History.Current.SelectedPath = _path;
+                    history.History.Current.SelectedPath = PreviousPath;
+                    Path = PreviousPath;
                     CommandRepository.GetCommandByName(nameof(MoveToHistoryItemCommand)).Execute(history.History.Current);
                     if (Workspace.PopupViewModel.IsOpen)
                         Workspace.PopupViewModel.IsOpen = false;

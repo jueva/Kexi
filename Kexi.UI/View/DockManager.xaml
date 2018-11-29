@@ -106,7 +106,7 @@
 
                 <base:PanesTemplateSelector.ToolPreviewTemplate>
                     <DataTemplate>
-                        <view2:PreviewerControl DataContext="{Binding Content}" /> 
+                        <view1:PreviewerControl DataContext="{Binding Content}" /> 
                     </DataTemplate>
                 </base:PanesTemplateSelector.ToolPreviewTemplate>
                 

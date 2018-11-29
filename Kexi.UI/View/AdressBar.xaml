@@ -64,8 +64,7 @@
         </Style>
     </UserControl.Resources>
 
-    <!--<Grid Margin="0 3 3 2"-->
-    <Grid Margin="0 2 2 2"
+    <Grid Margin="0 2 2 2" x:Name="AdressGrid"
           Visibility="{Binding Options.AddressbarVisible, Converter={StaticResource BoolToVisibilityConverter}}"
           view1:VisibilityAnimation.AnimationType="Fade" view1:VisibilityAnimation.SlideType="Top"
     >
@@ -88,7 +87,7 @@
                 Command="{Binding Path=CommandRepository.HistoryBack}"
                 Focusable="False"
                 Style="{StaticResource CommandButtonStyle}">
-            <iconPacks:FontAwesome Kind="ChevronLeftSolid" Width="15" Height="15" />
+            <iconPacks:FontAwesome Kind="ChevronLeftSolid" Width="15" Height="15"  />
         </Button>
         <Button Grid.Column="2"
                 BorderBrush="{StaticResource BackGroundBrush}"

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -8,24 +7,18 @@ using Kexi.ViewModel;
 
 namespace Kexi.Common
 {
-    [Export]
     public class ThemeHandler
     {
-        private Workspace Workspace { get; }
-        private NotificationHost NotificationHost { get; }
-        private Options Options { get; }
-
-        [ImportingConstructor]
-        public ThemeHandler(Workspace workspace, NotificationHost notificationHost, Options options)
+        public ThemeHandler(Workspace workspace)
         {
             Workspace = workspace;
-            NotificationHost = notificationHost;
-            Options = options;
             InitThemes();
         }
 
-        public List<FileInfo> Themes { get; private set; }
-        public FileInfo CurrentTheme { get; private set; }
+        private Workspace Workspace { get; }
+
+        public List<FileInfo> Themes       { get; private set; }
+        public FileInfo       CurrentTheme { get; private set; }
 
         public string CurrentThemeName => Path.GetFileNameWithoutExtension(CurrentTheme.FullName);
 
@@ -42,7 +35,7 @@ namespace Kexi.Common
             var theme = Themes.FirstOrDefault(t => t.Name.StartsWith(themeName, StringComparison.CurrentCultureIgnoreCase));
             if (theme == null)
             {
-                NotificationHost.AddError($"Theme {themeName} was not found");
+                Workspace.NotificationHost.AddError($"Theme {themeName} was not found");
                 return;
             }
 
@@ -52,10 +45,10 @@ namespace Kexi.Common
                 Source = new Uri(theme.FullName, UriKind.Absolute)
             };
             var th = Path.GetFileNameWithoutExtension(theme.FullName);
-            Options.WriteToConfig("Theme", th);
+            Workspace.Options.WriteToConfig("Theme", th);
             Application.Current.Resources.MergedDictionaries.Add(dict);
-            Options.Theme = th;
-            NotificationHost.AddInfo("Theme changed to " + themeName);
+            Workspace.Options.Theme = th;
+            Workspace.NotificationHost.AddInfo("Theme changed to " + themeName);
         }
 
         public void MoveNext()

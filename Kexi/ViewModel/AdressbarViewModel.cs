@@ -1,32 +1,29 @@
-﻿using System.ComponentModel.Composition;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using Kexi.Common;
 using Kexi.ViewModel.Commands;
 
 namespace Kexi.ViewModel
 {
-    [Export]
     public class AdressbarViewModel : ViewModelBase
     {
-        [ImportingConstructor]
-        public AdressbarViewModel(Workspace workspace, Options options, CommandRepository commandRepository, BreadcrumbViewModel breadcrumbViewModel)
+        public AdressbarViewModel(Workspace workspace)
         {
-            Workspace = workspace;
-            BreadcrumbViewModel = breadcrumbViewModel;
-            Options = options;
-            CommandRepository = commandRepository;
+            Workspace           = workspace;
+            BreadcrumbViewModel = new BreadcrumbViewModel(workspace);
+            Options             = workspace.Options;
+            CommandRepository   = workspace.CommandRepository;
 
             RecentLocationsDatasource = new RecentLocationPopupViewModel(Workspace)
             {
                 HorizontalOffset = -24,
-                VerticalOffset = 5,
-                Width = 250
+                VerticalOffset   = 5,
+                Width            = 250
             };
 
             ShowRecentLocationPopupCommand = new RelayCommand(c =>
             {
-                RecentLocationsDatasource.PopupTarget = c as Button;
+                RecentLocationsDatasource.PopupTarget  = c as Button;
                 RecentLocationsDatasource.PopupVisible = true;
             });
 
@@ -35,8 +32,6 @@ namespace Kexi.ViewModel
                 SearchBoxText = "";
                 FocusSearchBox();
             });
-
-            //FocusSearchBoxCommand = new RelayCommand(c => FocusSearchBox());
         }
 
         public BreadcrumbViewModel BreadcrumbViewModel { get; }
@@ -86,6 +81,12 @@ namespace Kexi.ViewModel
             }
         }
 
+        public  RelayCommand ClearCommand { get; }
+        private bool         _isSearchBoxFocused;
+        private bool         _isSearchSelected;
+
+        private string _searchBoxText;
+
         public void SearchBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -104,19 +105,10 @@ namespace Kexi.ViewModel
             }
         }
 
-        public RelayCommand ClearCommand { get; }
-
-        //public ICommand FocusSearchBoxCommand { get; }
-
         private void FocusSearchBox()
         {
             IsSearchBoxFocused = false;
             IsSearchBoxFocused = true;
         }
-        
-        private string _searchBoxText;
-        private bool _isSearchBoxFocused;
-        private bool _isSearchSelected;
-
     }
 }

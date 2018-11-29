@@ -2,11 +2,13 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using Kexi.Annotations;
-using Kexi.Common;
+using Kexi.Common.Syntaxhighlighting;
 using Kexi.Files;
 using Kexi.Interfaces;
+using Kexi.ItemProvider;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 
@@ -22,33 +24,49 @@ namespace Kexi.ViewModel
         }
 
         public Workspace Workspace { get; }
-        public Options   Options   => Workspace.Options;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public async Task SetItem(IItem item)
         {
-            if (!(item is FileItem fileItem) || fileItem.IsContainer)
+            if (item is FileItem fileItem)
+            {
+                var target = new FileItemTargetResolver(fileItem);
+                if (target.TargetType == ItemType.Container)
+                {
+                    await ShowDirectoryContent(target);
+                }
+                else
+                {
+                    await ShowFileContent(fileItem);
+                }
+            }
+            else
             {
                 Items = Enumerable.Empty<LineItem>();
-                return;
             }
+        }
 
+        private async Task ShowFileContent(FileItem fileItem)
+        {
             if (_viewFileLister == null) //TODO: Inject
                 _viewFileLister = KexContainer.Resolve<ViewFileLister>();
 
             var targetResolver = new FileItemTargetResolver(fileItem);
-            targetResolver.Parse();
-
             _viewFileLister.Path = targetResolver.TargetPath;
-            if (_viewFileLister.GetEncoding() == null)
-            {
-                Items = Enumerable.Empty<LineItem>();
-                return;
-            }
 
             await _viewFileLister.Refresh().ConfigureAwait(false);
             Items = _viewFileLister.Items;
+        }
+
+        private async Task ShowDirectoryContent(FileItemTargetResolver target)
+        {
+            var provider = new FileItemProvider(Workspace);
+            var items = (await provider.GetItems(target.TargetPath)).ToList();
+            var highLighter = new SyntaxHighlighter(Encoding.UTF8);
+            highLighter.Init(items.Select(i => i.Name));
+            var line = 1;
+            Items = items.Select(i => new LineItem(highLighter, i.Name, line++));
         }
 
         [NotifyPropertyChangedInvocator]

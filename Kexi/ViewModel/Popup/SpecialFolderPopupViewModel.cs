@@ -48,12 +48,14 @@ namespace Kexi.ViewModel.Popup
             }
         }
 
-        protected override void ItemSelected(BaseItem selectedItem)
+        protected async override void ItemSelected(BaseItem selectedItem)
         {
             var enumValue =
                 (Environment.SpecialFolder) Enum.Parse(typeof(Environment.SpecialFolder), selectedItem.DisplayName);
             var path = Environment.GetFolderPath(enumValue);
-            Workspace.ActiveLister.Path = path;
+            var lister = Workspace.ActiveLister;
+            lister.Path = path;
+            await lister.Refresh();
             base.ItemSelected(selectedItem);
             Text   = "";
             IsOpen = false;

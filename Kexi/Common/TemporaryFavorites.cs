@@ -1,60 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace Kexi.Common
 {
-    [Export(typeof(TemporaryFavorites<>))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     public class TemporaryFavorites<T> where T : class
     {
-        private readonly ObservableCollection<T> _favorites = new ObservableCollection<T>();
-        private int current = -1;
+        public ObservableCollection<T> Favorites { get; } = new ObservableCollection<T>();
 
-        public ObservableCollection<T> Favorites
-        {
-            get { return _favorites; }
-        }
+        private int _current = -1;
 
         public void Add(T item)
         {
-            if (_favorites.Contains(item))
+            if (Favorites.Contains(item))
                 return;
 
-            _favorites.Add(item);
-            current = _favorites.Count - 1;
+            Favorites.Add(item);
+            _current = Favorites.Count - 1;
         }
 
         public T Next()
         {
-            if (current == -1)
+            if (_current == -1)
                 return null;
 
-            var result = _favorites[current];
-            current--;
+            var result = Favorites[_current];
+            _current--;
 
-            if (current < 0)
-                current = _favorites.Count -1;
+            if (_current < 0)
+                _current = Favorites.Count - 1;
             return result;
         }
 
         public T Previous()
         {
-            if (current == -1)
+            if (_current == -1)
                 return null;
 
-            var result = _favorites[current];
-            current++;
+            var result = Favorites[_current];
+            _current++;
 
-            if (current > _favorites.Count - 1)
-                current = 0;
+            if (_current > Favorites.Count - 1)
+                _current = 0;
 
             return result;
         }
-
     }
 }

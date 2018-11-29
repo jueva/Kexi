@@ -45,7 +45,7 @@ namespace Kexi
                 _workspace.PopupViewModel.IsOpen = false;
         }
 
-        private readonly DockingManager _dockingManager;
+        internal readonly DockingManager _dockingManager;
         private readonly Workspace      _workspace;
 
         private async void Serializer_LayoutSerializationCallback(object sender, LayoutSerializationCallbackEventArgs e)

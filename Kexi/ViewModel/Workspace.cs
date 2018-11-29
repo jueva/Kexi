@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +12,6 @@ using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Dock;
 using Kexi.ViewModel.Lister;
-using Kexi.ViewModel.Popup;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -23,16 +21,41 @@ namespace Kexi.ViewModel
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class Workspace : ViewModelBase
     {
-        public Workspace()
+        [ImportingConstructor]
+        public Workspace([ImportMany] IEnumerable<Lazy<ILister>> listers, Options options, CommandRepository commandRepository)
         {
-            _renamePopupViewModel = new RenamePopupViewModel(this);
+            _listers              = listers;
+            Options               = options;
+            CommandRepository     = commandRepository;
+            RenamePopupViewModel  = new RenamePopupViewModel(this);
             Docking               = new DockViewModel(this);
             KeyDispatcher         = new KeyDispatcher(this);
             CommanderbarViewModel = new CommanderbarViewModel(this);
-            PopupViewModel        = new FilterPopupViewModel(this, new Options(), null);
             TaskManager           = new TaskManager(this);
-            _listers              = KexContainer.ResolveMany<ILister>();
+            NotificationHost      = new NotificationHost(this);
+            ThemeHandler          = new ThemeHandler(this);
+            AddressbarViewModel   = new AdressbarViewModel(this);
+            RibbonViewModel       = new RibbonViewModel(this);
+            TemporaryFavorites    = new TemporaryFavorites<IItem>();
         }
+
+        public Options Options { get; set; }
+
+        public TemporaryFavorites<IItem> TemporaryFavorites { get; }
+
+        public NotificationHost NotificationHost { get; }
+
+        public ThemeHandler ThemeHandler { get; }
+
+        public CommandRepository CommandRepository { get; }
+
+        public AdressbarViewModel AddressbarViewModel { get; }
+
+        public RibbonViewModel RibbonViewModel { get; }
+
+        public KeyDispatcher KeyDispatcher { get; }
+
+        public CommanderbarViewModel CommanderbarViewModel { get; }
 
         public RenamePopupViewModel RenamePopupViewModel
         {
@@ -49,37 +72,6 @@ namespace Kexi.ViewModel
             get => Docking.ActiveLayoutContent;
             set => Docking.ActiveLayoutContent = value;
         }
-
-        [Import]
-        public Options Options { get; private set; }
-
-        public KeyDispatcher KeyDispatcher { get; set; }
-
-        public CommanderbarViewModel CommanderbarViewModel { get; }
-
-        [Import]
-        public TemporaryFavorites<IItem> TemporaryFavorites { get; private set; }
-
-        [Import]
-        public NotificationHost NotificationHost { get; private set; }
-
-        [Import]
-        public ThemeHandler ThemeHandler { get; private set; }
-
-        [Import]
-        public CommandRepository CommandRepository { get; private set; }
-
-        [Import]
-        public AdressbarViewModel AddressbarViewModel { get; private set; }
-
-        [Import]
-        public BreadcrumbViewModel BreadcrumbViewModel { get; private set; }
-
-        [Import]
-        public FontHelper FontHelper { get; private set; }
-
-        [Import]
-        public RibbonViewModel RibbonViewModel { get; private set; }
 
         public TaskManager    TaskManager { get; }
         public DockingManager Manager     { get; set; }
@@ -176,31 +168,17 @@ namespace Kexi.ViewModel
                 Width            = 250
             });
 
-        public RelayCommand ShowAdressbarHistoryPopupCommand
-        {
-            get
-            {
-                return _showAdressbarHistoryPopupCommand ??
-                    (_showAdressbarHistoryPopupCommand = new RelayCommand(c =>
-                    {
-                        AdressbarHistoryDatasource.PopupTarget  = c as Button;
-                        AdressbarHistoryDatasource.PopupVisible = true;
-                    }));
-            }
-        }
-
         public TextBox         TitleTextBox    { get; set; }
         public Border          TitleTextBorder { get; set; }
         public IDockingManager DockingMananger { get; set; }
 
-        private readonly IEnumerable<ILister> _listers;
+        private readonly IEnumerable<Lazy<ILister>> _listers;
 
         private ILister                      _activeLister;
         private RecentLocationPopupViewModel _adressbarHistoryDatasource;
         private bool                         _commanderMode;
         private PopupViewModel               _popupViewModel;
         private RenamePopupViewModel         _renamePopupViewModel;
-        private RelayCommand                 _showAdressbarHistoryPopupCommand;
 
         private async void RefreshLister()
         {
@@ -210,23 +188,6 @@ namespace Kexi.ViewModel
             Open(fileLister);
         }
 
-        public void EnsureUniquePathName()
-        {
-            var allLister = Docking.Files.Select(i => i.Content).OfType<FileLister>()
-                .Select(f => new Tuple<string, FileLister>(f.PathName, f)).ToList();
-
-            foreach (var l in allLister)
-            foreach (var s in allLister.Where(a => Path.GetFileName(a.Item2.Path) == Path.GetFileName(l.Item2.Path) && a.Item2 != l.Item2))
-            {
-                var up = Directory.GetParent(s.Item2.Path);
-                if (up != null)
-                {
-                    var parent  = Path.GetFileName(up.FullName);
-                    var current = Path.GetFileName(s.Item2.Path);
-                    s.Item2.PathName = $"{parent}/{current}";
-                }
-            }
-        }
 
         public IEnumerable<T> CurrentItemsOfType<T>()
         {
@@ -280,7 +241,7 @@ namespace Kexi.ViewModel
 
         public ILister CreateListerByProtocol(string protocol)
         {
-            return _listers.FirstOrDefault(l => l.ProtocolPrefix.ToLower() == protocol);
+            return _listers.FirstOrDefault(l => l.Value.ProtocolPrefix.ToLower() == protocol)?.Value;
         }
 
         public void ReplaceCurrentLister(ILister lister)

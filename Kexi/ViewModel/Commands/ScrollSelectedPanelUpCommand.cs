@@ -1,16 +1,17 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kexi.Common;
+using System.Linq;
 using Kexi.Interfaces;
+using Kexi.ViewModel.Dock;
 
 namespace Kexi.ViewModel.Commands
 {
     [Export]
     [Export(typeof(IKexiCommand))]
-    public class FocusAdressBarCommand : IKexiCommand
+    public class ScrollSelectedPanelUpCommand : IKexiCommand
     {
         [ImportingConstructor]
-        public FocusAdressBarCommand(Workspace workspace)
+        public ScrollSelectedPanelUpCommand(Workspace workspace)
         {
             _workspace = workspace;
         }
@@ -22,8 +23,13 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _workspace.Options.AddressbarVisible = true;
-            _workspace.AddressbarViewModel.BreadcrumbViewModel.Mode = BreadcrumbMode.Adressbox;
+            var models =new ToolViewModel[]
+            {
+                _workspace.Docking.DetailViewModel, 
+                _workspace.Docking.ExplorerViewModel, 
+                _workspace.Docking.PreviewViewModel
+            };
+            models.FirstOrDefault(m => m.IsVisible && m.IsSelected)?.ScrollUp();;
         }
 
         public event EventHandler  CanExecuteChanged;

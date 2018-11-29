@@ -32,7 +32,7 @@ namespace Kexi.ViewModel.Lister
             new Column("Key", "Key"),
             new Column("Command", "CommandName")
         };
-
+        
         public override  string                      ProtocolPrefix => "Keybindings";
         private readonly SetKeyBindingPopupViewModel _keyBindingPopupViewModel;
         private readonly KeyBindingsProvider         _keyBindingsProvider;
@@ -48,8 +48,7 @@ namespace Kexi.ViewModel.Lister
                 return;
 
             Workspace.PopupViewModel = _keyBindingPopupViewModel;
-            _keyBindingPopupViewModel.SourceBinding = item.Binding;
-            _keyBindingPopupViewModel.CommandName = item.CommandName;
+            _keyBindingPopupViewModel.BindingItem = item;
             _keyBindingPopupViewModel.Open();
         }
     }

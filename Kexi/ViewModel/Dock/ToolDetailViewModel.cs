@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using Kexi.Property;
 
 namespace Kexi.ViewModel.Dock
@@ -17,5 +18,7 @@ namespace Kexi.ViewModel.Dock
             Content     = new FilePropertyProvider(workspace);
             IsVisible   = true;
         }
+
+
     }
 }

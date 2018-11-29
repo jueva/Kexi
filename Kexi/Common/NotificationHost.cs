@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.IO;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
 using System.Windows.Threading;
@@ -14,13 +13,14 @@ namespace Kexi.Common
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class NotificationHost : INotificationHost
     {
-        [Import]
-        private Workspace Workspace { get; set; }
+        private Workspace Workspace { get; }
 
-        private DispatcherTimer currentTimer;
+        private DispatcherTimer _currentTimer;
 
-        public NotificationHost()
+        [ImportingConstructor]
+        public NotificationHost(Workspace workspace)
         {
+            Workspace = workspace;
             _notifications = new ObservableCollection<NotificationItem>();
         }
 
@@ -56,19 +56,19 @@ namespace Kexi.Common
             ClearCurrentMessage();
             var lister = Workspace.ActiveLister;
             lister.Notification = item;
-            currentTimer = new DispatcherTimer();
-            currentTimer.Interval = TimeSpan.FromSeconds(3);
-            currentTimer.Tick += (s, ea) =>
+            _currentTimer = new DispatcherTimer();
+            _currentTimer.Interval = TimeSpan.FromSeconds(3);
+            _currentTimer.Tick += (s, ea) =>
             {
-                lister.Notification = null; currentTimer.Stop();
+                lister.Notification = null; _currentTimer.Stop();
             };
-            currentTimer.Start();
+            _currentTimer.Start();
         }
 
         public void ClearCurrentMessage()
         {
             Workspace.ActiveLister.Notification = null;
-            currentTimer?.Stop();
+            _currentTimer?.Stop();
         }
 
         public ObservableCollection<NotificationItem> Notifications

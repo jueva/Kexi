@@ -18,12 +18,9 @@ namespace Kexi.ViewModel.Popup
 
         public override void Open()
         {
-            BaseItems = TemporaryFavorites.Favorites;
+            BaseItems = Workspace.TemporaryFavorites.Favorites;
             base.Open();
         }
-
-        [Import]
-        private TemporaryFavorites<IItem> TemporaryFavorites { get; set; }
 
         protected override void ItemSelected(IItem selectedItem)
         {

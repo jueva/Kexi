@@ -20,6 +20,7 @@
                  ShowMinButton="False"
                  ShowMaxRestoreButton="False"
                  mc:Ignorable="d"
+                 FocusVisualStyle="{x:Null}"
                  Title="Welcome. Please select" Width="600" Height="380">
     <Grid Background="Transparent">
         <Rectangle
@@ -32,9 +33,9 @@
                 <acrylicWpf:NoiseEffect Ratio="0.25" />
             </Rectangle.Effect>
         </Rectangle>
-    <StackPanel Orientation="Vertical" Margin="10" Background="Transparent">
+    <StackPanel Orientation="Vertical" Margin="10" Background="Transparent" FocusVisualStyle="{x:Null}">
         <Label Foreground="{DynamicResource ListerForeground}" FontWeight="Bold">Theme</Label>
-        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" x:Name="DarkThemeButton"
+        <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" x:Name="DarkThemeButton" FocusVisualStyle="{x:Null}"
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winDark'}">Dark</RadioButton>
         <RadioButton Foreground="{DynamicResource ListerForeground}" GroupName="theme" 
                      IsChecked="{Binding Theme, Converter={converters:ThemeConverter}, ConverterParameter='winLight'}">Light</RadioButton>

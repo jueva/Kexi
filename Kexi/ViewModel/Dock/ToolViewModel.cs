@@ -1,4 +1,5 @@
-﻿using Kexi.Common;
+﻿using System;
+using Kexi.Common;
 
 namespace Kexi.ViewModel.Dock
 {
@@ -30,12 +31,6 @@ namespace Kexi.ViewModel.Dock
             }
         }
 
-        private object _content;
-
-        #region IsVisible
-
-        private bool _isVisible;
-
         public bool IsVisible
         {
             get => _isVisible;
@@ -49,6 +44,21 @@ namespace Kexi.ViewModel.Dock
             }
         }
 
-        #endregion
+        public Action ScrollDownAction { get; set; }
+        public Action ScrollUpAction { get; set; }
+
+        private object _content;
+
+        private bool _isVisible;
+
+        public void ScrollDown()
+        {
+            ScrollDownAction?.Invoke();
+        }
+
+        public void ScrollUp()
+        {
+            ScrollUpAction?.Invoke();
+        }
     }
 }

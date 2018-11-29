@@ -10,19 +10,15 @@ using Kexi.ViewModel.Item;
 
 namespace Kexi.ViewModel
 {
-    [Export]
     public class BreadcrumbViewModel : ViewModelBase
     {
-        [ImportingConstructor]
-        public BreadcrumbViewModel(Workspace workspace, Options options)
+        public BreadcrumbViewModel(Workspace workspace)
         {
             Workspace         = workspace;
-            //CommandRepository = commandRepository;
-            Options           = options;
+            Options           = workspace.Options;
         }
 
         public Workspace            Workspace         { get; }
-        //public CommandRepository    CommandRepository { get; }
         public Options              Options           { get; }
 
         public bool AdressVisible

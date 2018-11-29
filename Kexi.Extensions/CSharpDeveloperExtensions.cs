@@ -48,7 +48,7 @@ namespace Kexi.Extensions
                 var description = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.Name == "AssemblyDescriptionAttribute");
                 if (description != null)
                     yield return new PropertyItem("Description", description.ConstructorArguments.FirstOrDefault().Value);
-                yield return new PropertyItem("Public Key Token:", GetPublicKeyToken(assembly));
+                yield return new PropertyItem("Public Key Token", GetPublicKeyToken(assembly));
                 var debugModes = GetDebugInfo(assembly).ToList();
                 if (debugModes.Any())
                     yield return new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes));

@@ -12,7 +12,6 @@ using Kexi.Interfaces;
 using Kexi.UI.Base;
 using Kexi.View;
 using Kexi.ViewModel;
-using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 
 namespace Kexi.UI.View
@@ -51,7 +50,7 @@ namespace Kexi.UI.View
 
         public SortAdorner CurrentSortAdorner { get; set; }
 
-        public void ShowDetail()
+        public async void ShowDetail()
         {
             var lister = ViewModel;
             if (CurrentItem == null || lister == null)
@@ -64,27 +63,23 @@ namespace Kexi.UI.View
                 var provider = lister.PropertyProvider;
                 if (provider != null && lister.SelectedItems.Count() > 1)
                 {
-                     provider.SetSelection(lister.SelectedItems);
+                    await provider.SetSelection(lister.SelectedItems);
                 }
                 else if (provider != null && !Equals(provider.Item, CurrentItem))
-                    try
-                    {
-                        if (provider.Item != null)
-                            _cancellationTokenSource?.Cancel(false);
+                {
+                    if (provider.Item != null)
+                        _cancellationTokenSource?.Cancel(false);
 
-                        _cancellationTokenSource         = new CancellationTokenSource();
-                        provider.CancellationTokenSource = _cancellationTokenSource;
-                        provider.SetItem(CurrentItem);
-                    }
-                    catch (TaskCanceledException)
-                    {
-                    }
+                    _cancellationTokenSource         = new CancellationTokenSource();
+                    provider.CancellationTokenSource = _cancellationTokenSource;
+                    await provider.SetItem(CurrentItem);
+                }
             }
 
             if (Workspace.Docking.PreviewViewModel.IsVisible)
             {
-                var content = Workspace.Docking.PreviewViewModel.Content as PreviewContentView;
-                content?.SetItem(CurrentItem);
+                if (Workspace.Docking.PreviewViewModel.Content is PreviewContentView content)
+                    await content.SetItem(CurrentItem);
             }
         }
 
@@ -108,6 +103,7 @@ namespace Kexi.UI.View
                     FocusManager.SetFocusedElement(currentView, listViewItem);
                     Keyboard.Focus(listViewItem);
                 }
+
                 ViewModel.SetSelection(iitem, true);
             }
         }
@@ -124,9 +120,19 @@ namespace Kexi.UI.View
             FocusItem(item);
         }
 
-        private  DispatcherTimer _detailTimer;
+        public void Dispose()
+        {
+            _mouseHandler?.Dispose();
+            ListBoxSelector.SetEnabled(ListView, false);
+            _cancellationTokenSource?.Dispose();
+            _detailTimer.Stop();
+            _detailTimer = null;
+            ListView     = null;
+        }
 
         private CancellationTokenSource _cancellationTokenSource;
+
+        private DispatcherTimer _detailTimer;
 
 
         private IItem _lastItem;
@@ -149,7 +155,7 @@ namespace Kexi.UI.View
                 _lastItem = e.AddedItems[e.AddedItems.Count - 1] as IItem;
             else if (e.RemovedItems.Count > 0)
                 _lastItem = e.RemovedItems[e.RemovedItems.Count - 1] as IItem;
-            else 
+            else
                 _lastItem = ListView.SelectedItem as IItem;
 
             if (IsLoaded)
@@ -192,24 +198,10 @@ namespace Kexi.UI.View
         private void ListerView_OnKeyDown(object sender, KeyEventArgs e)
         {
             Workspace.KeyDispatcher.Execute(e, ViewModel);
-            if (!KeyIsModifier(e.Key))
+            var key = e.Key == Key.System ? e.SystemKey : e.Key;
+            if (!key.IsModifier())
                 MouseMoving = false;
         }
 
-        private static bool KeyIsModifier(Key k)
-        {
-            return k == Key.LeftCtrl || k == Key.RightCtrl || k == Key.LeftAlt || k == Key.RightAlt
-                || k == Key.LeftShift || k == Key.RightShift;
-        }
-
-        public void Dispose()
-        {
-            _mouseHandler?.Dispose();
-            ListBoxSelector.SetEnabled(ListView, false);
-            _cancellationTokenSource?.Dispose();
-            _detailTimer.Stop();
-            _detailTimer = null;
-            ListView = null;
-        }
     }
 }
