@@ -54,5 +54,22 @@ namespace Kexi
         {
             return CommandCache.Value[name];
         }
+
+        public IKexiCommand LastCommand { get; private set; }
+
+        public void Execute(string name, object arg = null)
+        {
+            var command = GetCommandByName(name);
+            Execute(command, arg);
+        }
+
+        public void Execute(IKexiCommand command, object arg = null)
+        {
+            if (command.CanExecute(arg))
+            {
+                command.Execute(arg);
+                LastCommand = command;
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;

@@ -24,10 +24,8 @@ namespace Kexi.ViewModel.Popup
 
         protected override void ItemSelected(BaseItem selectedItem)
         {
-            var command = CommandRepository.GetCommandByName(selectedItem.Path);
             IsOpen = false;
-            if (command.CanExecute(null))
-                command.Execute(null);
+            CommandRepository.Execute(selectedItem.Path);
         }
 
         internal string GetName(string name)

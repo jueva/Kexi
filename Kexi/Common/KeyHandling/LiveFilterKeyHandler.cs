@@ -20,7 +20,7 @@ namespace Kexi.Common.KeyHandling
         {
             if (_bindingHandler.Handle(args, lister, group))
             {
-                if (_bindingHandler.LastCommand.GetType() == typeof(DoActionCommand) || args.Key == Key.Escape)
+                if (_workspace.CommandRepository.LastCommand.GetType() == typeof(DoActionCommand) || args.Key == Key.Escape)
                 {
                     _workspace.PopupViewModel.Close();
                 }

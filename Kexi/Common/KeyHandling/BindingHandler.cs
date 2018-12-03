@@ -24,8 +24,6 @@ namespace Kexi.Common.KeyHandling
         private          Key?             _firstKey;
         private          ModifierKeys?    _firstModifier;
 
-        public IKexiCommand LastCommand { get; private set; }
-
         public bool Handle(KeyEventArgs args, ILister lister, string group = null)
         {
             var        k              = args.Key == Key.System ? args.SystemKey : args.Key;
@@ -33,6 +31,8 @@ namespace Kexi.Common.KeyHandling
             KexBinding binding        = null;
             var        groupName      = group ?? lister?.GetType().Name;
             var        listerCommands = _bindings.Where(b => b.Group == groupName || string.IsNullOrEmpty(b.Group));
+            if (k.IsModifier())
+                return true;
 
             if (_firstKey != null && !k.IsModifier())
             {
@@ -84,9 +84,11 @@ namespace Kexi.Common.KeyHandling
                 try
                 {
                     if (binding.Command == _workspace.CommandRepository.GetCommandByName(nameof(RepeatLastCommandCommand)))
-                        LastCommand?.Execute(lister);
-                    else
-                        LastCommand = binding.Command;
+                    {
+                        _workspace.CommandRepository.Execute(_workspace.CommandRepository.LastCommand);
+                        args.Handled = true;
+                        return true;
+                    }
 
                     switch (binding.CommandName)
                     {
@@ -110,8 +112,8 @@ namespace Kexi.Common.KeyHandling
                     }
 
                     var commandArgs = new CommandArgument(lister, binding.CommandArguments);
+                    _workspace.CommandRepository.Execute(binding.Command, commandArgs);
                     args.Handled = true;
-                    binding.Command.Execute(commandArgs);
                     return true;
                 }
                 catch (Exception ex)

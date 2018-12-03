@@ -43,7 +43,7 @@ namespace Kexi.Common.KeyHandling
             _timer.Stop();
             if (_bindingHandler.Handle(args, lister, group))
             {
-                var type = _bindingHandler.LastCommand.GetType();
+                var type = _workspace.CommandRepository.LastCommand.GetType();
                 if (type == typeof(DoActionCommand) || type == typeof(HistoryBackCommand) || args.Key == Key.Escape)
                 {
                     ClearSearchString();

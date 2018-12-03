@@ -8,10 +8,8 @@ namespace Kexi.Common.KeyHandling
 {
     public class ViStyleKeyHandler : IKeyHandler
     {
-
         public ViStyleKeyHandler(Workspace workspace, List<KexBinding> bindings)
         {
-            _workspace      = workspace;
             Bindings        = bindings;
             _bindingHandler = new BindingHandler(workspace, bindings);
         }
@@ -25,6 +23,5 @@ namespace Kexi.Common.KeyHandling
 
         public           string         SearchString { get; set; }
         private readonly BindingHandler _bindingHandler;
-        private readonly Workspace      _workspace;
     }
 }
