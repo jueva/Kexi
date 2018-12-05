@@ -48,16 +48,19 @@ namespace Kexi.Common.KeyHandling
             if (e.PropertyName == nameof(Workspace.ActiveLister)) _classicKeyHandler.ClearSearchString();
         }
 
-        public bool Execute(KeyEventArgs args, ILister lister, string group = null)
+        public void Execute(KeyEventArgs args, ILister lister, string group = null)
         {
             switch (Workspace.Options.KeyMode)
             {
                 case KeyMode.Classic:
-                    return _classicKeyHandler.Execute(args, lister, group);
+                    _classicKeyHandler.Execute(args, lister, group);
+                    break;
                 case KeyMode.LiveFilter:
-                    return _liveFilterKeyHandler.Execute(args, lister, group);
+                    _liveFilterKeyHandler.Execute(args, lister, group);
+                    break;
                 default:
-                    return _viStyleKeyHandler.Execute(args, lister, group);
+                    _viStyleKeyHandler.Execute(args, lister, group);
+                    break;
             }
         }
 

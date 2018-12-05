@@ -38,10 +38,10 @@ namespace Kexi.Common.KeyHandling
             }
         }
 
-        public bool Execute(KeyEventArgs args, ILister lister, string group)
+        public void Execute(KeyEventArgs args, ILister lister, string group)
         {
             _timer.Stop();
-            if (_bindingHandler.Handle(args, lister, group))
+            if (_bindingHandler.Handle(args, lister))
             {
                 var type = _workspace.CommandRepository.LastCommand.GetType();
                 if (type == typeof(DoActionCommand) || type == typeof(HistoryBackCommand) || args.Key == Key.Escape)
@@ -51,7 +51,7 @@ namespace Kexi.Common.KeyHandling
                         _workspace.NotificationHost.ClearCurrentMessage();
                 }
 
-                return false;
+                return;
             }
 
             if (args.Key >= Key.A && args.Key <= Key.Z)
@@ -68,10 +68,7 @@ namespace Kexi.Common.KeyHandling
                 }
 
                 args.Handled = true;
-                return false;
             }
-
-            return false;
         }
 
         private readonly BindingHandler _bindingHandler;

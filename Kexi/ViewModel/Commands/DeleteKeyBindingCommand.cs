@@ -32,7 +32,13 @@ namespace Kexi.ViewModel.Commands
                     ? KeyMode.ViStyle
                     : KeyMode.Classic;
                 var sourceBindings = keyConfiguration.Bindings.SingleOrDefault(b => b.KeyMode == keyMode)?.KeyBindings;
-                sourceBindings?.RemoveAll(b => b.Equals(binding.Binding));
+                var bindings = sourceBindings?.Where(b => b.Equals(binding.Binding)).ToArray();
+                if (bindings != null)
+                {
+                    sourceBindings.RemoveAll(b => b.Equals(binding.Binding));
+                    binding.Binding = null;
+                }
+
             }
         }
 

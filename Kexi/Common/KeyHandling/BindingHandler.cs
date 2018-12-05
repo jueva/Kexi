@@ -24,57 +24,42 @@ namespace Kexi.Common.KeyHandling
         private          Key?             _firstKey;
         private          ModifierKeys?    _firstModifier;
 
-        public bool Handle(KeyEventArgs args, ILister lister, string group = null)
+        public bool Handle(KeyEventArgs args, ILister lister)
         {
-            var        k              = args.Key == Key.System ? args.SystemKey : args.Key;
+            var        key              = args.Key == Key.System ? args.SystemKey : args.Key;
             var        modifierKeys   = args.KeyboardDevice.Modifiers;
             KexBinding binding        = null;
-            var        groupName      = group ?? lister?.GetType().Name;
+            var        groupName      = lister?.GetType().Name;
             var        listerCommands = _bindings.Where(b => b.Group == groupName || string.IsNullOrEmpty(b.Group));
-            if (k.IsModifier())
+            if (key.IsModifier())
                 return true;
 
-            if (_firstKey != null && !k.IsModifier())
+            if (_firstKey != null)
             {
-                binding =
-                    listerCommands.OfType<KexDoubleBinding>()
-                        .FirstOrDefault(b =>
-                            b.Key == _firstKey && b.Modifier == _firstModifier
-                            && b.SecondKey == k && b.SecondModifier == modifierKeys
-                        );
-
-                if (binding == null && k != Key.Escape)
+                binding = GetDoubleBinding(listerCommands, key, modifierKeys, out binding);
+                if (binding == null)
                 {
-                    _workspace.NotificationHost.AddInfo($"Binding {_firstKey}-{k} not found");
-                    _firstKey      = null;
-                    _firstModifier = null;
                     args.Handled = true;
                     return true;
                 }
-
-                _workspace.NotificationHost.ClearCurrentMessage();
-                _firstKey      = null;
-                _firstModifier = null;
             }
             else
             {
-                if (_workspace.CommanderMode) binding = _bindings.FirstOrDefault(b => b.Group == CommanderGroup && b.Key == k && b.Modifier == modifierKeys);
+                if (_workspace.CommanderMode) 
+                    binding = _bindings.FirstOrDefault(b => b.Group == CommanderGroup && b.Key == key && b.Modifier == modifierKeys);
 
                 if (binding == null)
-                    binding = listerCommands.FirstOrDefault(b => b.Key == k && b.Modifier == modifierKeys);
+                    binding = listerCommands.FirstOrDefault(b =>
+                        (b.Key == key && b.Modifier == modifierKeys && !(b is KexDoubleBinding))
+                        || (b.Key == key && b.Modifier == modifierKeys));
 
-                switch (binding)
+                if (binding is KexDoubleBinding)
                 {
-                    case KexDoubleBinding _ when _firstKey == null:
-                        _firstKey      = k;
-                        _firstModifier = modifierKeys;
-                        _workspace.NotificationHost.AddInfo("Press second key to perform action");
-                        args.Handled = true;
-                        return true;
-                    case KexDoubleBinding _:
-                        _firstKey      = null;
-                        _firstModifier = null;
-                        break;
+                    _firstKey      = key;
+                    _firstModifier = modifierKeys;
+                    _workspace.NotificationHost.AddInfo("Press second key to perform action");
+                    args.Handled = true;
+                    return true;
                 }
             }
 
@@ -124,6 +109,25 @@ namespace Kexi.Common.KeyHandling
 
             args.Handled = false;
             return false;
+        }
+
+        private KexBinding GetDoubleBinding(IEnumerable<KexBinding> listerCommands, Key key, ModifierKeys modifierKeys, out KexBinding binding)
+        {
+            _workspace.NotificationHost.ClearCurrentMessage();
+            binding = listerCommands.OfType<KexDoubleBinding>().FirstOrDefault(b =>
+                b.Key == _firstKey && b.Modifier == _firstModifier
+                && b.SecondKey == key && b.SecondModifier == modifierKeys
+            );
+
+            if (binding == null)
+            {
+                _workspace.NotificationHost.AddInfo($"Binding {_firstKey}-{key} not found");
+            }
+
+            _firstKey      = null;
+            _firstModifier = null;
+
+            return binding;
         }
 
         private void EnsureFocus()

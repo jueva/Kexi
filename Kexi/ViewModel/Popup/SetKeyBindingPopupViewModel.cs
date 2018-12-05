@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using Kexi.Common;
 using Kexi.Common.KeyHandling;
@@ -28,22 +29,29 @@ namespace Kexi.ViewModel.Popup
         public string CommandName => BindingItem.CommandName;
         public  KexBinding Binding       { get; set; }
         public  string     Group         { get; set; }
-        private bool       _bindingSet;
+        private bool       _selectListers;
 
         public override void Open()
         {
             Title = "Press Key then Return to finish";
             BaseItems = null;
-            Text = null;
-            _bindingSet = false;
+            _selectListers = false;
             base.Open();
+        }
+
+        public override void Close()
+        {
+            Text = "";
+            Binding = null;
+            BindingItem = null;
+            base.Close();
         }
 
         [SuppressMessage("ReSharper", "SwitchStatementMissingSomeCases")]
         public override void PreviewKeyDown(object sender, KeyEventArgs ea)
         {            
             var key = (ea.Key == Key.System ? ea.SystemKey : ea.Key);
-            if (key.IsModifier() || _bindingSet)
+            if (key.IsModifier() || _selectListers)
             {
                 base.PreviewKeyDown(sender, ea);
                 return;
@@ -59,17 +67,25 @@ namespace Kexi.ViewModel.Popup
                     SelectListers();
                     break;
                 default:
-                    Text += $"{ea.KeyboardDevice.Modifiers}+{key}";
                     if (Binding == null)
                     {
                         Binding =  new KexBinding(Group, key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                    }
+                    else if (!(Binding is KexDoubleBinding))
+                    {
                         Text    += ", ";
+                        Binding =  new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, key, ea.KeyboardDevice.Modifiers, CommandName, null);
                     }
                     else
                     {
-                        Binding = new KexDoubleBinding(Binding.Group, Binding.Key, Binding.Modifier, key, ea.KeyboardDevice.Modifiers, CommandName, null);
+                        ea.Handled = true;
+                        return;
                     }
 
+                    if (ea.KeyboardDevice.Modifiers != ModifierKeys.None)
+                        Text += $"{ea.KeyboardDevice.Modifiers}+{key}";
+                    else
+                        Text += key;
                     SetCaret(Text.Length);
                     break;
             }
@@ -82,7 +98,7 @@ namespace Kexi.ViewModel.Popup
             if (Binding == null)
                 return;
 
-            _bindingSet = true;
+            _selectListers = true;
             Text        = "";
             Title       = "Choose Target Lister";
             var allListers = KexContainer.ResolveMany<ILister>()
@@ -102,16 +118,13 @@ namespace Kexi.ViewModel.Popup
             var keyMode = Options.KeyMode == KeyMode.ViStyle
                 ? KeyMode.ViStyle
                 : KeyMode.Classic;
-            var sourceBindings = keyConfiguration.Bindings.SingleOrDefault(b => b.KeyMode == keyMode)?.KeyBindings;
-            if (sourceBindings != null)
-            {
-                if (sourceBindings.Contains(SourceBinding) && SourceBinding.Group == selectedItem.Path)
-                {
-                    sourceBindings.Remove(SourceBinding);
-                }
 
-                sourceBindings.Add(Binding);
+            var sourceBindings = keyConfiguration.Bindings.Single(b => b.KeyMode == keyMode).KeyBindings ;
+            if (sourceBindings.Contains(SourceBinding) && SourceBinding.Group == selectedItem.Path)
+            {
+                sourceBindings.Remove(SourceBinding);
             }
+            sourceBindings.Add(Binding);
 
             if (BindingItem != null)
             {

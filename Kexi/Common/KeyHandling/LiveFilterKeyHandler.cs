@@ -16,15 +16,16 @@ namespace Kexi.Common.KeyHandling
             _bindingHandler = new BindingHandler(workspace, bindings);
         }
 
-        public bool Execute(KeyEventArgs args, ILister lister, string group)
+        public void Execute(KeyEventArgs args, ILister lister, string group)
         {
-            if (_bindingHandler.Handle(args, lister, group))
+            if (_bindingHandler.Handle(args, lister))
             {
                 if (_workspace.CommandRepository.LastCommand.GetType() == typeof(DoActionCommand) || args.Key == Key.Escape)
                 {
                     _workspace.PopupViewModel.Close();
                 }
-                return true;
+
+                return;
             }
 
             if (args.KeyboardDevice.Modifiers == ModifierKeys.None && args.Key >= Key.A && args.Key <= Key.Z)
@@ -33,9 +34,7 @@ namespace Kexi.Common.KeyHandling
                 _filterPopupView     = new FilterPopupViewModel(_workspace, _workspace.Options, null);
                 new ShowFilterPopupCommand(_workspace, _fileFilterPopupView, _filterPopupView).Execute();
                 args.Handled = false;
-                return true;
             }
-            return false;
         }
 
         public           string                   SearchString { get; set; }

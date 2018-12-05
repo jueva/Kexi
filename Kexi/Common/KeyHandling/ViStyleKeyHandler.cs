@@ -16,9 +16,9 @@ namespace Kexi.Common.KeyHandling
 
         public List<KexBinding> Bindings { get; }
 
-        public bool Execute(KeyEventArgs args, ILister lister, string group = null)
+        public void Execute(KeyEventArgs args, ILister lister, string group = null)
         {
-            return _bindingHandler.Handle(args, lister, group);
+            _bindingHandler.Handle(args, lister);
         }
 
         public           string         SearchString { get; set; }
