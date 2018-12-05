@@ -22,8 +22,9 @@ namespace Kexi.ViewModel.Popup
         public override void Open()
         {
             var        shell       = new Shell32.Shell();
-            var        dir         = Path.GetDirectoryName(Workspace.CurrentItem.Path);
-            var        file        = Path.GetFileName(Workspace.CurrentItem.Path);
+            var path = Workspace.CurrentItem?.Path ?? Workspace.ActiveLister.Path;
+            var        dir         = Path.GetDirectoryName(path);
+            var        file        = Path.GetFileName(path);
             var        shellFolder = shell.NameSpace(dir) as Folder3;
             FolderItem folderItem = shellFolder?.ParseName(file) as FolderItem2;
             if (folderItem != null) 
@@ -61,7 +62,6 @@ namespace Kexi.ViewModel.Popup
                 }
                 return;
             }
-
             Items = filtered;
         }
 

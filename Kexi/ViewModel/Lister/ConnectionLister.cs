@@ -16,8 +16,8 @@ namespace Kexi.ViewModel.Lister
     public class ConnectionLister : BaseLister<ConnectionItem>
     {
         [ImportingConstructor]
-        public ConnectionLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public ConnectionLister(Workspace workspace, Options options, CommandRepository commandRepository)
+            : base(workspace, options, commandRepository)
         {
             Title = "Active Connections";
             PathName =  "connections://";

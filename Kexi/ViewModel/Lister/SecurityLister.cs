@@ -19,8 +19,8 @@ namespace Kexi.ViewModel.Lister
     public class SecurityLister : BaseLister<SecurityItem>
     {
         [ImportingConstructor]
-        public SecurityLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public SecurityLister(Workspace workspace,  Options options, CommandRepository commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             Title           =  PathName = "Security";
             PropertyChanged += SecurityLister_PropertyChanged;

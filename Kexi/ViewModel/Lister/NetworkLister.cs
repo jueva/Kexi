@@ -18,7 +18,7 @@ namespace Kexi.ViewModel.Lister
     public class NetworkLister : BaseLister<NetworkItem>
     {
         [ImportingConstructor]
-        public NetworkLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository) : base(workspace, notificationHost, options, commandRepository)
+        public NetworkLister(Workspace workspace,  Options options, CommandRepository commandRepository) : base(workspace,  options, commandRepository)
         {
             Title = PathName = "Network";
         }

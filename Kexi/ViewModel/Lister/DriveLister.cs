@@ -20,7 +20,7 @@ namespace Kexi.ViewModel.Lister
     public class DriveLister : BaseLister<DriveItem>
     {
         [ImportingConstructor]
-        public DriveLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository) : base(workspace, notificationHost, options, commandRepository)
+        public DriveLister(Workspace workspace, Options options, CommandRepository commandRepository) : base(workspace, options, commandRepository)
         {
             Title = PathName = Path = "Drives";
         }

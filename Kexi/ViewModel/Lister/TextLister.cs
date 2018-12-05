@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Kexi.Common;
-using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
 
 namespace Kexi.ViewModel.Lister
@@ -16,8 +15,8 @@ namespace Kexi.ViewModel.Lister
     public class TextLister : BaseLister<BaseItem>
     {
         [ImportingConstructor]
-        public TextLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public TextLister(Workspace workspace, Options options, CommandRepository commandRepository)
+            : base(workspace, options, commandRepository)
         {
         }
 
@@ -49,6 +48,5 @@ namespace Kexi.ViewModel.Lister
             var lines = Text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             return Task.FromResult(lines.Select(t => new BaseItem(t)));
         }
-
     }
 }

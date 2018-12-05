@@ -12,6 +12,7 @@ using Kexi.Common.KeyHandling;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Dock;
 using Kexi.ViewModel.Lister;
+using Kexi.ViewModel.Popup;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
 
@@ -37,6 +38,7 @@ namespace Kexi.ViewModel
             AddressbarViewModel   = new AdressbarViewModel(this);
             RibbonViewModel       = new RibbonViewModel(this);
             TemporaryFavorites    = new TemporaryFavorites<IItem>();
+            PopupViewModel = new FilterPopupViewModel(this, options, null);
         }
 
         public Options Options { get; set; }
@@ -134,8 +136,8 @@ namespace Kexi.ViewModel
 
                 if (value && CurrentDocumentPaneGroup?.Children != null && CurrentDocumentPaneGroup.Children.Count == 1)
                 {
-                    RefreshLister();
-                    SplitVertical();
+                    RefreshAndSplit();
+
                 }
 
                 _commanderMode = value;
@@ -180,12 +182,13 @@ namespace Kexi.ViewModel
         private PopupViewModel               _popupViewModel;
         private RenamePopupViewModel         _renamePopupViewModel;
 
-        private async void RefreshLister()
+        private async void RefreshAndSplit()
         {
             var fileLister = KexContainer.Resolve<FileLister>();
             fileLister.Path = ActiveLister.Path;
-            await fileLister.Refresh().ConfigureAwait(false);
+            await fileLister.Refresh();
             Open(fileLister);
+            SplitVertical();
         }
 
 

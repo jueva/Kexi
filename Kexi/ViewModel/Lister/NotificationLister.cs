@@ -17,8 +17,8 @@ namespace Kexi.ViewModel.Lister
     public class NotificationLister : BaseLister<NotificationItem>
     {
         [ImportingConstructor]
-        public NotificationLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public NotificationLister(Workspace workspace, Options options, CommandRepository commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             Title                                            =  PathName = "Notifications";
             NotificationHost.Notifications.CollectionChanged += async (sender, args) => await Refresh();

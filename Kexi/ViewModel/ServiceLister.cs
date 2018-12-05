@@ -22,8 +22,8 @@ namespace Kexi.ViewModel
         private static readonly Lazy<BitmapImage> Thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("service.png"));
 
         [ImportingConstructor]
-        public ServiceLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandrepository)
-            : base(workspace, notificationHost, options, commandrepository)
+        public ServiceLister(Workspace workspace,  Options options, CommandRepository commandrepository)
+            : base(workspace,  options, commandrepository)
         {
             Title     =  PathName = Path = "Services";
             Thumbnail =  Thumb.Value;

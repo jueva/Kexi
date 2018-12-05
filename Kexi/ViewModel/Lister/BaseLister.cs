@@ -27,12 +27,12 @@ namespace Kexi.ViewModel.Lister
         where T : class, IItem
     {
         [ImportingConstructor]
-        protected BaseLister(Workspace workspace, INotificationHost notificationHost, Options options,
+        protected BaseLister(Workspace workspace,  Options options,
             CommandRepository commandRepository)
         {
             Workspace         =  workspace;
             SortHandler       =  new SortHandler(this);
-            NotificationHost  =  notificationHost;
+            NotificationHost  =  workspace.NotificationHost;
             GotView           += GotTheView;
             Options           =  options;
             CommandRepository =  commandRepository;

@@ -26,8 +26,8 @@ namespace Kexi.ViewModel.Lister
     public class ConsoleLister : BaseLister<ConsoleItem>
     {
         [ImportingConstructor]
-        public ConsoleLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public ConsoleLister(Workspace workspace, Options options, CommandRepository commandRepository)
+            : base(workspace, options, commandRepository)
         {
             Title = PathName = Path = "Console";
             Items = new ObservableCollection<ConsoleItem>();

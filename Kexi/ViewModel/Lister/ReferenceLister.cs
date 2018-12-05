@@ -26,9 +26,9 @@ namespace Kexi.ViewModel.Lister
         private SearchItemProvider _searchItemProvider;
 
         [ImportingConstructor]
-        public ReferenceLister(Workspace workspace, INotificationHost notificationHost, Options options,
+        public ReferenceLister(Workspace workspace,  Options options,
             CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             Items = new ObservableCollection<ReferenceItem>();
             Title = PathName = ProtocolPrefix;

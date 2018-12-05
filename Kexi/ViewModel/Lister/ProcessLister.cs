@@ -21,8 +21,8 @@ namespace Kexi.ViewModel.Lister
     public class ProcessLister : BaseLister<ProcessItem>
     {
         [ImportingConstructor]
-        public ProcessLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public ProcessLister(Workspace workspace,  Options options, CommandRepository commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             Title     = PathName = Path = "Processes";
             Thumbnail = _thumb.Value;

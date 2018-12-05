@@ -75,7 +75,7 @@ namespace Kexi.Property
             {
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.DisplayName));
-                tempProp.Add(new PropertyItem("Type", Item.Details.Type));
+                tempProp.Add(new PropertyItem("Type", Item.Details?.Type));
                 return tempProp;
             }, CancellationTokenSource.Token);
         }

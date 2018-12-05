@@ -24,8 +24,8 @@ namespace Kexi.ViewModel.Lister
         private SyntaxHighlighter _syntaxHighlighter;
 
         [ImportingConstructor]
-        public ViewFileLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+        public ViewFileLister(Workspace workspace, Options options, CommandRepository commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             _options = options;
         }

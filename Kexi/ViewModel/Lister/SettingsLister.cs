@@ -16,8 +16,8 @@ namespace Kexi.ViewModel.Lister
     public class SettingsLister : BaseLister<SettingItem>
     {
         [ImportingConstructor]
-        public SettingsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository, PropertyEditorPopupViewModel propertyEditorPopup)
-            : base(workspace, notificationHost, options, commandRepository)
+        public SettingsLister(Workspace workspace, Options options, CommandRepository commandRepository, PropertyEditorPopupViewModel propertyEditorPopup)
+            : base(workspace,  options, commandRepository)
         {
             _propertyEditorPopup = propertyEditorPopup;
             Title                = PathName = Path = "Settings";

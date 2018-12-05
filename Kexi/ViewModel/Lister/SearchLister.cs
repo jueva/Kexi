@@ -25,8 +25,8 @@ namespace Kexi.ViewModel.Lister
     public class SearchLister : FileLister
     {
         [ImportingConstructor]
-        public SearchLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository
-        ) : base(workspace, notificationHost, options, commandRepository)
+        public SearchLister(Workspace workspace, Options options, CommandRepository commandRepository
+        ) : base(workspace, options, commandRepository)
         {
             Title                        =  null;
             SearchItemProvider           =  new SearchItemProvider();

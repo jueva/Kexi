@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Kexi.Common;
+using Kexi.Composition;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
+using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Popup;
 
@@ -16,8 +20,8 @@ namespace Kexi.ViewModel.Lister
     public class KeyCommandsLister : BaseLister<KexBindingItem>
     {
         [ImportingConstructor]
-        public KeyCommandsLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository,
-            KeyBindingsProvider keyBindingsProvider, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace, notificationHost, options, commandRepository)
+        public KeyCommandsLister(Workspace workspace,  Options options, CommandRepository commandRepository,
+            KeyBindingsProvider keyBindingsProvider, SetKeyBindingPopupViewModel keyBindingPopupViewModel) : base(workspace,  options, commandRepository)
         {
             _keyBindingsProvider      = keyBindingsProvider;
             _keyBindingPopupViewModel = keyBindingPopupViewModel;
@@ -50,6 +54,19 @@ namespace Kexi.ViewModel.Lister
             Workspace.PopupViewModel = _keyBindingPopupViewModel;
             _keyBindingPopupViewModel.BindingItem = item;
             _keyBindingPopupViewModel.Open();
+        }
+
+        [ExportContextMenuCommand(typeof(KeyCommandsLister), "Delete Keybinding")]
+        public ICommand DeleteKeybinding
+        {
+            get
+            {
+                return new RelayCommand(async c =>
+                    {
+                        Workspace.CommandRepository.Execute(nameof(DeleteKeyBindingCommand));
+                    }
+                );
+            }
         }
     }
 }

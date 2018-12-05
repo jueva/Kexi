@@ -25,9 +25,9 @@ namespace Kexi.ViewModel.Lister
     public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider
     {
         [ImportingConstructor]
-        public FileLister(Workspace workspace, INotificationHost notificationHost, Options options,
+        public FileLister(Workspace workspace,  Options options,
             CommandRepository commandRepository)
-            : base(workspace, notificationHost, options, commandRepository)
+            : base(workspace,  options, commandRepository)
         {
             Title    = "Files";
             History  = new BrowsingHistory();

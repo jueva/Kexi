@@ -27,8 +27,8 @@ namespace Kexi.ViewModel.Lister
         private FileItem _fileItem;
 
         [ImportingConstructor]
-        public PropertyLister(Workspace workspace, INotificationHost notificationHost, Options options, CommandRepository commandRepository, ExtendedExtendedPropertyProvider extendedPropertyProvider)
-            : base(workspace, notificationHost, options, commandRepository)
+        public PropertyLister(Workspace workspace,  Options options, CommandRepository commandRepository, ExtendedExtendedPropertyProvider extendedPropertyProvider)
+            : base(workspace,  options, commandRepository)
         {
             _extendedPropertyProvider = extendedPropertyProvider;
             _contentProvider = new FilePropertyProvider(workspace);
