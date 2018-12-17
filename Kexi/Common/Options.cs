@@ -216,6 +216,14 @@ namespace Kexi.Common
             "Consolas",
             "Microsoft Sans Serif",
             "Courier",
+            "Gill Sans MT",
+            "Lucidia Console",
+            "MS Reference Sans Serif",
+            "Microsoft New Tai Lue",
+            "Segoe",
+            "Tahoma",
+            "Tw Cen Mt",
+            "Verdana",
         })]
         public FontFamily FontFamily
         {
