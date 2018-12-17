@@ -18,7 +18,7 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(ILister))]
     [Export(typeof(ViewFileLister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class ViewFileLister : BaseLister<LineItem>
+    public class ViewFileLister : BaseLister<RtfItem>
     {
         private readonly Options _options;
         private SyntaxHighlighter _syntaxHighlighter;
@@ -36,7 +36,7 @@ namespace Kexi.ViewModel.Lister
             new Column("", "RtfRuns", ColumnType.SyntaxHighlighted, ColumnSize.FullWidth)
         };
 
-        protected override async Task<IEnumerable<LineItem>> GetItems()
+        protected override async Task<IEnumerable<RtfItem>> GetItems()
         {
             Title            = Path;
             Thumbnail        = ShellNative.GetLargeBitmapSource(Path);
@@ -51,7 +51,7 @@ namespace Kexi.ViewModel.Lister
             return await _syntaxHighlighter.Init(Path, extension);
         }
 
-        public override void DoAction(LineItem lineItem)
+        public override void DoAction(RtfItem lineItem)
         {
             if (lineItem == null)
                 return;

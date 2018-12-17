@@ -43,7 +43,7 @@ namespace Kexi.ViewModel
             }
             else
             {
-                Items = Enumerable.Empty<LineItem>();
+                Items = Enumerable.Empty<RtfItem>();
             }
         }
 
@@ -66,7 +66,7 @@ namespace Kexi.ViewModel
             var highLighter = new SyntaxHighlighter(Encoding.UTF8);
             highLighter.Init(items.Select(i => i.Name));
             var line = 1;
-            Items = items.Select(i => new LineItem(highLighter, i.Name, line++));
+            Items = items.Select(i => new RtfItem(highLighter, i.Name, line++));
         }
 
         [NotifyPropertyChangedInvocator]
@@ -75,9 +75,9 @@ namespace Kexi.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private IEnumerable<LineItem> _items;
+        private IEnumerable<RtfItem> _items;
 
-        public IEnumerable<LineItem> Items
+        public IEnumerable<RtfItem> Items
         {
             get => _items;
             set

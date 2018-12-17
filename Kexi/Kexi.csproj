@@ -101,6 +101,7 @@
     <Reference Include="Mono.Cecil, Version=0.10.1.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.10.1\lib\net40\Mono.Cecil.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="NHotkey, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NHotkey.1.2.1\lib\net20\NHotkey.dll</HintPath>
       <Private>True</Private>
@@ -386,7 +387,7 @@
     <Compile Include="ViewModel\Item\ConsoleItem.cs" />
     <Compile Include="ViewModel\Item\FileDetailItem.cs" />
     <Compile Include="ViewModel\Item\KexBindingItem.cs" />
-    <Compile Include="ViewModel\Item\LineItem.cs" />
+    <Compile Include="ViewModel\Item\RtfItem.cs" />
     <Compile Include="ViewModel\Item\NotificationItem.cs" />
     <Compile Include="ViewModel\Item\ObjectPropertyItem.cs" />
     <Compile Include="ViewModel\Item\ProcessDetailItem.cs" />

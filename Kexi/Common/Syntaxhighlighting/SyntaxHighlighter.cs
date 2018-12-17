@@ -44,18 +44,26 @@ namespace Kexi.Common.Syntaxhighlighting
             _textDocument = new TextDocument(string.Join(Environment.NewLine, lines));
         }
 
-        public async Task<IEnumerable<LineItem>> InitBinary(string path)
+        public IEnumerable<RtfItem> InitBinary(string path)
         {
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            var length = new FileInfo(path).Length;
+            var binaryInfo = new[]
             {
-                var contentLength = (int) stream.Length;
-                Binary        = new byte[contentLength];
-                await stream.ReadAsync(Binary, 0, contentLength);
-                return Enumerable.Range(1,contentLength/24).Select((b, index) => new LineItem(this, "", index + 1)).ToList();
-            }
+                "Binary File",
+                $"Length {length}"
+            };
+            Text = string.Join(Environment.NewLine, binaryInfo);
+            return binaryInfo.Select((i, index) => new RtfItem(this, i, index + 1));
+            //using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    var contentLength = (int) stream.Length;
+            //    Binary        = new byte[contentLength];
+            //    await stream.ReadAsync(Binary, 0, contentLength);
+            //    return Enumerable.Range(1,contentLength/24).Select((b, index) => new LineItem(this, "", index + 1)).ToList();
+            //}
         }
 
-        public async Task<IEnumerable<LineItem>> Init(string path, string extension)
+        public async Task<IEnumerable<RtfItem>> Init(string path, string extension)
         {
             using (var file = new StreamReader(path, _encoding))
             {
@@ -70,7 +78,7 @@ namespace Kexi.Common.Syntaxhighlighting
                 SetHighlightColors(_highlightingDefinition);
             }
             var lines = Text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-            return lines.Select((l, index) => new LineItem(this, l, index+1));
+            return lines.Select((l, index) => new RtfItem(this, l, index+1));
         }
 
         private void SetHighlightColors(IHighlightingDefinition highlighter)
@@ -87,8 +95,7 @@ namespace Kexi.Common.Syntaxhighlighting
         {
             if (_encoding == null)
             {
-                return new Run[0];
-                return GetHex(Binary, lineIndex ).ToArray();
+                return new Run[0]; //TODO: Refactor whole viewfilelister, syntax, preview
             }
 
             var docLine = _textDocument.GetLineByNumber(lineIndex);
