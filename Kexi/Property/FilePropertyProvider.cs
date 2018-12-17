@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Kexi.Common;
@@ -10,6 +12,7 @@ using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 using Microsoft.WindowsAPICodePack.Shell;
+using Ude;
 
 namespace Kexi.Property
 {
@@ -124,6 +127,13 @@ namespace Kexi.Property
                     tempProp.Add(new PropertyItem("Target:", target.TargetPath));
                 }
 
+                if (!Item.IsContainer)
+                {
+                    var encoding = GetEncoding(Item.Path);
+                    if (encoding != null)
+                        tempProp.Add(new PropertyItem("Encoding", encoding.EncodingName));
+                }
+
                 if (IsMusic)
                 {
                     tempProp.Add(new PropertyItem("Title", _shellObject.Properties.System.Title.ValueAsObject));
@@ -139,8 +149,20 @@ namespace Kexi.Property
                         tempProp.Add(new PropertyItem(key.Substring(13), props.GetValue(key)));
                 }
 
+
                 return tempProp;
             });
+        }
+
+        private static Encoding GetEncoding(string path)
+        {
+            using (var stream = File.OpenRead(path))
+            {
+                var detector = new CharsetDetector();
+                detector.Feed(stream);
+                detector.DataEnd();
+                return detector.Charset == null ? null : Encoding.GetEncoding(detector.Charset);
+            }
         }
 
         private Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
