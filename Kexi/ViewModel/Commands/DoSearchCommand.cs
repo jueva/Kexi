@@ -42,11 +42,11 @@ namespace Kexi.ViewModel.Commands
             }
             else
             {
-                searchLister               = KexContainer.Resolve<SearchLister>();
-                searchLister.Path          = _workspace.ActiveLister.Path;
-                searchLister.SearchPattern = searchPattern;
+                searchLister               =  KexContainer.Resolve<SearchLister>();
+                searchLister.Path          =  _workspace.ActiveLister.Path;
+                searchLister.SearchPattern =  searchPattern;
+                searchLister.GotView       += searchLister_GotView;
                 _workspace.Open(searchLister);
-                searchLister.GotView += searchLister_GotView;
             }
         }
 

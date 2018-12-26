@@ -31,12 +31,12 @@ namespace Kexi.ViewModel.Lister
             Title                        =  null;
             SearchItemProvider           =  new SearchItemProvider();
             SearchItemProvider.ItemAdded += ItemProvider_ItemAdded;
+            Items     = new ObservableCollection<FileItem>();
             SearchItemProvider.SearchFinished += () =>
             {
                 PathName += " - Finished";
                 SearchFinished?.Invoke();
             };
-            Items     = new ObservableCollection<FileItem>();
             Thumbnail = Utils.GetImageFromRessource("search.png");
         }
 

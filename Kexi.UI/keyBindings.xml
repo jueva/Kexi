@@ -4,6 +4,13 @@
       <KeyModeBindings>
         <KeyMode>ViStyle</KeyMode>
         <KeyBindings>
+          <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>ClearFilterCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>Q</Key>
+            <SecondKey>W</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
           <KexBinding>
             <CommandName>ShowCommandsPopupCommand</CommandName>
             <Modifier>None</Modifier>

@@ -10,9 +10,12 @@ namespace Kexi.ViewModel.Popup
     [Export]
     public class SearchPopupViewModel : PopupViewModel<BaseItem>
     {
+        private readonly DoSearchCommand _searchCommand;
+
         [ImportingConstructor]
-        public SearchPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler) : base(workspace, options, mouseHandler)
+        public SearchPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler, DoSearchCommand searchCommand) : base(workspace, options, mouseHandler)
         {
+            _searchCommand = searchCommand;
             TitleVisible       = true;
             Title              = "Search";
             HideInputAtStartup = false;
@@ -31,7 +34,7 @@ namespace Kexi.ViewModel.Popup
                 var searchText = Text;
                 IsOpen = false;
                 Workspace.FocusCurrentOrFirst();
-                CommandRepository.GetCommandByName(nameof(DoSearchCommand)).Execute(searchText);
+                _searchCommand.Execute(searchText);
             }
             catch (Exception ex)
             {
