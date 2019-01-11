@@ -68,7 +68,8 @@ namespace Kexi
             if (command.CanExecute(arg))
             {
                 command.Execute(arg);
-                LastCommand = command;
+                if (command.GetType().Name != nameof(RepeatLastCommandCommand))
+                    LastCommand = command;
             }
         }
     }

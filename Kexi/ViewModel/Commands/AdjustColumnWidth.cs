@@ -18,7 +18,7 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _workspace.ActiveLister.View.ListView.View is GridView;
         }
 
         public void Execute(object parameter)
@@ -30,8 +30,8 @@ namespace Kexi.ViewModel.Commands
             {
                 var header = ((ContentControl) column.Header).Content as string;
                 var col    = _workspace.ActiveLister.Columns.FirstOrDefault(co => co.Header == header);
-                //TODO: check actualsize vs desiredsize
-                if (string.IsNullOrEmpty(col?.Header)) continue;
+                if (string.IsNullOrEmpty(col?.Header)) 
+                    continue;
                 column.Width = column.ActualWidth;
                 column.Width = double.NaN;
             }

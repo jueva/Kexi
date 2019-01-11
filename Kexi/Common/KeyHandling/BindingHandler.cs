@@ -68,12 +68,12 @@ namespace Kexi.Common.KeyHandling
                 if (binding.Command == null) binding.Command = _workspace.CommandRepository.GetCommandByName(binding.CommandName);
                 try
                 {
-                    if (binding.Command == _workspace.CommandRepository.GetCommandByName(nameof(RepeatLastCommandCommand)))
-                    {
-                        _workspace.CommandRepository.Execute(_workspace.CommandRepository.LastCommand);
-                        args.Handled = true;
-                        return true;
-                    }
+                    //if (binding.Command == _workspace.CommandRepository.GetCommandByName(nameof(RepeatLastCommandCommand)))
+                    //{
+                    //    _workspace.CommandRepository.Execute(_workspace.CommandRepository.LastCommand);
+                    //    args.Handled = true;
+                    //    return true;
+                    //}
 
                     switch (binding.CommandName)
                     {

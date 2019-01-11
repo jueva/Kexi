@@ -16,12 +16,12 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _workspace.CommandRepository.LastCommand != null;
         }
 
         public void Execute(object parameter)
         {
-            //TODO: Implement
+            _workspace.CommandRepository.Execute(_workspace.CommandRepository.LastCommand);
         }
 
         public event EventHandler  CanExecuteChanged;

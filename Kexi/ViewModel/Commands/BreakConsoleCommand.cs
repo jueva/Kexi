@@ -17,7 +17,7 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _workspace.ActiveLister is ConsoleLister;
         }
 
         public void Execute(object parameter)

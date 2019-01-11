@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Kexi.Interfaces;
+using System;
 using System.ComponentModel.Composition;
-using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
 {
@@ -16,17 +16,14 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _workspace.CurrentItem != null;
         }
 
         public void Execute(object parameter)
         {
             var item = _workspace.CurrentItem;
-            if (item != null)
-            {
-                _workspace.TemporaryFavorites.Add(item);
-                _workspace.NotificationHost.AddInfo(item.Path + " added to Temporary Favorites");
-            }
+            _workspace.TemporaryFavorites.Add(item);
+            _workspace.NotificationHost.AddInfo(item.Path + " added to Temporary Favorites");
         }
 
         public event EventHandler  CanExecuteChanged;

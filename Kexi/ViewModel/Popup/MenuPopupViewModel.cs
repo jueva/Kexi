@@ -120,11 +120,11 @@ namespace Kexi.ViewModel.Popup
                     Items = new[]
                     {
                         new MenuCommandBoundItem("View Details",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ViewDetailsCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ViewDetailsCommand)))),
                         new MenuCommandBoundItem("View Icons",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ViewIconsCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ViewIconsCommand)))),
                         new MenuCommandBoundItem("View Thumbnails",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ViewThumbnailsCommand)).Execute()))
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ViewThumbnailsCommand))))
                     },
                     Thumbnail = menuImg
                 },
@@ -133,19 +133,19 @@ namespace Kexi.ViewModel.Popup
                     Items = new[]
                     {
                         new MenuCommandBoundItem("Toggle Adressbar",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ToggleAdressbarVisibiblityCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ToggleAdressbarVisibiblityCommand)))),
                         new MenuCommandBoundItem("Toggle Statusbar",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ToggleStatusbarVisibilityCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ToggleStatusbarVisibilityCommand)))),
                         new MenuCommandBoundItem("Toggle Detailspane",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ToggleFileDetailsVisibilityCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ToggleFileDetailsVisibilityCommand)))),
                         new MenuCommandBoundItem("Toggle Treeview Pane",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ToggleTreeViewVisibilityCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ToggleTreeViewVisibilityCommand)))),
                         new MenuCommandBoundItem("Toggle Ribbonpane",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ToggleRibbonVisibilityCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(ToggleRibbonVisibilityCommand)))),
                         new MenuCommandBoundItem("Load Layout",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(LoadLayoutCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(LoadLayoutCommand)))),
                         new MenuCommandBoundItem("Save Layout",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(SaveLayoutCommand)).Execute()))
+                            new RelayCommand(c => CommandRepository.Execute(nameof(SaveLayoutCommand))))
                     },
                     Thumbnail = menuImg
                 },
@@ -154,33 +154,33 @@ namespace Kexi.ViewModel.Popup
                     Items = new[]
                     {
                         new MenuCommandBoundItem("Adjust Width",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(AdjustListerWidthCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(AdjustListerWidthCommand)))),
                         new MenuCommandBoundItem("Adjust Column Width",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(AdjustColumnWidth)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(AdjustColumnWidth)))),
                         new MenuCommandBoundItem("Split Horizontal",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowSplitHorizontalCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowSplitHorizontalCommand)))),
                         new MenuCommandBoundItem("Split Vertical",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowSplitVerticalCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowSplitVerticalCommand)))),
                         new MenuCommandBoundItem("Move To Next Group",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(MoveToNextTabCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(MoveToNextTabCommand)))),
                         new MenuCommandBoundItem("Move To Previous Group",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(MoveToPreviousTabCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(MoveToPreviousTabCommand)))),
                         new MenuCommandBoundItem("Maximize",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowMaximizeCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowMaximizeCommand)))),
                         new MenuCommandBoundItem("Minimize",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowMinimizeCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowMinimizeCommand)))),
                         new MenuCommandBoundItem("Restore",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowRestoreCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowRestoreCommand)))),
                         new MenuCommandBoundItem("Dock Left",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowDockLeftCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowDockLeftCommand)))),
                         new MenuCommandBoundItem("Dock Right",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowDockRightCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowDockRightCommand)))),
                         new MenuCommandBoundItem("Center",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowCenterCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowCenterCommand)))),
                         new MenuCommandBoundItem("Full Height",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowFullHeightCommand)).Execute())),
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowFullHeightCommand)))),
                         new MenuCommandBoundItem("Next Monitor",
-                            new RelayCommand(c => CommandRepository.GetCommandByName(nameof(WindowNextMonitorCommand)).Execute()))
+                            new RelayCommand(c => CommandRepository.Execute(nameof(WindowNextMonitorCommand))))
                     },
                     Thumbnail = menuImg
                 },
@@ -197,18 +197,18 @@ namespace Kexi.ViewModel.Popup
                         }))),
                     Thumbnail = menuImg
                 },
-                new MenuCommandBoundItem("Options", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowSettingsListerCommand)).Execute())),
-                new MenuCommandBoundItem("GroupBy", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowGroupByPopupCommand)).Execute())),
-                new MenuCommandBoundItem("Sort", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowSortPopupCommand)).Execute())),
+                new MenuCommandBoundItem("Options", new RelayCommand(c => CommandRepository.Execute(nameof(ShowSettingsListerCommand)))),
+                new MenuCommandBoundItem("GroupBy", new RelayCommand(c => CommandRepository.Execute(nameof(ShowGroupByPopupCommand)))),
+                new MenuCommandBoundItem("Sort", new RelayCommand(c => CommandRepository.Execute(nameof(ShowSortPopupCommand)))),
                 new MenuCommandBoundItem("Toggle Hidden Items", new RelayCommand(c =>
                 {
-                    new ToggleHiddenItemsCommand(Workspace).Execute();
+                    new ToggleHiddenItemsCommand(Workspace);
                     Workspace.ActiveLister.Refresh();
                 })),
-                new MenuCommandBoundItem("Refresh", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(RefreshListerCommand)).Execute())),
-                new MenuCommandBoundItem("Console Command", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(ShowConsolePopupCommand)).Execute())),
-                new MenuCommandBoundItem("Restart as Admin", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(RestartAsAdminCommand)).Execute())),
-                new MenuCommandBoundItem("Quit", new RelayCommand(c => CommandRepository.GetCommandByName(nameof(QuitCommand)).Execute())),
+                new MenuCommandBoundItem("Refresh", new RelayCommand(c => CommandRepository.Execute(nameof(RefreshListerCommand)))),
+                new MenuCommandBoundItem("Console Command", new RelayCommand(c => CommandRepository.Execute(nameof(ShowConsolePopupCommand)))),
+                new MenuCommandBoundItem("Restart as Admin", new RelayCommand(c => CommandRepository.Execute(nameof(RestartAsAdminCommand)))),
+                new MenuCommandBoundItem("Quit", new RelayCommand(c => CommandRepository.Execute(nameof(QuitCommand)))),
             };
             return items;
         }
