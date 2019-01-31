@@ -163,9 +163,17 @@ namespace Kexi.ViewModel.Item
         private bool           _isSystemOrHidden;
         private long           _length;
 
-        private async  void SetDetails()
+        private readonly object locker = new object();
+        private bool gettingDetails;
+        public async void SetDetails()
         {
-             await SetDetailsAsync();
+            lock (locker)
+            {
+                if (gettingDetails)
+                    return;
+                gettingDetails = true;
+            }
+            await SetDetailsAsync();
         }
 
         public async Task<FileDetailItem> SetDetailsAsync()
@@ -173,31 +181,28 @@ namespace Kexi.ViewModel.Item
             if (CancellationToken?.IsCancellationRequested ?? false)
                 return null;
 
-            _details = new FileDetailItem(this, CancellationToken);
-            try
-            {
-                var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
-                var token      = CancellationToken ?? System.Threading.CancellationToken.None;
-                await Task.Factory.StartNew(() =>
-                {
-                    SetTargetType();
-                    _details.Init(token);
-                    _details.SetThumbs(token, largeThumb);
-                    IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
-                }, token);
+            var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
+            var token      = CancellationToken ?? System.Threading.CancellationToken.None;
+            _details = await Task.Factory.StartNew(()=>GetDetail(largeThumb, token), token);
+            Details   = _details;
+            Thumbnail = _details.Thumbnail;
 
-                if (_fetchDisplayName && !string.IsNullOrEmpty(_details.DisplayName))
-                    DisplayName = _details.DisplayName;
-
-                Details   = _details;
-                Thumbnail = _details.Thumbnail;
-            }
-            catch (TaskCanceledException)
-            {
-                //ignore
-            }
-
+            if (_fetchDisplayName && !string.IsNullOrEmpty(_details.DisplayName))
+                DisplayName = _details.DisplayName;
             return _details;
+        }
+
+        public FileDetailItem GetDetail(bool largeThumb, CancellationToken token)
+        {
+            if (_details != null)
+                return _details;
+
+            var det = new FileDetailItem(this, CancellationToken);
+            SetTargetType();
+            det.Init(token);
+            det.SetThumbs(token, largeThumb);
+            IsSystemOrHidden = Attributes.HasFlag(FileAttributes.Hidden | FileAttributes.System);
+            return det;
         }
 
         private void SetTargetType()

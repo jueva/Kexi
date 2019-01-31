@@ -45,5 +45,18 @@ namespace Kexi.Shell
                 return ShellNative.GetBitMapSource(icon);
             }
         }
+
+        public BitmapSource IconOnly
+        {
+            get
+            {
+                var info   = new ShellNative.SHFILEINFO();
+                var uFlags = ShellNative.Win32.SHGFI_ICON;
+                ShellNative.Win32.SHGetFileInfo(_fileName, 0, ref info, (uint) Marshal.SizeOf(info), uFlags);
+                var icon = (Icon) System.Drawing.Icon.FromHandle(info.hIcon).Clone();
+                ShellNative.Win32.DestroyIcon(info.hIcon);
+                return ShellNative.GetBitMapSource(icon);
+            }
+        }
     }
 }

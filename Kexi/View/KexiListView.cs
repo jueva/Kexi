@@ -1,12 +1,16 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using Kexi.Interfaces;
 
 namespace Kexi.View
 {
     public class KexiListView : ListView
     {
-        //protected override DependencyObject GetContainerForItemOverride()
+        //protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         //{
-        //    return new KexiListViewItem(MouseHandler);
+        //    base.PrepareContainerForItemOverride(element, item);
+        //    if (item is IAsyncDetails lazy)
+        //        lazy.SetDetails();
         //}
 
     }

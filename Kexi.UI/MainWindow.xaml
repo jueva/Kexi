@@ -32,6 +32,7 @@
     <controls:MetroWindow.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
+        <converters:TransparencyConverter x:Key="TransparencyConverter"></converters:TransparencyConverter>
     </controls:MetroWindow.Resources>
 
     <controls:MetroWindow.Title>
@@ -122,7 +123,7 @@
     </controls:MetroWindow.RightWindowCommands>
 
     <Grid Background="Transparent">
-        <Rectangle
+        <!--<Rectangle
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Fill="{DynamicResource ListerBackground}"
@@ -132,15 +133,15 @@
                 <acrylicWpf:NoiseEffect Ratio="0.15" />
             </Rectangle.Effect>
 
-        </Rectangle>
+        </Rectangle>-->
         <Grid>
-            <Grid.Background>Transparent</Grid.Background>
-            <!--<Grid.Background>
+            <!--<Grid.Background>Transparent</Grid.Background>-->
+            <Grid.Background>
                 <MultiBinding Converter="{StaticResource TransparencyConverter}">
                     <Binding Path="Options.TransparentBackground" />
                     <Binding Path="Options.Theme" />
                 </MultiBinding>
-            </Grid.Background>-->
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <!--  Ribbon  -->

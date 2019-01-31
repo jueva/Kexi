@@ -4,10 +4,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
-
 
 //Taken from: https://stackoverflow.com/questions/21751747/extract-thumbnail-for-any-file-in-windows
 namespace Kexi.Common
@@ -69,6 +69,10 @@ namespace Kexi.Common
             return bitmapSource;
         }
 
+        public static Task<BitmapSource> GetLargeThumbnailAsync(string path, CancellationToken? cancellationToken = null)
+        {
+            return Task.Factory.StartNew(() => GetThumbnailSource(path, 256, 256, ThumbnailOptions.None, cancellationToken));
+        }
 
         private static BitmapSource Convert(Bitmap bitmap)
         {

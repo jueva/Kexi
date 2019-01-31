@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using Kexi.Common;
 using Kexi.Shell;
 
 namespace Kexi.ViewModel.Item
@@ -57,7 +56,6 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-
         public string UserName
         {
             get => _userName;
@@ -69,16 +67,14 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-
+        private ProcessDetailItem _details;
         private string _fileName;
         private string _moduleName;
         private string _userName;
 
-        private ProcessDetailItem _details;
-
         private async void SetDetailsAsync()
         {
-            Details      = await Task.Run(() => GetDetail());
+            Details      = await Task.Run(() => GetDetail()).ConfigureAwait(false);
             Thumbnail    = Details.Thumbnail;
             FilterString = $"{DisplayName}_{Details.Description}";
         }
@@ -87,6 +83,9 @@ namespace Kexi.ViewModel.Item
         {
             try
             {
+                if (Process.HasExited)
+                    return null;
+
                 var main = Process.MainModule;
                 FileName   = main.FileName;
                 ModuleName = main.ModuleName;
@@ -106,22 +105,5 @@ namespace Kexi.ViewModel.Item
                 return new ProcessDetailItem();
             }
         }
-
-
-        //private string GetProcessOwner(int processId)
-        //{
-        //    var query       = "Select * From Win32_Process Where ProcessID = " + processId;
-        //    var searcher    = new ManagementObjectSearcher(query);
-        //    var processList = searcher.Get();
-
-        //    foreach (ManagementObject obj in processList)
-        //    {
-        //        var argList   = {string.Empty, string.Empty};
-        //        var returnVal = Convert.ToInt32(obj.InvokeMethod("GetOwner", argList));
-        //        if (returnVal == 0) return argList[0];
-        //    }
-
-        //    return "NO OWNER";
-        //}
     }
 }

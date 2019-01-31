@@ -54,7 +54,7 @@ namespace Kexi.Property
         }
         protected override  Task<BitmapSource> GetThumbnail()
         {
-            return Task.Run(() => ThumbnailProvider.GetThumbnailSource(Item.Path, 256, 256, ThumbnailOptions.None));
+            return ThumbnailProvider.GetLargeThumbnailAsync(Item.Path);
         }
     }
 }

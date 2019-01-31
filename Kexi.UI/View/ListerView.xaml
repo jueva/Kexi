@@ -18,14 +18,14 @@
                  mc:Ignorable="d">
 
         <UserControl.Resources>
-            <converters:ViewTypeConverter x:Key="viewConverter" />
+            <converters:ViewTypeConverter x:Key="viewTypeConverter" />
+            <converters:ViewModeConverter x:Key="viewModeConverter" />
         </UserControl.Resources>
 
         <view1:KexiListView x:Name="_ListView"
                        Background="Transparent"
                        Foreground="{DynamicResource ListerForeground}"
                        ItemsSource="{Binding ItemsView}"
-                       ItemContainerStyle="{Binding CurrentContainerStyle}"
                        Padding="0"
                        Margin="0"
                        x:FieldModifier="public"
@@ -43,9 +43,16 @@
                        VirtualizingPanel.ScrollUnit="Pixel"
                        FocusVisualStyle="{x:Null}"
                        VirtualizingPanel.VirtualizationMode="Recycling">
+
+        <view1:KexiListView.ItemContainerStyle>
+            <MultiBinding Converter="{StaticResource viewModeConverter}" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="CurrentViewMode" />
+                <Binding RelativeSource="{RelativeSource Self}" />
+            </MultiBinding>
+        </view1:KexiListView.ItemContainerStyle>
                        
         <view1:KexiListView.View>
-            <MultiBinding Converter="{StaticResource viewConverter}" UpdateSourceTrigger="PropertyChanged">
+            <MultiBinding Converter="{StaticResource viewTypeConverter}" UpdateSourceTrigger="PropertyChanged">
                 <Binding Path="CurrentViewMode" />
                 <Binding Path="."  />
             </MultiBinding>

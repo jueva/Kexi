@@ -16,7 +16,6 @@
              Foreground="{DynamicResource ListerForeground}"
              FontFamily="{Binding Workspace.Options.FontFamily}"
              FontSize="{Binding Workspace.Options.FontSize}"
-             Width="{Binding ActualWidth}"
 
              mc:Ignorable="d">
     <UserControl.Resources>

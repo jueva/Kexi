@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -6,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kexi.Common;
@@ -22,7 +24,7 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(FileLister))]
     [Export(typeof(ILister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider
+    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider, IBackgroundLoader<FileItem>
     {
         [ImportingConstructor]
         public FileLister(Workspace workspace,  Options options,
@@ -292,6 +294,22 @@ namespace Kexi.ViewModel.Lister
             PathChanged -= FileLister_PathChanged;
             _itemProvider.Dispose();
             base.Dispose(disposing);
+        }
+
+        public void LoadBackgroundData(IEnumerable<FileItem> items, CancellationToken cancellationToken)
+        {
+            foreach(var i in items)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+                i.Details = i.GetDetail(false, cancellationToken);
+                i.Thumbnail = i.Details.Thumbnail;
+            }
+        }
+
+        public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
+        {
+            LoadBackgroundData(items.Cast<FileItem>(), cancellationToken);
         }
     }
 }

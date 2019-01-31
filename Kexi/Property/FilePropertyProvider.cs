@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Kexi.Common;
@@ -76,9 +77,10 @@ namespace Kexi.Property
 
             return Task.Factory.StartNew(() =>
             {
+                var detail = Item.GetDetail(false, CancellationToken.None);
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.DisplayName));
-                tempProp.Add(new PropertyItem("Type", Item.Details?.Type));
+                tempProp.Add(new PropertyItem("Type", detail?.Type));
                 return tempProp;
             }, CancellationTokenSource.Token);
         }
@@ -98,8 +100,8 @@ namespace Kexi.Property
 
             if (IsPicture)
                 ThumbMaxHeight = 120;
-            Item.Details.LargeThumbnail = await Item.Details.GetLargeThumbAsync().ConfigureAwait(false);
-            return Item.Details.LargeThumbnail;
+
+            return await ThumbnailProvider.GetLargeThumbnailAsync(Item.Path).ConfigureAwait(false);
         }
 
         protected override Task<ObservableCollection<PropertyItem>> GetBottomItems()
@@ -112,11 +114,12 @@ namespace Kexi.Property
 
             return Task.Run(() =>
             {
+                var detail = Item.GetDetail(false, CancellationToken.None);
                 var tempProp = new ObservableCollection<PropertyItem>
                 {
                     new PropertyItem("Attributes", Item.AttributeString),
-                    new PropertyItem("Created", Item.Details.Created),
-                    new PropertyItem("Last Modified", Item.Details.LastModified)
+                    new PropertyItem("Created", detail.Created),
+                    new PropertyItem("Last Modified", detail.LastModified)
                 };
 
                 var props = new Files.FilePropertyProvider(_shellObject);
@@ -173,9 +176,10 @@ namespace Kexi.Property
 
             return  Task.Run(() =>
             {
+                var details = Item.GetDetail(false, CancellationToken.None);
                 tempProp.Clear();
                 tempProp.Add(new PropertyItem("Name", Item.Name));
-                tempProp.Add(new PropertyItem("Type", Item.Details.Type));
+                tempProp.Add(new PropertyItem("Type", details.Type));
                 return tempProp;
             }, CancellationTokenSource.Token);
         }
@@ -187,12 +191,13 @@ namespace Kexi.Property
 
             return Task.Run(() =>
             {
+                var details = Item.GetDetail(false, CancellationToken.None);
                 var tempProp = new ObservableCollection<PropertyItem>
                 {
                     new PropertyItem("Location", "Network"),
                     new PropertyItem("Attributes", Item.AttributeString),
-                    new PropertyItem("Created", Item.Details.Created),
-                    new PropertyItem("Last Modified", Item.Details.LastModified)
+                    new PropertyItem("Created", details.Created),
+                    new PropertyItem("Last Modified", details.LastModified)
                 };
 
                 return tempProp;

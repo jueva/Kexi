@@ -128,6 +128,7 @@
     <Compile Include="Converters\ThemeConverter.cs" />
     <Compile Include="Converters\TransparencyConverter.cs" />
     <Compile Include="Converters\UniquePathConverter.cs" />
+    <Compile Include="Converters\ViewModeConverter.cs" />
     <Compile Include="Converters\ViewTypeBackgroundConverter.cs" />
     <Compile Include="Converters\ViewTypeConverter.cs" />
     <Compile Include="Converters\WindowTitleConverter.cs" />

@@ -179,7 +179,7 @@ namespace Kexi.ViewModel.Item
 
         public  Task<BitmapSource> GetLargeThumbAsync()
         {
-            return Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(_fileItem.Path, 256, 256, ThumbnailOptions.None, _cancellationToken));
+            return ThumbnailProvider.GetLargeThumbnailAsync(_fileItem.Path, _cancellationToken);
         }
 
         [NotifyPropertyChangedInvocator]

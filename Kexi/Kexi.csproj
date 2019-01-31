@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\ProcessHelper.cs" />
     <Compile Include="Converter\AnyToHeightConverter.cs" />
     <Compile Include="DockingSerializer.cs" />
     <Compile Include="Column.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Converter\StringToXamlConverter.cs" />
     <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyMode.cs" />
+    <Compile Include="Interfaces\IBackgroundLoader.cs" />
     <Compile Include="ItemProvider\KeyBindingsProvider.cs" />
     <Compile Include="ItemProvider\NetworkShareProvider.cs" />
     <Compile Include="Property\BasePropertyProvider.cs" />

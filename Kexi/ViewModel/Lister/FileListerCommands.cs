@@ -133,7 +133,10 @@ namespace Kexi.ViewModel.Lister
         public ICommand AddToFavorites => _commandRepository.GetCommandByName(nameof(CreateShortcutInFavoritesCommand));
 
         [ExportContextMenuCommand(typeof (FileLister), "Open Command Prompt")]
-        public ICommand OpenComamndPrompt => _commandRepository.GetCommandByName(nameof(OpenPathInConsoleCommand));
+        public ICommand OpenCommandPrompt => _commandRepository.GetCommandByName(nameof(OpenPathInConsoleCommand));
+
+        [ExportContextMenuCommand(typeof (FileLister), "Open Power Shell")]
+        public ICommand OpenPowerShell => _commandRepository.GetCommandByName(nameof(OpenPathInPowerShellCommand));
 
         [ExportContextMenuCommand(typeof (FileLister), "Open In Explorer")]
         public ICommand OpenInExplorer => _commandRepository.GetCommandByName(nameof(OpenPathInExplorerCommand));

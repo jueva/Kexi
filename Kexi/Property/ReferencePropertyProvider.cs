@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Kexi.Common;
 using Kexi.Composition;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
@@ -43,8 +44,7 @@ namespace Kexi.Property
 
         protected override Task<BitmapSource> GetThumbnail()
         {
-            var fi = new FileItem(Item?.AssemblyPath);
-            return  fi.Details.GetLargeThumbAsync();
+            return ThumbnailProvider.GetLargeThumbnailAsync(Item?.AssemblyPath);
         }
     }
 }

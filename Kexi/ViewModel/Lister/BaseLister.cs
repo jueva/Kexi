@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,7 +28,7 @@ namespace Kexi.ViewModel.Lister
         where T : class, IItem
     {
         [ImportingConstructor]
-        protected BaseLister(Workspace workspace,  Options options,
+        protected BaseLister(Workspace workspace, Options options,
             CommandRepository commandRepository)
         {
             Workspace         =  workspace;
@@ -115,14 +116,12 @@ namespace Kexi.ViewModel.Lister
 
                 OnPathChanging(value);
                 PreviousPath = _path;
-                _path = value;
+                _path        = value;
                 OnPathChanged(value);
 
                 OnNotifyPropertyChanged();
             }
         }
-
-        protected string PreviousPath;
 
         public event EventHandler GotItems;
 
@@ -239,12 +238,22 @@ namespace Kexi.ViewModel.Lister
                 var items = await GetItems();
                 Items = new ObservableCollection<T>(items);
 
+                if (this is IBackgroundLoader preloadDetails)
+                {
+                    cancellation?.Cancel();
+                    var newCancellation = new CancellationTokenSource();
+                    new Task(
+                        () => preloadDetails.LoadBackgroundData(Items, newCancellation.Token),
+                        newCancellation.Token).Start();
+                    cancellation = newCancellation;
+                }
+
                 if (this is IHistorisationProvider history)
                 {
                     _oldFilter         = Filter;
                     _oldSortExpression = SortHandler.CurrentSortDescription;
-                    _oldGroupBy = GroupBy;
-                    history?.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
+                    _oldGroupBy        = GroupBy;
+                    history.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
                 }
 
                 if (clearFilterAndGroup)
@@ -261,7 +270,7 @@ namespace Kexi.ViewModel.Lister
                 if (this is IHistorisationProvider history && history.History.Current != null)
                 {
                     history.History.Current.SelectedPath = PreviousPath;
-                    Path = PreviousPath;
+                    Path                                 = PreviousPath;
                     CommandRepository.GetCommandByName(nameof(MoveToHistoryItemCommand)).Execute(history.History.Current);
                     if (Workspace.PopupViewModel.IsOpen)
                         Workspace.PopupViewModel.IsOpen = false;
@@ -365,7 +374,6 @@ namespace Kexi.ViewModel.Lister
                 _currentViewMode = value;
 
                 OnNotifyPropertyChanged();
-                SetContainerStyle();
             }
         }
 
@@ -442,18 +450,21 @@ namespace Kexi.ViewModel.Lister
         private            LoadingStatus                _loadingStatus;
         private            NotificationItem             _notification;
 
-        private   string            _oldFilter;
-        private   string            _oldGroupBy;
-        private   SortDescription   _oldSortExpression;
-        private   string            _path;
-        private   string            _pathName;
-        private   IPropertyProvider _propertyProvider;
-        private   string            _statusString;
-        private   BitmapSource      _thumbnail;
-        private   string            _title;
-        private   IListerView       _view;
+        private string                  _oldFilter;
+        private string                  _oldGroupBy;
+        private SortDescription         _oldSortExpression;
+        private string                  _path;
+        private string                  _pathName;
+        private IPropertyProvider       _propertyProvider;
+        private string                  _statusString;
+        private BitmapSource            _thumbnail;
+        private string                  _title;
+        private IListerView             _view;
+        private CancellationTokenSource cancellation;
 
         private DispatcherTimer loadingSpinnerTimer;
+
+        protected string PreviousPath;
 
         private IPropertyProvider GetPropertyProvider()
         {
@@ -503,6 +514,11 @@ namespace Kexi.ViewModel.Lister
             PathChanging?.Invoke(value);
         }
 
+        protected void OnGotItems(object sender, EventArgs args)
+        {
+            GotItems?.Invoke(sender, args);
+        }
+
         private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
         {
             var gen = sender as ItemContainerGenerator;
@@ -511,27 +527,6 @@ namespace Kexi.ViewModel.Lister
                 Workspace.ActiveLister?.View?.FocusCurrentOrFirst();
                 View.ListView.ItemContainerGenerator.StatusChanged -= ItemContainerGenerator_StatusChanged;
                 OnGotItems(this, EventArgs.Empty);
-            }
-        }
-
-        protected void OnGotItems(object sender, EventArgs args)
-        {
-            GotItems?.Invoke(sender, args);
-        }
-
-        private void SetContainerStyle()
-        {
-            switch (CurrentViewMode)
-            {
-                case ViewType.Detail:
-                    CurrentContainerStyle = View.ListView.FindResource("ListViewItemDetailStyle") as Style;
-                    break;
-                case ViewType.Icon:
-                case ViewType.Thumbnail:
-                    CurrentContainerStyle = View.ListView.FindResource("ListViewItemThumbStyle") as Style;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(CurrentViewMode));
             }
         }
 
