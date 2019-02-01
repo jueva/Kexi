@@ -71,6 +71,9 @@ namespace Kexi.Common
 
         public static Task<BitmapSource> GetLargeThumbnailAsync(string path, CancellationToken? cancellationToken = null)
         {
+            if (string.IsNullOrEmpty(path))
+                return Task.FromResult(default(BitmapSource));
+
             return Task.Factory.StartNew(() => GetThumbnailSource(path, 256, 256, ThumbnailOptions.None, cancellationToken));
         }
 
@@ -90,7 +93,7 @@ namespace Kexi.Common
             return bitmapSource;
         }
 
-        public static Bitmap GetBitmapFromHBitmap(IntPtr nativeHBitmap)
+        private static Bitmap GetBitmapFromHBitmap(IntPtr nativeHBitmap)
         {
             var bmp = Image.FromHbitmap(nativeHBitmap);
 
@@ -103,7 +106,7 @@ namespace Kexi.Common
             }
         }
 
-        public static unsafe Bitmap CreateAlphaBitmap(Bitmap srcBitmap, PixelFormat targetPixelFormat)
+        private static unsafe Bitmap CreateAlphaBitmap(Bitmap srcBitmap, PixelFormat targetPixelFormat)
         {
             var result = new Bitmap(srcBitmap.Width, srcBitmap.Height, targetPixelFormat);
 
@@ -137,9 +140,8 @@ namespace Kexi.Common
 
         private static IntPtr GetHBitmap(string fileName, int width, int height, ThumbnailOptions options)
         {
-            IShellItem nativeShellItem;
             var        shellItem2Guid = new Guid(IShellItem2Guid);
-            var        retCode        = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out nativeShellItem);
+            var        retCode        = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out var nativeShellItem);
 
             if (retCode != 0)
                 throw Marshal.GetExceptionForHR(retCode);
@@ -150,8 +152,7 @@ namespace Kexi.Common
                 Height = height
             };
 
-            IntPtr hBitmap;
-            var    hr = ((IShellItemImageFactory) nativeShellItem).GetImage(nativeSize, options, out hBitmap);
+            var hr = (nativeShellItem as IShellItemImageFactory).GetImage(nativeSize, options, out var hBitmap);
 
             Marshal.ReleaseComObject(nativeShellItem);
 
