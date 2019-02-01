@@ -34,8 +34,9 @@ namespace Kexi.ViewModel.Lister
             Items     = new ObservableCollection<FileItem>();
             SearchItemProvider.SearchFinished += () =>
             {
-                PathName += " - Finished";
+                PathName += Canceled ? " - Canceled" : " - Finished";
                 SearchFinished?.Invoke();
+                LoadingStatus = LoadingStatus.Loaded;
             };
             Thumbnail = Utils.GetImageFromRessource("search.png");
         }
@@ -104,6 +105,7 @@ namespace Kexi.ViewModel.Lister
 
         public override Task Refresh(bool clearFilterAndGroup = true)
         {
+            LoadingStatus = LoadingStatus.Loading;
             PathName        = "Search " + SearchPattern;
             HighlightString = SearchPattern;
             var pattern = SearchPattern;
@@ -153,10 +155,13 @@ namespace Kexi.ViewModel.Lister
                 {
                     if (Workspace.ActiveLister is SearchLister searchLister)
                     {
+                        searchLister.Canceled = true;
                         searchLister.SearchItemProvider.CancellationTokenSource.Cancel();
                     }
                 });
             }
         }
+
+        public bool Canceled { get; private set; }
     }
 }

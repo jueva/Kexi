@@ -229,7 +229,7 @@ namespace Kexi.ViewModel.Lister
                 var dirInfo = new[] {new DirectoryInfo(Path)};
                 scm.ShowContextMenu(dirInfo, Cursor.Position);
             }
-            else
+            else if (selectedItems != null)
             {
                 var fileInfos = selectedItems.Select(getFileInfo).Where(i => i != null).ToArray();
                 scm.ShowContextMenu(fileInfos, Cursor.Position);
