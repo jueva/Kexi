@@ -93,7 +93,7 @@
                 </Border>
                 <Button Command="{Binding Path=CommandRepository.ToggleMenuPopup}" CommandParameter="FromButton"
                         Focusable="False"
-                        Margin="0 2 3 3"
+                        Margin="16 2 3 3"
                         Style="{StaticResource CommandButtonStyle}">
 
                     <Rectangle Width="12" Height="12" Fill="{DynamicResource ListerForeground}">
@@ -123,7 +123,8 @@
     </controls:MetroWindow.RightWindowCommands>
 
     <Grid Background="Transparent">
-        <!--<Rectangle
+        <Rectangle
+            Visibility="{Binding Options.TransparentBackground, Converter={StaticResource BoolToVisibilityConverter}}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Fill="{DynamicResource ListerBackground}"
@@ -133,7 +134,7 @@
                 <acrylicWpf:NoiseEffect Ratio="0.15" />
             </Rectangle.Effect>
 
-        </Rectangle>-->
+        </Rectangle>
         <Grid>
             <!--<Grid.Background>Transparent</Grid.Background>-->
             <Grid.Background>
