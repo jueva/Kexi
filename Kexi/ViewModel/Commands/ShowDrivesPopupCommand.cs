@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
         public void Execute(object parameter)
         {
             _workspace.PopupViewModel = _drivePopup;
-            _drivePopup.IsOpen        = true;
+            _drivePopup.Open();
         }
 
         public event EventHandler            CanExecuteChanged;

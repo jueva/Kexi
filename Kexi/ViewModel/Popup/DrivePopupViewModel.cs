@@ -68,6 +68,7 @@ namespace Kexi.ViewModel.Popup
             if (Workspace.ActiveLister is FileLister)
             {
                 Workspace.ActiveLister.Path = selectedItem.Path;
+                await Workspace.ActiveLister.Refresh();
             }
             else
             {

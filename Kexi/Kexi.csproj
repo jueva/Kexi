@@ -46,7 +46,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -205,6 +205,7 @@
     <Compile Include="ViewModel\Commands\CloseAllTabsButThisCommand.cs" />
     <Compile Include="ViewModel\Commands\CommanderCopyCommand.cs" />
     <Compile Include="ViewModel\Commands\CommanderMoveCommand.cs" />
+    <Compile Include="ViewModel\Commands\CopyPathCommand.cs" />
     <Compile Include="ViewModel\Commands\CreateShortcutInFavoritesCommand.cs" />
     <Compile Include="ViewModel\Commands\CutCommand.cs" />
     <Compile Include="ViewModel\Commands\CyclePanelSizeCommand.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="ViewModel\Lister\SearchLister.cs" />
     <Compile Include="ViewModel\Lister\SecurityLister.cs" />
     <Compile Include="ViewModel\Lister\SettingsLister.cs" />
+    <Compile Include="ViewModel\Lister\TemporaryBookmarkLister.cs" />
     <Compile Include="ViewModel\Lister\TextLister.cs" />
     <Compile Include="ViewModel\Lister\ViewFileLister.cs" />
     <Compile Include="ViewModel\Item\MenuCommandBoundItem.cs" />

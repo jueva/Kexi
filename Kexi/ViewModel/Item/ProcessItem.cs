@@ -79,7 +79,7 @@ namespace Kexi.ViewModel.Item
             FilterString = $"{DisplayName}_{Details.Description}";
         }
 
-        private ProcessDetailItem GetDetail()
+        public ProcessDetailItem GetDetail()
         {
             try
             {

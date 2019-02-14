@@ -28,8 +28,7 @@ namespace Kexi.ViewModel.Lister
         where T : class, IItem
     {
         [ImportingConstructor]
-        protected BaseLister(Workspace workspace, Options options,
-            CommandRepository commandRepository)
+        protected BaseLister(Workspace workspace, Options options, CommandRepository commandRepository)
         {
             Workspace         =  workspace;
             SortHandler       =  new SortHandler(this);
@@ -58,7 +57,7 @@ namespace Kexi.ViewModel.Lister
 
         public string ContentId => "Lister" + GetHashCode();
 
-        public CommandRepository CommandRepository { get; set; }
+        public CommandRepository CommandRepository { get; }
 
         public virtual Style CurrentContainerStyle
         {
@@ -464,7 +463,7 @@ namespace Kexi.ViewModel.Lister
 
         private DispatcherTimer loadingSpinnerTimer;
 
-        protected string PreviousPath;
+        private string PreviousPath;
 
         private IPropertyProvider GetPropertyProvider()
         {
@@ -494,7 +493,8 @@ namespace Kexi.ViewModel.Lister
             ContextMenuItems = KexContainer.Container.InnerCompositionContainer.GetExports<ICommand, IExportCommandMetadata>()
                 .Where(e => e.Metadata.TargetListerType == GetType())
                 .Select(e => new CommandBoundItem(e.Metadata.Name, e.Value))
-                .Concat(new[] {new CommandBoundItem("Copy", new CopyCommand(Workspace))});
+                .Concat(new[] {new CommandBoundItem("Copy", new CopyCommand(Workspace))})
+                .Concat(new[] {new CommandBoundItem("Copy Path", new CopyPathCommand(Workspace))});
 
             CurrentViewMode = Options.DefaultViewMode;
         }

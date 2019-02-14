@@ -615,11 +615,14 @@
             <Key>B</Key>
             <Group>SearchLister</Group>
           </KexBinding>
-          <KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
             <CommandName>ShowDrivesPopupCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>D</Key>
-            <Group>SearchLister</Group>
+            <Modifier>None</Modifier>
+            <SecondKey>P</SecondKey>
+            <SecondModifier>None</SecondModifier>
+            <Group>FileLister</Group>
           </KexBinding>
           <KexBinding>
             <CommandName>ShowSpecialFoldersPopupCommand</CommandName>

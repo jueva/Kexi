@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -18,7 +20,7 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(ProcessLister))]
     [Export(typeof(ILister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class ProcessLister : BaseLister<ProcessItem>
+    public class ProcessLister : BaseLister<ProcessItem>, IBackgroundLoader<ProcessItem>
     {
         [ImportingConstructor]
         public ProcessLister(Workspace workspace,  Options options, CommandRepository commandRepository)
@@ -36,11 +38,7 @@ namespace Kexi.ViewModel.Lister
                 new Column("", "Details.Thumbnail", ColumnType.Image),
                 new Column("Name", "DisplayName", ColumnType.Highlightable) {Width                = 300},
                 new Column("Description", "Details.Description", ColumnType.Highlightable) {Width = 300},
-                new Column("Memory", "Details.Memory", ColumnType.RightAligned)
-                {
-                    Width     = 80,
-                    Converter = new LengthConverter()
-                },
+                new Column("Memory", "Details.Memory", ColumnType.RightAligned) { Width     = 80, Converter = new LengthConverter() },
                 new Column("Cpu", "Details.Cpu", ColumnType.RightAligned),
                 new Column("Pid", "Details.Pid")
             };
@@ -69,13 +67,13 @@ namespace Kexi.ViewModel.Lister
                 return new RelayCommand(c =>
                     {
                         var item       = Workspace.GetSelection<ProcessItem>().First();
-                        RefreshLister(item);
+                        OpenFileLister(item);
                     }
                 );
             }
         }
 
-        private async void RefreshLister(ProcessItem item)
+        private async void OpenFileLister(ProcessItem item)
         {
             var fileLister = KexContainer.Resolve<FileLister>();
             fileLister.Path = System.IO.Path.GetDirectoryName(item.FileName);
@@ -101,6 +99,21 @@ namespace Kexi.ViewModel.Lister
         protected override Task<IEnumerable<ProcessItem>> GetItems()
         {
             return Task.Run(() => Process.GetProcesses().Select(p => new ProcessItem(p)));
+        }
+
+        public void LoadBackgroundData(IEnumerable<ProcessItem> items, CancellationToken cancellationToken)
+        {
+            foreach (var i in items)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+                i.Details = i.GetDetail();
+            }
+        }
+
+        public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
+        {
+            LoadBackgroundData(items.Cast<ProcessItem>(), cancellationToken);
         }
     }
 }

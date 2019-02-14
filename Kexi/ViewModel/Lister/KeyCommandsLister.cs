@@ -61,7 +61,7 @@ namespace Kexi.ViewModel.Lister
         {
             get
             {
-                return new RelayCommand(async c =>
+                return new RelayCommand(c =>
                     {
                         Workspace.CommandRepository.Execute(nameof(DeleteKeyBindingCommand));
                     }
