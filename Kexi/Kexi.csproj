@@ -206,6 +206,7 @@
     <Compile Include="ViewModel\Commands\CommanderCopyCommand.cs" />
     <Compile Include="ViewModel\Commands\CommanderMoveCommand.cs" />
     <Compile Include="ViewModel\Commands\CopyPathCommand.cs" />
+    <Compile Include="ViewModel\Commands\CreateDirectoryFromFullPathCommand.cs" />
     <Compile Include="ViewModel\Commands\CreateShortcutInFavoritesCommand.cs" />
     <Compile Include="ViewModel\Commands\CutCommand.cs" />
     <Compile Include="ViewModel\Commands\CyclePanelSizeCommand.cs" />
