@@ -10,7 +10,7 @@ namespace Kexi.ViewModel.Dock
         public const string Identifier = "ExplorerView";
 
         [ImportingConstructor]
-        public ToolExplorerViewModel(Workspace workspace) : base("Explorer", workspace)
+        public ToolExplorerViewModel(Workspace workspace) : base("Treeview", workspace)
         {
             ContentId   = Identifier;
             AnchorTitle = "Tree";

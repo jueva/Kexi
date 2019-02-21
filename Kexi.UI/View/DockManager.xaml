@@ -73,6 +73,16 @@
             </DataTemplate>
         </xcad:DockingManager.AnchorableHeaderTemplate>
 
+        <xcad:DockingManager.AnchorableTitleTemplate>
+            <DataTemplate>
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding Title}"
+                           Background="{DynamicResource ListerBackground}"
+                           Foreground="{DynamicResource ListerForeground}"
+                           TextTrimming="CharacterEllipsis" />
+            </DataTemplate>
+        </xcad:DockingManager.AnchorableTitleTemplate>
+
         <xcad:DockingManager.LayoutItemTemplateSelector>
             <base:PanesTemplateSelector>
 
