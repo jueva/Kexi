@@ -30,7 +30,7 @@ namespace Kexi.ViewModel.Lister
 
         public override bool ShowInMenu => true;
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("Lister", "Lister"),
             new Column("Key", "Key"),

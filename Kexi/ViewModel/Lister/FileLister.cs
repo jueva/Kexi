@@ -39,7 +39,7 @@ namespace Kexi.ViewModel.Lister
             PathChanged   += FileLister_PathChanged;
         }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("", "Thumbnail", ColumnType.Image) {OneTimeBinding                      = true},
             new Column("Name", "DisplayName", ColumnType.Highlightable) {Width                 = 300},

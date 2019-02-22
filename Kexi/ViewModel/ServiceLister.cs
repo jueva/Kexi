@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Composition;
-using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
 
@@ -19,15 +18,16 @@ namespace Kexi.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ServiceLister : BaseLister<ServiceItem>
     {
-        private static readonly Lazy<BitmapImage> Thumb = new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("service.png"));
+        private static readonly Lazy<BitmapImage> Thumb =
+            new Lazy<BitmapImage>(() => Utils.GetImageFromRessource("service.png"));
 
         [ImportingConstructor]
-        public ServiceLister(Workspace workspace,  Options options, CommandRepository commandrepository)
-            : base(workspace,  options, commandrepository)
+        public ServiceLister(Workspace workspace, Options options, CommandRepository commandrepository)
+            : base(workspace, options, commandrepository)
         {
-            Title     =  PathName = Path = "Services";
-            Thumbnail =  Thumb.Value;
-            GotItems  += ServiceLister_GotItems;
+            Title = PathName = Path = "Services";
+            Thumbnail = Thumb.Value;
+            GotItems += ServiceLister_GotItems;
         }
 
         [ExportContextMenuCommand(typeof(ServiceLister), "Stop Service")]
@@ -39,7 +39,7 @@ namespace Kexi.ViewModel
                 {
                     var items = Workspace.GetSelection<ServiceItem>();
                     foreach (var item in items)
-                        stopService(item);
+                        StopService(item);
                 }, _ => Workspace.GetSelection<ServiceItem>().Any(i => i.Status == ServiceControllerStatus.Running));
             }
         }
@@ -58,12 +58,12 @@ namespace Kexi.ViewModel
             }
         }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("", "Thumbnail", ColumnType.Image),
-            new Column("Name", "DisplayName") {Width        = 300},
+            new Column("Name", "DisplayName") {Width = 300},
             new Column("Description", "Description") {Width = 300},
-            new Column("Status", "Status") {Width           = 300}
+            new Column("Status", "Status") {Width = 300}
         };
 
         public override string ProtocolPrefix => "services";
@@ -88,7 +88,7 @@ namespace Kexi.ViewModel
             });
         }
 
-        private async void stopService(ServiceItem item)
+        private async void StopService(ServiceItem item)
         {
             LoadingStatus = LoadingStatus.Loading;
             await Task.Run(() =>
@@ -104,7 +104,7 @@ namespace Kexi.ViewModel
             LoadingStatus = LoadingStatus.Loaded;
         }
 
-        protected override  Task<IEnumerable<ServiceItem>> GetItems()
+        protected override Task<IEnumerable<ServiceItem>> GetItems()
         {
             return GetServices();
         }

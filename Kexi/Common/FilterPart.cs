@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Kexi.Common
+﻿namespace Kexi.Common
 {
     public class FilterPart
     {

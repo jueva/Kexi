@@ -21,10 +21,9 @@ namespace Kexi.ViewModel.Lister
             : base(workspace,  options, commandRepository)
         {
             Title                                            =  PathName = "Notifications";
-            //NotificationHost.Notifications.CollectionChanged += async (sender, args) => await Refresh();
         }
 
-        public override IEnumerable<Column> Columns { get; } =
+        public override ObservableCollection<Column> Columns { get; } =
             new ObservableCollection<Column>
             {
                 new Column("DisplayName", "DisplayName", ColumnType.Highlightable) {Width = 600},

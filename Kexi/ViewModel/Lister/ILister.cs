@@ -19,7 +19,7 @@ namespace Kexi.ViewModel.Lister
         string              PathName     { get; set; }
         NotificationItem    Notification { get; set; }
         IListerView          View         { get; set; }
-        IEnumerable<Column> Columns      { get; }
+        ObservableCollection<Column> Columns      { get; }
         string              StatusString { get; set; }
         BitmapSource        Thumbnail    { get; set; }
 

@@ -30,17 +30,17 @@ namespace Kexi.ViewModel.Lister
         [ImportingConstructor]
         protected BaseLister(Workspace workspace, Options options, CommandRepository commandRepository)
         {
-            Workspace         =  workspace;
-            SortHandler       =  new SortHandler(this);
-            NotificationHost  =  workspace.NotificationHost;
-            GotView           += GotTheView;
-            Options           =  options;
-            CommandRepository =  commandRepository;
+            Workspace = workspace;
+            SortHandler = new SortHandler(this);
+            NotificationHost = workspace.NotificationHost;
+            GotView += GotTheView;
+            Options = options;
+            CommandRepository = commandRepository;
 
             PropertyProvider = GetPropertyProvider();
 
-            loadingSpinnerTimer      =  new DispatcherTimer {Interval = TimeSpan.FromSeconds(1)};
-            loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
+            _loadingSpinnerTimer = new DispatcherTimer {Interval = TimeSpan.FromSeconds(1)};
+            _loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
         }
 
         public Visibility LoadingSpinnerVisibility
@@ -74,7 +74,7 @@ namespace Kexi.ViewModel.Lister
         public virtual void Copy()
         {
             var selection = ItemsView.SelectedItems.Select(s => s.DisplayName);
-            var text      = string.Join(Environment.NewLine, selection);
+            var text = string.Join(Environment.NewLine, selection);
             Clipboard.SetText(text);
         }
 
@@ -114,8 +114,8 @@ namespace Kexi.ViewModel.Lister
                     return;
 
                 OnPathChanging(value);
-                PreviousPath = _path;
-                _path        = value;
+                _previousPath = _path;
+                _path = value;
                 OnPathChanged(value);
 
                 OnNotifyPropertyChanged();
@@ -199,7 +199,7 @@ namespace Kexi.ViewModel.Lister
         }
 
         public event Action<ILister> GotView;
-        public event Action<string>  PathChanged;
+        public event Action<string> PathChanged;
 
         public virtual string ProtocolPrefix => "";
 
@@ -227,7 +227,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public abstract IEnumerable<Column> Columns { get; }
+        public abstract ObservableCollection<Column> Columns { get; }
 
         public virtual async Task Refresh(bool clearFilterAndGroup = true)
         {
@@ -239,25 +239,25 @@ namespace Kexi.ViewModel.Lister
 
                 if (this is IBackgroundLoader preloadDetails)
                 {
-                    cancellation?.Cancel();
+                    _cancellation?.Cancel();
                     var newCancellation = new CancellationTokenSource();
                     new Task(
                         () => preloadDetails.LoadBackgroundData(Items, newCancellation.Token),
                         newCancellation.Token).Start();
-                    cancellation = newCancellation;
+                    _cancellation = newCancellation;
                 }
 
                 if (this is IHistorisationProvider history)
                 {
-                    _oldFilter         = Filter;
+                    _oldFilter = Filter;
                     _oldSortExpression = SortHandler.CurrentSortDescription;
-                    _oldGroupBy        = GroupBy;
+                    _oldGroupBy = GroupBy;
                     history.History.Push(Path, _oldFilter, _oldGroupBy, _oldSortExpression);
                 }
 
                 if (clearFilterAndGroup)
                 {
-                    Filter  = null;
+                    Filter = null;
                     GroupBy = null;
                 }
 
@@ -268,9 +268,10 @@ namespace Kexi.ViewModel.Lister
                 NotificationHost.AddError(ex.Message, ex.ToString());
                 if (this is IHistorisationProvider history && history.History.Current != null)
                 {
-                    history.History.Current.SelectedPath = PreviousPath;
-                    Path                                 = PreviousPath;
-                    CommandRepository.GetCommandByName(nameof(MoveToHistoryItemCommand)).Execute(history.History.Current);
+                    history.History.Current.SelectedPath = _previousPath;
+                    Path = _previousPath;
+                    CommandRepository.GetCommandByName(nameof(MoveToHistoryItemCommand))
+                        .Execute(history.History.Current);
                     if (Workspace.PopupViewModel.IsOpen)
                         Workspace.PopupViewModel.IsOpen = false;
                 }
@@ -306,7 +307,7 @@ namespace Kexi.ViewModel.Lister
         }
 
         IEnumerable<IItem> ILister.SelectedItems => SelectedItems;
-        public IEnumerable<T>      SelectedItems => ItemsView.SelectedItems;
+        public IEnumerable<T> SelectedItems => ItemsView.SelectedItems;
 
         IEnumerable<IItem> ILister.Items => Items;
 
@@ -390,11 +391,11 @@ namespace Kexi.ViewModel.Lister
 
                 if (value == LoadingStatus.Loading)
                 {
-                    loadingSpinnerTimer?.Start(); //Got probs here. Disposed? => Check null
+                    _loadingSpinnerTimer?.Start(); //Got probs here. Disposed? => Check null
                 }
                 else
                 {
-                    loadingSpinnerTimer?.Stop();
+                    _loadingSpinnerTimer?.Stop();
                     LoadingSpinnerVisibility = Visibility.Collapsed;
                 }
 
@@ -427,7 +428,7 @@ namespace Kexi.ViewModel.Lister
                 return null;
 
             var selected = View.ListView.SelectedItems;
-            var count    = selected.Count;
+            var count = selected.Count;
             return $"{Items.Count} Items, {count} selected";
         }
 
@@ -437,37 +438,35 @@ namespace Kexi.ViewModel.Lister
             GC.SuppressFinalize(this);
         }
 
-        protected readonly INotificationHost            NotificationHost;
-        private            Style                        _currentContainerStyle;
-        private            ViewType                     _currentViewMode;
-        private            string                       _filter;
-        private            string                       _groupBy;
-        private            string                       _highlightString;
-        private            ObservableCollection<T>      _items;
-        private            MultiSelectCollectionView<T> _itemsView;
-        private            Visibility                   _loadingSpinnerVisibility = Visibility.Collapsed;
-        private            LoadingStatus                _loadingStatus;
-        private            NotificationItem             _notification;
-
-        private string                  _oldFilter;
-        private string                  _oldGroupBy;
-        private SortDescription         _oldSortExpression;
-        private string                  _path;
-        private string                  _pathName;
-        private IPropertyProvider       _propertyProvider;
-        private string                  _statusString;
-        private BitmapSource            _thumbnail;
-        private string                  _title;
-        private IListerView             _view;
-        private CancellationTokenSource cancellation;
-
-        private DispatcherTimer loadingSpinnerTimer;
-
-        private string PreviousPath;
+        protected readonly INotificationHost NotificationHost;
+        private Style _currentContainerStyle;
+        private ViewType _currentViewMode;
+        private string _filter;
+        private string _groupBy;
+        private string _highlightString;
+        private ObservableCollection<T> _items;
+        private MultiSelectCollectionView<T> _itemsView;
+        private Visibility _loadingSpinnerVisibility = Visibility.Collapsed;
+        private LoadingStatus _loadingStatus;
+        private NotificationItem _notification;
+        private string _oldFilter;
+        private string _oldGroupBy;
+        private SortDescription _oldSortExpression;
+        private string _path;
+        private string _pathName;
+        private IPropertyProvider _propertyProvider;
+        private string _statusString;
+        private BitmapSource _thumbnail;
+        private string _title;
+        private IListerView _view;
+        private CancellationTokenSource _cancellation;
+        private DispatcherTimer _loadingSpinnerTimer;
+        private string _previousPath;
 
         private IPropertyProvider GetPropertyProvider()
         {
-            var allProviders = KexContainer.Container.InnerCompositionContainer.GetExports<IPropertyProvider, IExportPropertyProviderMetadata>();
+            var allProviders = KexContainer.Container.InnerCompositionContainer
+                .GetExports<IPropertyProvider, IExportPropertyProviderMetadata>();
             var propProvider = allProviders.SingleOrDefault(e => e.Metadata.TargetListerType == GetType());
             return propProvider?.Value ?? new DefaultPropertyProvider(Workspace);
         }
@@ -477,20 +476,21 @@ namespace Kexi.ViewModel.Lister
         private void LoadingSpinnerTimer_Tick(object sender, EventArgs e)
         {
             LoadingSpinnerVisibility = Visibility.Visible;
-            loadingSpinnerTimer.Stop();
+            _loadingSpinnerTimer.Stop();
         }
 
         public event Action<string> PathChanging;
 
         private void BaseLister_GotView(ILister obj)
         {
-            GotView                                            -= BaseLister_GotView;
+            GotView -= BaseLister_GotView;
             View.ListView.ItemContainerGenerator.StatusChanged += ItemContainerGenerator_StatusChanged;
         }
 
         protected virtual void GotTheView(ILister obj)
         {
-            ContextMenuItems = KexContainer.Container.InnerCompositionContainer.GetExports<ICommand, IExportCommandMetadata>()
+            ContextMenuItems = KexContainer.Container.InnerCompositionContainer
+                .GetExports<ICommand, IExportCommandMetadata>()
                 .Where(e => e.Metadata.TargetListerType == GetType())
                 .Select(e => new CommandBoundItem(e.Metadata.Name, e.Value))
                 .Concat(new[] {new CommandBoundItem("Copy", new CopyCommand(Workspace))})
@@ -542,11 +542,11 @@ namespace Kexi.ViewModel.Lister
                 GotView -= GotTheView;
                 View?.Dispose();
                 View = null;
-                if (loadingSpinnerTimer != null)
+                if (_loadingSpinnerTimer != null)
                 {
-                    loadingSpinnerTimer.Tick -= LoadingSpinnerTimer_Tick;
-                    loadingSpinnerTimer.Stop();
-                    loadingSpinnerTimer = null;
+                    _loadingSpinnerTimer.Tick -= LoadingSpinnerTimer_Tick;
+                    _loadingSpinnerTimer.Stop();
+                    _loadingSpinnerTimer = null;
                 }
 
                 if (PropertyProvider is IDisposable disposable)

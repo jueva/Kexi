@@ -25,7 +25,7 @@ namespace Kexi.ViewModel.Lister
             Title = PathName = Path = "Drives";
         }
 
-        public override IEnumerable<Column> Columns { get; } =
+        public override ObservableCollection<Column> Columns { get; } =
             new ObservableCollection<Column>
             {
                 new Column("", "Thumbnail", ColumnType.Image),

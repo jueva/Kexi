@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Kexi.Common;
-using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Popup;
 
@@ -15,27 +14,30 @@ namespace Kexi.ViewModel.Lister
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class SettingsLister : BaseLister<SettingItem>
     {
+        private readonly PropertyEditorPopupViewModel _propertyEditorPopup;
+
         [ImportingConstructor]
-        public SettingsLister(Workspace workspace, Options options, CommandRepository commandRepository, PropertyEditorPopupViewModel propertyEditorPopup)
-            : base(workspace,  options, commandRepository)
+        public SettingsLister(Workspace workspace, Options options, CommandRepository commandRepository,
+            PropertyEditorPopupViewModel propertyEditorPopup)
+            : base(workspace, options, commandRepository)
         {
             _propertyEditorPopup = propertyEditorPopup;
-            Title                = PathName = Path = "Settings";
-            Thumbnail            = Utils.GetImageFromRessource("process.png");
+            Title = PathName = Path = "Settings";
+            Thumbnail = Utils.GetImageFromRessource("process.png");
         }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("Name", "DisplayName") {Width = 300},
-            new Column("Value", "Value") {Width      = 300}
+            new Column("Value", "Value") {Width = 300}
         };
 
-        public override  string                       ProtocolPrefix => "Settings";
-        private readonly PropertyEditorPopupViewModel _propertyEditorPopup;
+        public override string ProtocolPrefix => "Settings";
 
         protected override Task<IEnumerable<SettingItem>> GetItems()
         {
-            var settings = typeof(Options).GetProperties().OrderBy(p => p.Name).Select(p => new SettingItem(p.Name, GetValue(p.Name)));
+            var settings = typeof(Options).GetProperties().OrderBy(p => p.Name)
+                .Select(p => new SettingItem(p.Name, GetValue(p.Name)));
             return Task.FromResult(settings);
         }
 
@@ -54,7 +56,7 @@ namespace Kexi.ViewModel.Lister
             if (prop != null && prop.PropertyType == typeof(bool))
             {
                 var currentValue = (bool) prop.GetValue(Options);
-                var newValue     = !currentValue;
+                var newValue = !currentValue;
                 prop.SetValue(Options, newValue);
                 Options.WriteToConfig(item.Path, newValue.ToString());
                 item.Value = newValue;

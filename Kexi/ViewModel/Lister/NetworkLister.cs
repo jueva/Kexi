@@ -23,7 +23,7 @@ namespace Kexi.ViewModel.Lister
             Title = PathName = "Network";
         }
 
-        public override IEnumerable<Column> Columns { get; } =
+        public override ObservableCollection<Column> Columns { get; } =
             new ObservableCollection<Column>
             {
                 new Column("Name", "DisplayName") {Width = 300}

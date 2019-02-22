@@ -43,7 +43,7 @@ namespace Kexi.ViewModel.Lister
 
         public string SearchPattern { get; set; }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("", "Thumbnail", ColumnType.Image),
             new Column("Name", "DisplayName", ColumnType.Highlightable) {Width = 200},

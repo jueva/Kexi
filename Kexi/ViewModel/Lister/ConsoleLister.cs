@@ -136,7 +136,7 @@ namespace Kexi.ViewModel.Lister
 
         public Stack<ConsoleCommandItem> CommandHistory { get; }
 
-        public override IEnumerable<Column> Columns { get; } =
+        public override ObservableCollection<Column> Columns { get; } =
             new ObservableCollection<Column>
             {
                 new Column("", "DisplayName", ColumnType.Text, ColumnSize.FullWidth)

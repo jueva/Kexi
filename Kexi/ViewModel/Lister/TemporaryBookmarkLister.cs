@@ -19,10 +19,10 @@ namespace Kexi.ViewModel.Lister
             Title = PathName = "Temporary Bookmarks";
         }
 
-        public override IEnumerable<Column> Columns { get; } =
+        public override ObservableCollection<Column> Columns { get; } =
             new ObservableCollection<Column>
             {
-                new Column("DisplayName", "DisplayName", ColumnType.Highlightable) ,
+                new Column("DisplayName", "DisplayName", ColumnType.Highlightable),
                 new Column("Path", "Path", ColumnType.Highlightable)
             };
 

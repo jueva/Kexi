@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kexi.Common;
 using Kexi.Common.Syntaxhighlighting;
-using Kexi.Interfaces;
 using Kexi.Shell;
 using Kexi.ViewModel.Item;
 using Ude;
@@ -25,12 +24,12 @@ namespace Kexi.ViewModel.Lister
 
         [ImportingConstructor]
         public ViewFileLister(Workspace workspace, Options options, CommandRepository commandRepository)
-            : base(workspace,  options, commandRepository)
+            : base(workspace, options, commandRepository)
         {
             _options = options;
         }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("", "LineNumber", ColumnType.Number, ColumnSize.Undefined, 40),
             new Column("", "RtfRuns", ColumnType.SyntaxHighlighted, ColumnSize.FullWidth)
@@ -38,16 +37,13 @@ namespace Kexi.ViewModel.Lister
 
         protected override async Task<IEnumerable<RtfItem>> GetItems()
         {
-            Title            = Path;
-            Thumbnail        = ShellNative.GetLargeBitmapSource(Path);
-            PathName         = System.IO.Path.GetFileName(Path);
-            var    extension = System.IO.Path.GetExtension(Path);
+            Title = Path;
+            Thumbnail = ShellNative.GetLargeBitmapSource(Path);
+            PathName = System.IO.Path.GetFileName(Path);
+            var extension = System.IO.Path.GetExtension(Path);
             var encoding = GetEncoding();
             _syntaxHighlighter = new SyntaxHighlighter(encoding);
-            if (encoding == null)
-            {
-                return await Task.Run(() => _syntaxHighlighter.InitBinary(Path));
-            }
+            if (encoding == null) return await Task.Run(() => _syntaxHighlighter.InitBinary(Path));
             return await _syntaxHighlighter.Init(Path, extension);
         }
 

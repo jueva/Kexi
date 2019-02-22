@@ -32,7 +32,7 @@ namespace Kexi.ViewModel.Lister
 
         public override bool SupportsMultiview => true;
 
-        public override IEnumerable<Column> Columns { get; }
+        public override ObservableCollection<Column> Columns { get; }
             = new ObservableCollection<Column>
             {
                 new Column("", "Details.Thumbnail", ColumnType.Image),

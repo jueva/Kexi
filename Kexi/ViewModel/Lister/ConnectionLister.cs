@@ -23,7 +23,7 @@ namespace Kexi.ViewModel.Lister
             PathName =  "connections://";
         }
 
-        public override IEnumerable<Column> Columns { get; } = new ObservableCollection<Column>
+        public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
             new Column("Startpoint", "Startpoint"),
             new Column("Endpoint", "Endpoint"),
