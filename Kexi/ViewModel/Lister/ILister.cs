@@ -20,6 +20,7 @@ namespace Kexi.ViewModel.Lister
         NotificationItem    Notification { get; set; }
         IListerView          View         { get; set; }
         ObservableCollection<Column> Columns      { get; }
+        ObservableCollection<Column> VisibleColumns      { get; }
         string              StatusString { get; set; }
         BitmapSource        Thumbnail    { get; set; }
 

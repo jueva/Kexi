@@ -159,13 +159,24 @@ namespace Kexi.Property
 
         private static Encoding GetEncoding(string path)
         {
-            using (var stream = File.OpenRead(path))
+            FileStream stream = null;
+            try
             {
+                stream = File.OpenRead(path);
                 var detector = new CharsetDetector();
                 detector.Feed(stream);
                 detector.DataEnd();
                 return detector.Charset == null ? null : Encoding.GetEncoding(detector.Charset);
             }
+            catch
+            {
+                //Cant read File, locks}
+            }
+            finally
+            {
+                stream?.Dispose();
+            }
+            return null;
         }
 
         private Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()

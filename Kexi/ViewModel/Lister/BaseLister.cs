@@ -229,6 +229,8 @@ namespace Kexi.ViewModel.Lister
 
         public abstract ObservableCollection<Column> Columns { get; }
 
+        public ObservableCollection<Column> VisibleColumns { get; private set; }
+
         public virtual async Task Refresh(bool clearFilterAndGroup = true)
         {
             try
@@ -496,6 +498,7 @@ namespace Kexi.ViewModel.Lister
                 .Concat(new[] {new CommandBoundItem("Copy", new CopyCommand(Workspace))})
                 .Concat(new[] {new CommandBoundItem("Copy Path", new CopyPathCommand(Workspace))});
 
+            VisibleColumns = Columns;
             CurrentViewMode = Options.DefaultViewMode;
         }
 
