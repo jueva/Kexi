@@ -16,7 +16,6 @@
                    d:DesignWidth="300"
                             d:DataContext="{d:DesignInstance viewModel:PopupViewModel}"
                    mc:Ignorable="d">
-                   
 
     <Popup x:Name="popup"
            AllowsTransparency="True"
@@ -25,11 +24,11 @@
            StaysOpen="False">
 
         <Border x:Name="OuterBorder"
-                Margin="4"
+                Margin="0 5 0 0"
                 Background="{DynamicResource ListerBackground}"
-                BorderBrush="{DynamicResource KexSelectionBorderBrush}"
-                BorderThickness="1 1 1 1"
-                CornerRadius="0 0 2 2"
+                BorderBrush="{DynamicResource ListerStatusbarBackground}"
+                BorderThickness="1"
+                CornerRadius="0 0 3 3"
                 Opacity="0.96"
                 Padding="0"
                 >
@@ -83,10 +82,11 @@
                     </Button>
                 </Grid>
 
-                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 3 0" Padding="0" Grid.Row="1">
+                <Border x:Name="TitleTextBorder" Visibility="Collapsed" Margin="0 0 0 0" Padding="0" Grid.Row="1">
                     <TextBox x:Name="TitleText" MinWidth="243"
                              TextWrapping="WrapWithOverflow"
-                             Margin="2 0 0 -3"
+                             Margin="0"
+                             Padding="0"
                              VerticalAlignment="Bottom"
                              Background="{DynamicResource InputTextBackground}"
                              Foreground="{DynamicResource InputTextForeground}"
@@ -97,11 +97,13 @@
                     </TextBox>
                 </Border>
 
-                <Border Grid.Row="2"
+                <Border Grid.Row="2" 
                         BorderThickness="1"
-                        Margin="0"
+                        Margin="0 0 0 0"
                         CornerRadius="0"
-                        Padding="0">
+                        Padding="0"
+                        Visibility="{Binding ItemsView, Converter={StaticResource AnyToVisibilityConverter}}"
+                        >
                     <ListView x:Name="_listView"
                               Margin="0 1 0 0"
                               Background="{DynamicResource ListerBackground}"
