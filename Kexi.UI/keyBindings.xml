@@ -48,7 +48,7 @@
             <Group>Commandbar</Group>
           </KexBinding>
           <KexBinding>
-            <CommandName>DeleteFilesCommand</CommandName>
+            <CommandName>DeleteItems</CommandName>
             <Modifier>None</Modifier>
             <Key>F8</Key>
             <Group>Commandbar</Group>
@@ -150,13 +150,13 @@
             <Group>FileLister</Group>
           </KexBinding>
           <KexBinding>
-            <CommandName>DeleteFilesCommand</CommandName>
+            <CommandName>DeleteItemsCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>Delete</Key>
             <Group>FileLister</Group>
           </KexBinding>
           <KexDoubleBinding>
-            <CommandName>DeleteFilesCommand</CommandName>
+            <CommandName>DeleteItemsCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>D</Key>
             <SecondKey>D</SecondKey>
@@ -282,7 +282,7 @@
             <Group />
           </KexBinding>
           <KexBinding xsi:type="KexDoubleBinding">
-            <CommandName>DeleteFilesCommand</CommandName>
+            <CommandName>DeleteItemsCommand</CommandName>
             <Modifier>Shift</Modifier>
             <Key>D</Key>
             <SecondModifier>Shift</SecondModifier>
@@ -649,7 +649,7 @@
             <Group>SearchLister</Group>
           </KexBinding>
           <KexBinding>
-            <CommandName>DeleteFilesCommand</CommandName>
+            <CommandName>DeleteItemsCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>Delete</Key>
             <Group>SearchLister</Group>

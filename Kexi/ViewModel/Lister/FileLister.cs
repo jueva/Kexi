@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(FileLister))]
     [Export(typeof(ILister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider, IBackgroundLoader<FileItem>
+    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider, IBackgroundLoader<FileItem>, ICanDelete
     {
         [ImportingConstructor]
         public FileLister(Workspace workspace,  Options options,
@@ -310,6 +310,12 @@ namespace Kexi.ViewModel.Lister
         public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
         {
             LoadBackgroundData(items.Cast<FileItem>(), cancellationToken);
+        }
+
+        public void Delete()
+        {
+            var result = new FilesystemAction(Workspace.NotificationHost).Delete(ItemsView.SelectedItems);
+            if (result != null) Workspace.NotificationHost.AddError(result);
         }
     }
 }
