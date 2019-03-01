@@ -32,7 +32,7 @@ namespace Kexi.UI.View
         {
             {
                 var x = targetSize.Width - popupSize.Width - 4;
-                var y = offset.Y - 3;
+                var y = offset.Y;
                 if (ViewModel.Options.CenterPopup && !ViewModel.MenuButtonPlacement)
                     x                                                                      =  x / 2;
                 else if (ViewModel.MenuButtonPlacement && ViewModel.Options.CenterPopup) y += 26;
@@ -40,7 +40,7 @@ namespace Kexi.UI.View
                 {
                     new CustomPopupPlacement(new Point(x, y), PopupPrimaryAxis.Horizontal)
                 };
-            }
+            } 
         }
 
         private void PopupView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
