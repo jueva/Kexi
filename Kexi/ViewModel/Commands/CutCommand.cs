@@ -16,7 +16,7 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return _workspace.ActiveLister is ICopyPasteHandler;
+            return _workspace.ActiveLister is ICanCopyPaste;
         }
 
         public void Execute(object parameter)
@@ -24,7 +24,7 @@ namespace Kexi.ViewModel.Commands
             if (!CanExecute(parameter))
                 return;
 
-            if (_workspace.ActiveLister is ICopyPasteHandler handler)
+            if (_workspace.ActiveLister is ICanCopyPaste handler)
                 handler.Cut();
         }
 

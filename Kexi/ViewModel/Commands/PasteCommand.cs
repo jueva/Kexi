@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var handler = _workspace.ActiveLister as ICopyPasteHandler;
+            var handler = _workspace.ActiveLister as ICanCopyPaste;
             handler?.Paste();
         }
 

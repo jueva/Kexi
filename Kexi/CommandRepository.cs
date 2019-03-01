@@ -38,7 +38,7 @@ namespace Kexi
         public ICommand Copy => GetCommandByName(nameof(CopyCommand));
         public ICommand Cut => GetCommandByName(nameof(CutCommand));
         public ICommand Paste => GetCommandByName(nameof(PasteCommand));
-        public ICommand Delete => GetCommandByName(nameof(DeleteFilesCommand));
+        public ICommand Delete => GetCommandByName(nameof(DeleteItemsCommand));
         public ICommand Rename => GetCommandByName(nameof(CutCommand)); //TODO: renamecommand
         public ICommand Favorites => GetCommandByName(nameof(ShowFavoritesCommand));
         public ICommand CreateDirectory => GetCommandByName(nameof(ShowCreateElementPopupCommand));

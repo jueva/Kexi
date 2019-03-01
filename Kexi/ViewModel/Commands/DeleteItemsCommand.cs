@@ -1,19 +1,16 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
-using Kexi.Files;
 using Kexi.Interfaces;
-using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Popup;
 
 namespace Kexi.ViewModel.Commands
 {
     [Export]
     [Export(typeof(IKexiCommand))]
-    public class DeleteFilesCommand : IKexiCommand
+    public class DeleteItemsCommand : IKexiCommand
     {
         [ImportingConstructor]
-        public DeleteFilesCommand(Workspace workspace, DialogPopupViewModel dialogPopup)
+        public DeleteItemsCommand(Workspace workspace, DialogPopupViewModel dialogPopup)
         {
             _workspace   = workspace;
             _dialogPopup = dialogPopup;
@@ -28,22 +25,25 @@ namespace Kexi.ViewModel.Commands
         {
             void Delete(string a)
             {
-                if (a == "Yes") DeleteSelectedFiles();
+                if (a == optionYes) DeleteSelectedItems();
             }
 
             _workspace.PopupViewModel = _dialogPopup;
-            _dialogPopup.Open("Delete Files", Delete, "Yes", "No");
+            _dialogPopup.Open("Delete Files", Delete, optionYes, optionNo);
         }
 
         public event EventHandler             CanExecuteChanged;
         private readonly DialogPopupViewModel _dialogPopup;
         private readonly Workspace            _workspace;
+        private const string optionYes = "Yes";
+        private const string optionNo = "No";
 
-        private void DeleteSelectedFiles()
+        private void DeleteSelectedItems()
         {
-            var selectedItems = _workspace.ActiveLister.SelectedItems.OfType<FileItem>();
-            var result        = new FilesystemAction(_workspace.NotificationHost).Delete(selectedItems);
-            if (result != null) _workspace.NotificationHost.AddError(result);
+            if (_workspace.ActiveLister is ICanDelete deleteable)
+            {
+                deleteable.Delete();
+            }
         }
     }
 }

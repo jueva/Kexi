@@ -23,7 +23,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            if (_workspace.ActiveLister is ICopyPasteHandler handler)
+            if (_workspace.ActiveLister is ICanCopyPaste handler)
             {
                 handler.Copy();
             }

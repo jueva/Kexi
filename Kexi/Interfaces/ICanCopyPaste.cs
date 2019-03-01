@@ -1,6 +1,6 @@
 ﻿namespace Kexi.Interfaces
 {
-    public interface ICopyPasteHandler
+    public interface ICanCopyPaste
     {
         void Copy();
         void Cut();

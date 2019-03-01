@@ -24,7 +24,7 @@ using Kexi.ViewModel.Item;
 
 namespace Kexi.ViewModel.Lister
 {
-    public abstract class BaseLister<T> : ILister<T>, ICopyPasteHandler
+    public abstract class BaseLister<T> : ILister<T>, ICanCopyPaste
         where T : class, IItem
     {
         [ImportingConstructor]
@@ -343,7 +343,7 @@ namespace Kexi.ViewModel.Lister
 
         public void ClearSelection()
         {
-            Workspace.ActiveLister.SelectedItems.ToArray().Foreach(i => Workspace.ActiveLister.SetSelection(i, false));
+            SelectedItems.ToArray().Foreach(i => Workspace.ActiveLister.SetSelection(i, false));
         }
 
         public void SetSelection(IItem item, bool selected)

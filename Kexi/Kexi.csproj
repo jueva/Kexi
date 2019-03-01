@@ -167,6 +167,7 @@
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />
     <Compile Include="Converter\StringToXamlConverter.cs" />
+    <Compile Include="Interfaces\ICanDelete.cs" />
     <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyMode.cs" />
     <Compile Include="Interfaces\IBackgroundLoader.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="ViewModel\Commands\CycleTabsCommand.cs" />
     <Compile Include="ViewModel\Commands\DecreaseFontSizeCommand.cs" />
     <Compile Include="ViewModel\Commands\DeleteFilesCommand.cs" />
+    <Compile Include="ViewModel\Commands\DeleteItemsCommand.cs" />
     <Compile Include="ViewModel\Commands\DeleteKeyBindingCommand.cs" />
     <Compile Include="ViewModel\Commands\DoActionCommand.cs" />
     <Compile Include="ViewModel\Commands\DoSearchCommand.cs" />
@@ -243,7 +245,7 @@
     <Compile Include="Files\FilesystemAction.cs" />
     <Compile Include="Common\FilterPart.cs" />
     <Compile Include="Common\FontHelper.cs" />
-    <Compile Include="Interfaces\ICopyPasteHandler.cs" />
+    <Compile Include="Interfaces\ICanCopyPaste.cs" />
     <Compile Include="Interfaces\IHistorisationProvider.cs" />
     <Compile Include="Common\ItemFilter.cs" />
     <Compile Include="Common\KeyHandling\KexBinding.cs" />
