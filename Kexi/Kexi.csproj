@@ -323,6 +323,7 @@
     <Compile Include="ExtendedExtendedPropertyProvider.cs" />
     <Compile Include="Interfaces\IExtendedPropertyProvider.cs" />
     <Compile Include="Property\SearchPropertyProvider.cs" />
+    <Compile Include="ViewModel\Commands\AddCurrentFolderToTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AddTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AdjustColumnWidth.cs" />
     <Compile Include="ViewModel\Commands\AdjustListerWidthCommand.cs" />

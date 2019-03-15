@@ -104,6 +104,14 @@
             <SecondModifier>None</SecondModifier>
           </KexBinding>
           <KexBinding xsi:type="KexDoubleBinding">
+            <CommandName>AddCurrentFolderToTemporaryBookmarksCommand</CommandName>
+            <Modifier>None</Modifier>
+            <Key>T</Key>
+            <Group>FileLister</Group>
+            <SecondKey>R</SecondKey>
+            <SecondModifier>None</SecondModifier>
+          </KexBinding>
+          <KexBinding xsi:type="KexDoubleBinding">
             <CommandName>CyclePanelSizeCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>V</Key>
