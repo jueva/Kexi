@@ -35,12 +35,21 @@ namespace Kexi.ViewModel.Lister
             NotificationHost = workspace.NotificationHost;
             GotView += GotTheView;
             Options = options;
+            Options.PropertyChanged += Options_PropertyChanged;
             CommandRepository = commandRepository;
 
             PropertyProvider = GetPropertyProvider();
 
             _loadingSpinnerTimer = new DispatcherTimer {Interval = TimeSpan.FromSeconds(1)};
             _loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
+        }
+
+        private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Options.Highlights))
+            {
+                HighlightString = Options.Highlights ? Filter : "";
+            }
         }
 
         public Visibility LoadingSpinnerVisibility
@@ -436,6 +445,7 @@ namespace Kexi.ViewModel.Lister
 
         public void Dispose()
         {
+            Options.PropertyChanged -= Options_PropertyChanged;
             Dispose(true);
             GC.SuppressFinalize(this);
         }
