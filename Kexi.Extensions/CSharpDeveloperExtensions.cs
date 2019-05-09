@@ -13,12 +13,12 @@ using Mono.Cecil;
 namespace Kexi.Extensions
 {
     [Export(typeof(IExtendedPropertyProvider))]
-    [ExportPropertyProvider(typeof(FileItem), "CSharp Dev Extensions")]
+    [ExportPropertyProvider(typeof(FileItem), "CSharp Dev Extensions", "Csharp")]
     public class CSharpDeveloperExtensions : IExtendedPropertyProvider
     {
         public string Description => "Extensions for CSharp Developers";
 
-        public Task<IEnumerable<PropertyItem>> GetItems(IItem item)
+        public Task<IEnumerable<PropertyItem>> GetItems(IItem item, Detaillevel details)
         {
             return Task.Run(() =>
             {
@@ -27,7 +27,7 @@ namespace Kexi.Extensions
                     var path = fileItem.GetPathResolved();
                     if (IsNetAssembly(path))
                     {
-                        return GetItemsInternal(path);
+                        return GetItemsInternal(path, details);
                     }
                 }
                 return Enumerable.Empty<PropertyItem>();
@@ -39,7 +39,7 @@ namespace Kexi.Extensions
             return item is FileItem fileItem && (fileItem.Extension == ".exe" || fileItem.Extension == ".dll");
         }
 
-        private static IEnumerable<PropertyItem> GetItemsInternal(string path)
+        private static IEnumerable<PropertyItem> GetItemsInternal(string path, Detaillevel details)
         {
             if (IsNetAssembly(path))
             {
@@ -48,13 +48,16 @@ namespace Kexi.Extensions
                 var description = assembly.CustomAttributes.FirstOrDefault(c => c.AttributeType.Name == "AssemblyDescriptionAttribute");
                 if (description != null)
                     yield return new PropertyItem("Description", description.ConstructorArguments.FirstOrDefault().Value);
-                yield return new PropertyItem("Public Key Token", GetPublicKeyToken(assembly));
+                var token = GetPublicKeyToken(assembly);
+                if (!string.IsNullOrEmpty(token))
+                    yield return new PropertyItem("Public Key Token", token);
                 var debugModes = GetDebugInfo(assembly).ToList();
                 if (debugModes.Any())
                     yield return new PropertyItem("Debug Attributes", string.Join(Environment.NewLine, debugModes));
                 yield return new PropertyItem("Runtime Version", assembly.MainModule.RuntimeVersion);
                 yield return new PropertyItem("References", string.Join(Environment.NewLine, assembly.MainModule.AssemblyReferences));
-                yield return new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value)));
+                if (details == Detaillevel.Full)
+                    yield return new PropertyItem("Custom Attributes", string.Join(Environment.NewLine, assembly.CustomAttributes.Select(c => c.AttributeType.Name + " = " + c.ConstructorArguments.FirstOrDefault().Value)));
             }
         }
 

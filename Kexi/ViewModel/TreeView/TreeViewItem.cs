@@ -31,7 +31,7 @@ namespace Kexi.ViewModel.TreeView
             _fileItem.PropertyChanged += _fileItem_PropertyChanged;
         }
 
-        public BitmapSource Thumbnail => _fileItem?.Details.Thumbnail;
+        public BitmapSource Thumbnail => _fileItem?.Details?.Thumbnail;
 
         public string DisplayName => _fileItem?.DisplayName ?? "Computer";
 

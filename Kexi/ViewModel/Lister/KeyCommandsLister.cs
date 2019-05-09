@@ -87,5 +87,6 @@ namespace Kexi.ViewModel.Lister
             _keyBindingPopupViewModel.BindingItem = item;
             _keyBindingPopupViewModel.Open();
         }
+
     }
 }

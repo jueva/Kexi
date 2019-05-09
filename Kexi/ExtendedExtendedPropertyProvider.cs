@@ -10,13 +10,13 @@ using Microsoft.WindowsAPICodePack.Shell;
 namespace Kexi
 {
     [Export]
-    [ExportItemDetails(typeof(FileItem), "Windows Filesystem Properties")]
+    [ExportItemDetails(typeof(FileItem), "Windows Filesystem Properties", "Windows")]
     public class ExtendedExtendedPropertyProvider : IExtendedPropertyProvider
     {
         public bool   Active      => true;
         public string Description => "Returns Windows File System Properties";
 
-        public Task<IEnumerable<PropertyItem>> GetItems(IItem item)
+        public Task<IEnumerable<PropertyItem>> GetItems(IItem item, Detaillevel details)
         {
             var so = ShellObject.FromParsingName(item.Path);
             var ret =
@@ -32,12 +32,13 @@ namespace Kexi
             return true;
         }
 
-        private string CleanupPropertyName(string propertyName)
+        private const int cleanupLength = 7; // "System.".Length
+
+        private static string CleanupPropertyName(string propertyName)
         {
-            if (string.IsNullOrEmpty(propertyName))
-                return "";
-            var length = "System.".Length;
-            return propertyName.Substring(length);
+            return string.IsNullOrEmpty(propertyName) 
+                ? "" 
+                : propertyName.Substring(cleanupLength);
         }
     }
 }

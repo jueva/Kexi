@@ -18,7 +18,7 @@ namespace Kexi.Extensions
     {
         public string Description => "Additional informations for epub files";
 
-        public async Task<IEnumerable<PropertyItem>> GetItems(IItem item)
+        public async Task<IEnumerable<PropertyItem>> GetItems(IItem item, Detaillevel detail)
         {
             var book = await EpubReader.OpenBookAsync(item.Path).ConfigureAwait(false);
             var cover = await book.ReadCoverAsync().ConfigureAwait(false);

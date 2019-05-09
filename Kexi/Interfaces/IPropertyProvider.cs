@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Media.Imaging;
 using Kexi.ViewModel.Item;
 
@@ -11,7 +12,7 @@ namespace Kexi.Interfaces
         where T : IItem
     {
         new T Item { get; }
-        Task SetItem(T item);
+        Task SetItem(T item, Detaillevel detail = Detaillevel.Normal);
 
         Task SetSelection(IEnumerable<T> selection);
 
@@ -23,7 +24,7 @@ namespace Kexi.Interfaces
         double                             ThumbMaxHeight          { get; }
         int                                RotateThumb             { get; }
         CancellationTokenSource            CancellationTokenSource { get; set; }
-        Task SetItem(IItem item);
+        Task SetItem(IItem item, Detaillevel detail = Detaillevel.Normal);
         Task SetSelection(IEnumerable<IItem> selection);
     }
 

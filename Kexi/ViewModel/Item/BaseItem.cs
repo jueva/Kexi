@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
@@ -25,6 +27,11 @@ namespace Kexi.ViewModel.Item
             DisplayName  = name;
             FilterString = filter;
             Path         = path;
+        }
+
+        public IEnumerable<PropertyItem> Extensions
+        {
+            get { return null; }
         }
 
         public virtual BitmapSource Thumbnail

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using Kexi.Common;
 using Kexi.Composition;
+using Kexi.Interfaces;
 using Kexi.Property;
 using Kexi.ViewModel.Item;
 
@@ -95,9 +96,9 @@ namespace Kexi.ViewModel.Lister
         private async Task<IEnumerable<PropertyItem>> Parse()
         {
             var it = new RangeObservableCollection<PropertyItem>();
-            it.AddRange(await _extendedPropertyProvider.GetItems(_fileItem).ConfigureAwait(false));
+            it.AddRange(await _extendedPropertyProvider.GetItems(_fileItem, Detaillevel.Full).ConfigureAwait(false));
 
-            await _contentProvider.SetItem(new FileItem(_fileItem.Path));
+            await _contentProvider.SetItem(new FileItem(_fileItem.Path), Detaillevel.Full);
             it.AddRange(_contentProvider.PropertiesBottom);
             return it;
         }

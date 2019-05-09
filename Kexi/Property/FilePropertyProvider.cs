@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Composition;
 using Kexi.Files;
+using Kexi.Interfaces;
 using Kexi.ViewModel;
 using Kexi.ViewModel.Item;
 using Kexi.ViewModel.Lister;
@@ -55,10 +56,10 @@ namespace Kexi.Property
             }
         }
 
-        public override async Task SetItem(FileItem item)
+        public override async Task SetItem(FileItem item, Detaillevel detail)
         {
             _shellObject = await Task.Factory.StartNew(() => ShellObject.FromParsingName(item.Path)).ConfigureAwait(false);
-            await base.SetItem(item).ConfigureAwait(false);
+            await base.SetItem(item, detail).ConfigureAwait(false);
         }
 
         protected override  Task<ObservableCollection<PropertyItem>> GetTopItems()

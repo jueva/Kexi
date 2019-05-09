@@ -8,7 +8,7 @@ namespace Kexi.Interfaces
     public interface IExtendedPropertyProvider
     {
         string Description { get; }
-        Task<IEnumerable<PropertyItem>> GetItems(IItem item);
+        Task<IEnumerable<PropertyItem>> GetItems(IItem item, Detaillevel Details = Detaillevel.Normal);
         bool IsMatch(IItem item);
 
     }
