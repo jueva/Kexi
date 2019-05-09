@@ -27,8 +27,6 @@ namespace Kexi.Extensions
         private async void ZipAsync()
         {
             var files = _workspace.GetSelection<FileItem>().ToArray();
-            if (files.Length == 0)
-                return;
 
             var zipTask = new TaskItem("Zipping");
             await _workspace.TaskManager.RunAsync(zipTask, () => ZipInternal(files, zipTask));
@@ -37,6 +35,8 @@ namespace Kexi.Extensions
         private void ZipInternal(FileItem[] files, TaskItem zipTask)
         {
             //TODO: set progress on zipTask ?!
+            if (files.Length == 0)
+                return;
             var rootPath = _workspace.ActiveLister.Path;
             var zipName  = files.First().FileInfo.Name;
             var zipPath  = Path.Combine(rootPath, $"{zipName}.zip");

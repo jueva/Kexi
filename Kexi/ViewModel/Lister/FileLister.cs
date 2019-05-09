@@ -279,7 +279,7 @@ namespace Kexi.ViewModel.Lister
         private void FocusFirstPastedItem(object sender, NotifyCollectionChangedEventArgs e)
         {
             Items.CollectionChanged -= FocusFirstPastedItem;
-            if (e?.NewItems[0] is FileItem newItem)
+            if (e?.NewItems?.Count > 0 && e.NewItems?[0] is FileItem newItem)
             {
                 ClearSelection();
                 var firstPaste = System.IO.Path.GetFileName(Clipboard.GetFileDropList().Cast<string>().FirstOrDefault());
