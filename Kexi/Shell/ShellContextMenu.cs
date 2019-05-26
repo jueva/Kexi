@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -302,7 +304,9 @@ namespace Kexi.Shell
                 return null;
             }
 
-            IShellFolder oParentFolder = GetParentFolder(arrFI[0].DirectoryName);
+            var commonDirectory = GetCommonParentDirectory(arrFI);
+            var files = GetPathsFromCommonDirectory(commonDirectory, arrFI);
+            var oParentFolder = GetParentFolder(commonDirectory);
             if (null == oParentFolder)
             {
                 return null;
@@ -310,13 +314,13 @@ namespace Kexi.Shell
 
             IntPtr[] arrPIDLs = new IntPtr[arrFI.Length];
             int n = 0;
-            foreach (FileInfo fi in arrFI)
+            foreach (string path in files)
             {
                 // Get the file relative to folder
                 uint pchEaten = 0;
                 SFGAO pdwAttributes = 0;
                 IntPtr pPIDL = IntPtr.Zero;
-                int nResult = oParentFolder.ParseDisplayName(IntPtr.Zero, IntPtr.Zero, fi.Name, ref pchEaten, out pPIDL, ref pdwAttributes);
+                int nResult = oParentFolder.ParseDisplayName(IntPtr.Zero, IntPtr.Zero, path, ref pchEaten, out pPIDL, ref pdwAttributes);
                 if (S_OK != nResult)
                 {
                     FreePIDLs(arrPIDLs);
@@ -327,6 +331,28 @@ namespace Kexi.Shell
             }
 
             return arrPIDLs;
+        }
+
+        private IEnumerable<string> GetPathsFromCommonDirectory(string commonDirectory, FileInfo[] arrFi)
+        {
+            return arrFi.Select(f => f.FullName.Substring(commonDirectory.Length));
+        }
+
+        private string GetCommonParentDirectory(IEnumerable<FileInfo> arrFi)
+        {
+            var files = arrFi.Select(f => f.Directory.FullName+"\\").ToArray();
+            var common = files.OrderBy(f => f.Length).First();
+            while (!files.All(f => f.StartsWith(common, StringComparison.OrdinalIgnoreCase)))
+            {
+                var lastSep = common.LastIndexOf("\\", common.Length-2, StringComparison.OrdinalIgnoreCase);
+                if (lastSep < 0)
+                {
+                    common = null;
+                    break;
+                }
+                common = common.Substring(0, lastSep+1);
+            }
+            return common;
         }
 
         /// <summary>
