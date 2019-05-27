@@ -18,6 +18,8 @@
     <SolidColorBrush x:Key="ListerBackground" Color="#002b36" />
     <SolidColorBrush x:Key="ListerBackgroundDisabled" Color="#555555" />
     <SolidColorBrush x:Key="ListerForeground" Color="#657b83" />
+    <SolidColorBrush x:Key="ListerForegroundDisabled" Color="#777777" />
+
     <SolidColorBrush x:Key="ListerStatusbarForeground" Color="#000000" />
     <SolidColorBrush x:Key="ListerStatusbarBackground" Color="#073642" />
     <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC" />

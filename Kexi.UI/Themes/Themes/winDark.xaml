@@ -1,14 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="SelectionBack">#93C763</Color>
-    <Color x:Key="ControlBack">#FFFFFF</Color>
+    <Color x:Key="ControlBack">#BBBBBB</Color>
     <Color x:Key="BackColor">#404040</Color>
     <Color x:Key="BackDisabledColor">#555555</Color>
-    <SolidColorBrush x:Key="ActiveTabDecorator"  Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+
+    <LinearGradientBrush x:Key="ActiveTabDecorator" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Offset="1" Color="{DynamicResource BackColor}" />
+        <GradientStop Offset="0" Color="{DynamicResource BackDisabledColor}" />
+    </LinearGradientBrush>
+    <!--<SolidColorBrush x:Key="ActiveTabDecorator"  Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}"/>-->
     <SolidColorBrush x:Key="ItemHighlightColor" Color="#FF158782" />
     <SolidColorBrush x:Key="ItemErrorColor" Color="OrangeRed" />
 
-    <SolidColorBrush x:Key="KexSelectionBackground" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+    <!--<SolidColorBrush x:Key="KexSelectionBackground" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />-->
+    <LinearGradientBrush x:Key="KexSelectionBackground" StartPoint="1,1" EndPoint="0,1">
+        <GradientStop Offset="1" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
+        <GradientStop Offset="0.01" Color="{DynamicResource BackColor}" />
+        <GradientStop Offset="0" Color="{DynamicResource BackColor}" />
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="KexSelectionForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="KexSelectionBorderBrush" Color="{Binding Color, Source={x:Static SystemParameters.WindowGlassBrush}}" />
 
@@ -18,6 +28,7 @@
     <SolidColorBrush x:Key="ListerBackground" Color="{DynamicResource BackColor}" />
     <SolidColorBrush x:Key="ListerBackgroundDisabled" Color="{DynamicResource BackColor}" />
     <SolidColorBrush x:Key="ListerForeground" Color="White" />
+    <SolidColorBrush x:Key="ListerForegroundDisabled" Color="#888888" />
     <SolidColorBrush x:Key="ListerStatusbarForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="ListerStatusbarBackground" Color="#555555" />
     <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC" />

@@ -18,6 +18,7 @@
     <SolidColorBrush x:Key="ListerBackground" Color="{DynamicResource BackColor}" />
     <SolidColorBrush x:Key="ListerBackgroundDisabled" Color="{DynamicResource BackColor}" />
     <SolidColorBrush x:Key="ListerForeground" Color="White" />
+    <SolidColorBrush x:Key="ListerForegroundDisabled" Color="#888888" />
     <SolidColorBrush x:Key="ListerStatusbarForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="ListerStatusbarBackground" Color="#333333" />
     <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC" />

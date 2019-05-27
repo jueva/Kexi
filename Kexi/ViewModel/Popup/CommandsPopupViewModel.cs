@@ -12,7 +12,7 @@ namespace Kexi.ViewModel.Popup
         [ImportingConstructor]
         public CommandsPopupViewModel(Workspace workspace, Options options, MouseHandler mouseHandler) : base(workspace, options, mouseHandler)
         {
-            Title     = "Drives";
+            Title     = "Commands";
         }
 
         public override void Open()

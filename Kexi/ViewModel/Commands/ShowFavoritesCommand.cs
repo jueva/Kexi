@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Kexi.Interfaces;
+using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Commands
 {
@@ -21,6 +22,11 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
+            if (!(_workspace.ActiveLister is FileLister))
+            {
+                var l = KexContainer.Resolve<FileLister>();
+                _workspace.ReplaceCurrentLister(l);
+            }
             var favoriteLocation = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
             _workspace.ActiveLister.Path = favoriteLocation;
             _workspace.ActiveLister.Refresh();

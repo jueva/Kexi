@@ -1,7 +1,6 @@
 ﻿<base:BaseControl x:Class="Kexi.UI.View.DockManager"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:expression="clr-namespace:Xceed.Wpf.AvalonDock.Themes;assembly=Xceed.Wpf.AvalonDock.Themes.Expression"
                   xmlns:avalonDock="clr-namespace:Xceed.Wpf.AvalonDock.Layout;assembly=Xceed.Wpf.AvalonDock"
                   xmlns:controls="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -45,14 +44,28 @@
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">
                     <Image Width="18" Source="{Binding Content.Content.Thumbnail}" />
-                    <TextBlock Margin="3 0 0 0"
-                               Foreground="{DynamicResource ListerForeground}">
+                    <TextBlock Margin="3 0 0 0" >
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource UniquePathConverter}">
                                 <Binding Path="Content.Content.PathName" />
                                 <Binding Path="Content.Content" />
                             </MultiBinding>
                         </TextBlock.Text>
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="{DynamicResource ListerForeground}"/>
+                                </Style.Setters>
+                                <Style.Triggers>
+                                    <!--<DataTrigger Binding="{Binding Content.IsActive}" Value="True">
+                                        <Setter Property="Foreground" Value="{DynamicResource ListerForeground}"/>
+                                    </DataTrigger>-->
+                                    <DataTrigger Binding="{Binding Content.IsActive}" Value="False">
+                                        <Setter Property="Foreground" Value="{DynamicResource ListerForegroundDisabled}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
                     </TextBlock>
 
                     <ContentControl Visibility="{Binding Content.Content.LoadingSpinnerVisibility}"

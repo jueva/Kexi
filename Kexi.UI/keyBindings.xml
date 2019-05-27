@@ -81,7 +81,7 @@
             <CommandName>ShowFavoritesCommand</CommandName>
             <Modifier>None</Modifier>
             <Key>F</Key>
-            <Group>FileLister</Group>
+            <Group/>
           </KexBinding>
           <KexBinding>
             <CommandName>ShowCreateElementPopupCommand</CommandName>

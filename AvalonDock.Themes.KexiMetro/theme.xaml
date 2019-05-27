@@ -80,9 +80,9 @@
                         DropDownContextMenu="{Binding Root.Manager.DocumentContextMenu}"
                         DropDownContextMenuDataContext="{Binding LayoutItem, RelativeSource={RelativeSource TemplatedParent}}">
                         <Border Background="{TemplateBinding Control.Background}"
-                                BorderBrush="{TemplateBinding Control.BorderBrush}"
                                 BorderThickness="{TemplateBinding Control.BorderThickness}"
-                                CornerRadius="0,3,3,0"
+                                BorderBrush="{TemplateBinding Control.BorderBrush}"
+                                CornerRadius="3,3,3,0"
                                 Padding="4,4,0,0" x:Name="tabiOuterBorder">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -133,7 +133,7 @@
                                     Value="Images/PinClose_Dark.png" />
                             <Setter TargetName="tabiOuterBorder" Property="BorderBrush"
                                     Value="{DynamicResource ActiveTabDecorator}" />
-                            <Setter TargetName="tabiOuterBorder" Property="BorderThickness" Value="0 2 0 0" />
+                            <Setter TargetName="tabiOuterBorder" Property="BorderThickness" Value="0 2 2 0" />
                         </DataTrigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="true">
                             <Setter TargetName="DocumentCloseButton" Property="UIElement.Visibility" Value="Visible" />

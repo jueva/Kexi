@@ -480,8 +480,9 @@
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(TargetDir)Themes\" (
 mkdir $(TargetDir)Themes\
-copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
 )
+copy $(ProjectDir)Themes\Themes\*.* $(TargetDir)Themes\
+
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
