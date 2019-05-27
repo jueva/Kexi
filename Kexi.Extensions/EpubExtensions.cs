@@ -21,13 +21,13 @@ namespace Kexi.Extensions
         public async Task<IEnumerable<PropertyItem>> GetItems(IItem item, Detaillevel detail)
         {
             var book = await EpubReader.OpenBookAsync(item.Path).ConfigureAwait(false);
-            var cover = await book.ReadCoverAsync().ConfigureAwait(false);
-
-            var properties = new List<PropertyItem>()
+            var properties = new List<PropertyItem>
             {
                 new PropertyItem("Title", book.Title),
                 new PropertyItem("Authors", string.Join(Environment.NewLine, book.AuthorList)),
             };
+
+            var cover = await book.ReadCoverAsync().ConfigureAwait(false);
             if (cover != null)
                 properties.Add(new PropertyItem("Thumbnail", ImageFromBuffer(cover)));
             
