@@ -98,7 +98,8 @@ namespace Kexi.ViewModel.Lister
             var it = new RangeObservableCollection<PropertyItem>();
             it.AddRange(await _extendedPropertyProvider.GetItems(_fileItem, Detaillevel.Full).ConfigureAwait(false));
 
-            await _contentProvider.SetItem(new FileItem(_fileItem.Path), Detaillevel.Full);
+            var fileItem = new FileItem(_fileItem.Path) {Details = _fileItem.Details};
+            await _contentProvider.SetItem(fileItem, Detaillevel.Full);
             it.AddRange(_contentProvider.PropertiesBottom);
             return it;
         }

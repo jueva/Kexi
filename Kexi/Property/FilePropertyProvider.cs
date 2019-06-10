@@ -182,7 +182,7 @@ namespace Kexi.Property
         private Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
         {
             var tempProp = new ObservableCollection<PropertyItem>();
-            if (CancellationTokenSource.IsCancellationRequested)
+            if (CancellationTokenSource?.IsCancellationRequested ?? false)
                 return Task.FromResult(tempProp);
 
             return  Task.Run(() =>
@@ -192,12 +192,12 @@ namespace Kexi.Property
                 tempProp.Add(new PropertyItem("Name", Item.Name));
                 tempProp.Add(new PropertyItem("Type", details.Type));
                 return tempProp;
-            }, CancellationTokenSource.Token);
+            }, cancellationToken: CancellationTokenSource?.Token ?? default(CancellationToken));
         }
 
         private Task<ObservableCollection<PropertyItem>> GetNetworkBottomItems()
         {
-            if (CancellationTokenSource.IsCancellationRequested || Item == null)
+            if (CancellationTokenSource != null && CancellationTokenSource.IsCancellationRequested || Item == null)
                 return Task.FromResult(new ObservableCollection<PropertyItem>());
 
             return Task.Run(() =>
@@ -212,7 +212,7 @@ namespace Kexi.Property
                 };
 
                 return tempProp;
-            }, CancellationTokenSource.Token);
+            }, CancellationTokenSource?.Token ?? default(CancellationToken));
         }
     }
 }
