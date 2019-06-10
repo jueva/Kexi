@@ -35,7 +35,6 @@ namespace Kexi.Shell
 
         public List<string> GetNetworkComputers()
         {
-            Thread.Sleep(2000);
             var networkComputers = new List<string>();
             const int MAX_PREFERRED_LENGTH = -1;
             int SV_TYPE_WORKSTATION = 1;

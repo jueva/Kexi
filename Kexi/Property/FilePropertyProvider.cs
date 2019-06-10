@@ -62,7 +62,7 @@ namespace Kexi.Property
             await base.SetItem(item, detail).ConfigureAwait(false);
         }
 
-        protected override  Task<ObservableCollection<PropertyItem>> GetTopItems()
+        protected override Task<ObservableCollection<PropertyItem>> GetTopItems()
         {
             if (Item.IsFileShare)
             {
@@ -91,7 +91,9 @@ namespace Kexi.Property
             ThumbMaxHeight = 80;
             if (Item.IsFileShare)
             {
-                return Utils.GetImageFromRessource("share.png");
+                var thumb = Utils.GetImageFromRessource("share.png");
+                thumb.Freeze();
+                return thumb;
             }
 
             if (Item.IsNetwork())

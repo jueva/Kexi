@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using Kexi.Common;
 using Kexi.Interfaces;
 using Kexi.ViewModel.Item;
@@ -16,46 +17,38 @@ namespace Kexi.ItemProvider
 {
     public static class NetworkShareProvider
     {
-        public static  Task<IEnumerable<FileItem>> GetItems(string path)
+        public static BitmapImage GetShareImage() => Utils.GetImageFromRessource("share.png");
+        public static async Task<IEnumerable<FileItem>> GetItems(string path)
         {
-            var shareThumb = Utils.GetImageFromRessource("share.png");
-            shareThumb.Freeze();
 
-            return Task.Run(() =>
+            //return new FileItem[] {new FileItem("C:\\temp") };
+            var tempItems = await Task.Run(() =>
             {
+
                 var folder = ShellObject.FromParsingName(path) as ShellFolder;
                 if (folder == null)
                     return Enumerable.Empty<FileItem>();
 
-                ImmutableArray<FileItem> items;
+                ImmutableArray<FileItem> tempShares;
                 try
                 {
-                    items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container)
-                    {
-                        Thumbnail   = shareThumb,
-                        IsFileShare = true,
-                    }).ToImmutableArray();
+                    tempShares = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container)).ToImmutableArray();
                 }
                 catch (UnauthorizedAccessException)
                 {
                     PinvokeWindowsNetworking.ConnectToRemote(path, "", "", true);
-                    items = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container)
-                    {
-                        IsFileShare = true,
-                        Thumbnail   = shareThumb,
-                    }).ToImmutableArray();
+                    tempShares = folder.Select(i => new FileItem(i.Properties.System.ParsingPath.Value, ItemType.Container)).ToImmutableArray();
                 }
-
-                foreach (var fi in items)
-                {
-                    fi.Details = new FileDetailItem(fi, CancellationToken.None)
-                    {
-                        Type = "Share",
-                    };
-                }
-
-                return items;
+                return tempShares.ToList();
             });
+
+            var shareThumb = GetShareImage();
+            shareThumb.Freeze();
+
+            var shares = tempItems.Select(i => new FileItem(i.Path, ItemType.Container) { IsFileShare = true, Thumbnail = shareThumb }).ToArray();
+            foreach (var i in shares)
+                i.Details = new FileDetailItem(i, CancellationToken.None) { Type = "Share", Thumbnail = shareThumb, LargeThumbnail = shareThumb };
+            return shares;
         }
 
         //https://stackoverflow.com/questions/19123389/check-if-server-path-is-available-as-file-share-in-c-sharp
