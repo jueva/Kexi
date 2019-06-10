@@ -98,6 +98,12 @@ namespace Kexi.ItemProvider
                 return index < 0 ? null : path.Substring(0, index);
             }
 
+            if (new Uri(path).IsUnc)
+            {
+                var index = path.LastIndexOf(@"\", StringComparison.Ordinal);
+                return index <= 1 ? path : path.Substring(0, index);
+            }
+
             var parent = Directory.GetParent(path);
             return parent?.FullName;
         }
