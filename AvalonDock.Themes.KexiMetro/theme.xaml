@@ -305,7 +305,7 @@
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <avalonDockControls:LayoutDocumentControl Model="{Binding}" Background="Transparent" />
+                    <avalonDockControls:LayoutDocumentControl Model="{Binding}" Background="Transparent" FocusVisualStyle="{x:Null}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
