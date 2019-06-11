@@ -10,7 +10,7 @@ namespace Kexi.ViewModel.Commands
 {
     [Export]
     [Export(typeof(IKexiCommand))]
-    public class DeleteFilesCommand : IKexiCommand
+    public class DeleteFilesCommand : IKexiCommand, IUndoable
     {
         [ImportingConstructor]
         public DeleteFilesCommand(Workspace workspace, DialogPopupViewModel dialogPopup)
@@ -44,6 +44,10 @@ namespace Kexi.ViewModel.Commands
             var selectedItems = _workspace.ActiveLister.SelectedItems.OfType<FileItem>();
             var result        = new FilesystemAction(_workspace.NotificationHost).Delete(selectedItems);
             if (result != null) _workspace.NotificationHost.AddError(result);
+        }
+
+        public void Undo()
+        {
         }
     }
 }

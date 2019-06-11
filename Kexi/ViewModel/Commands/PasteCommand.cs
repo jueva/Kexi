@@ -6,7 +6,7 @@ namespace Kexi.ViewModel.Commands
 {
     [Export]
     [Export(typeof(IKexiCommand))]
-    public class PasteCommand : IKexiCommand
+    public class PasteCommand : IKexiCommand, IUndoable
     {
         [ImportingConstructor]
         public PasteCommand(Workspace workspace)
@@ -27,5 +27,9 @@ namespace Kexi.ViewModel.Commands
 
         public event EventHandler  CanExecuteChanged;
         private readonly Workspace _workspace;
+
+        public void Undo()
+        {
+        }
     }
 }

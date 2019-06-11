@@ -302,6 +302,7 @@
     <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyMode.cs" />
     <Compile Include="Interfaces\IBackgroundLoader.cs" />
+    <Compile Include="Interfaces\IUndoable.cs" />
     <Compile Include="ItemProvider\KeyBindingsProvider.cs" />
     <Compile Include="ItemProvider\NetworkShareProvider.cs" />
     <Compile Include="Property\BasePropertyProvider.cs" />
@@ -324,6 +325,7 @@
     <Compile Include="ExtendedExtendedPropertyProvider.cs" />
     <Compile Include="Interfaces\IExtendedPropertyProvider.cs" />
     <Compile Include="Property\SearchPropertyProvider.cs" />
+    <Compile Include="Shell\RecycleBin.cs" />
     <Compile Include="ViewModel\Commands\AddCurrentFolderToTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AddTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AdjustColumnWidth.cs" />
