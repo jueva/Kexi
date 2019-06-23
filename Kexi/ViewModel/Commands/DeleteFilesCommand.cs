@@ -48,6 +48,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Undo()
         {
+            _workspace.NotificationHost.AddInfo("Undo Delete");
         }
     }
 }

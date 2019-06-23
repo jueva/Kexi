@@ -21,8 +21,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var handler = _workspace.ActiveLister as ICanCopyPaste;
-            handler?.Paste();
+            (_workspace.ActiveLister as ICanCopyPaste)?.Paste();
         }
 
         public event EventHandler  CanExecuteChanged;
@@ -30,6 +29,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Undo()
         {
+            (_workspace.ActiveLister as ICanCopyPaste)?.Undo();
         }
     }
 }

@@ -184,13 +184,20 @@ namespace Kexi.ViewModel.Lister
             Items.CollectionChanged += FocusFirstPastedItem;
             var items = Clipboard.GetFileDropList();
             var copyTask = new TaskItem("Copying");
-            await Workspace.TaskManager.RunAsync(copyTask,
-                () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            _undoParameter = new Tuple<string, StringCollection, FileAction>(Path, items, action);
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();
                 SelectedItems.Foreach(i => i.IsMarkedForMove = false);
             }
+        }
+
+        private Tuple<string, StringCollection, FileAction> _undoParameter;
+
+        public override void Undo()
+        {
+            new FilesystemAction(NotificationHost).Undo(_undoParameter.Item1, _undoParameter.Item2, _undoParameter.Item3);
         }
 
         public override async void DoAction(FileItem selection)
