@@ -298,6 +298,8 @@
     <Compile Include="Converter\LengthConverter.cs" />
     <Compile Include="Converter\StringToXamlConverter.cs" />
     <Compile Include="Files\UndoCopyCommand.cs" />
+    <Compile Include="Files\UndoDeleteCommand.cs" />
+    <Compile Include="Files\UndoMoveCommand.cs" />
     <Compile Include="Interfaces\Detaillevel.cs" />
     <Compile Include="Interfaces\ICanDelete.cs" />
     <Compile Include="Interfaces\IKeyHandler.cs" />

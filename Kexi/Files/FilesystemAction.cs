@@ -144,8 +144,10 @@ namespace Kexi.Files
                     new UndoCopyCommand(path, items).DoUndo();
                     break;
                 case FileAction.Move:
+                    new UndoMoveCommand(path, items).DoUndo();
                     break;
                 case FileAction.Delete:
+                    new UndoDeleteCommand(path, items).DoUndo();
                     break;
             }
             _notificationHost.AddInfo($"{path} - {items.Count} - {action}");

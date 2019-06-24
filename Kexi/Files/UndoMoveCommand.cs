@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Kexi.Shell;
 
 namespace Kexi.Files
 {
-    public class UndoCopyCommand
+    public class UndoMoveCommand
     {
         private readonly StringCollection _items;
         private readonly string _path;
 
-        public UndoCopyCommand(string path, StringCollection items)
+        public UndoMoveCommand(string path, StringCollection items)
         {
             _path = path;
             _items = items;
@@ -20,8 +25,7 @@ namespace Kexi.Files
             foreach (var source in _items)
             {
                 var item = GetCopiedItem(source, _path);
-                if (File.Exists(item)) File.Delete(item);
-                if (Directory.Exists(item)) Directory.Delete(item);
+                Move(item, source);
             }
         }
 
@@ -36,5 +40,17 @@ namespace Kexi.Files
             return targetPath;
         }
 
+
+        private void Move(string from, string to)
+        {
+            var fileop = new ShellNative.SHFILEOPSTRUCT
+            {
+                wFunc = ShellNative.FO_MOVE,
+                pFrom = from,
+                pTo = to,
+                fFlags = ShellNative.FOF_RENAMEONCOLLISION
+            };
+            ShellNative.SHFileOperation(ref fileop);
+        }
     }
 }
