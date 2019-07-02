@@ -297,11 +297,15 @@
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />
     <Compile Include="Converter\StringToXamlConverter.cs" />
+    <Compile Include="Files\UndoCopyCommand.cs" />
+    <Compile Include="Files\UndoDeleteCommand.cs" />
+    <Compile Include="Files\UndoMoveCommand.cs" />
     <Compile Include="Interfaces\Detaillevel.cs" />
     <Compile Include="Interfaces\ICanDelete.cs" />
     <Compile Include="Interfaces\IKeyHandler.cs" />
     <Compile Include="Common\KeyHandling\KeyMode.cs" />
     <Compile Include="Interfaces\IBackgroundLoader.cs" />
+    <Compile Include="Interfaces\IUndoable.cs" />
     <Compile Include="ItemProvider\KeyBindingsProvider.cs" />
     <Compile Include="ItemProvider\NetworkShareProvider.cs" />
     <Compile Include="Property\BasePropertyProvider.cs" />
@@ -324,6 +328,7 @@
     <Compile Include="ExtendedExtendedPropertyProvider.cs" />
     <Compile Include="Interfaces\IExtendedPropertyProvider.cs" />
     <Compile Include="Property\SearchPropertyProvider.cs" />
+    <Compile Include="Shell\RecycleBin.cs" />
     <Compile Include="ViewModel\Commands\AddCurrentFolderToTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AddTemporaryBookmarksCommand.cs" />
     <Compile Include="ViewModel\Commands\AdjustColumnWidth.cs" />

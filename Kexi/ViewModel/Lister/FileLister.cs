@@ -170,8 +170,6 @@ namespace Kexi.ViewModel.Lister
 
         public override async void Paste()
         {
-            Items.CollectionChanged += FocusFirstPastedItem;
-
             var action = FileAction.Copy;
             if (Clipboard.GetData("Preferred DropEffect") is Stream act)
             {
@@ -183,14 +181,23 @@ namespace Kexi.ViewModel.Lister
             if (!Clipboard.ContainsFileDropList())
                 return;
 
-            var items    = Clipboard.GetFileDropList();
+            Items.CollectionChanged += FocusFirstPastedItem;
+            var items = Clipboard.GetFileDropList();
             var copyTask = new TaskItem("Copying");
             await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            _undoParameter = new Tuple<string, StringCollection, FileAction>(Path, items, action);
             if (action == FileAction.Move)
             {
                 Clipboard.Clear();
                 SelectedItems.Foreach(i => i.IsMarkedForMove = false);
             }
+        }
+
+        private Tuple<string, StringCollection, FileAction> _undoParameter;
+
+        public override void Undo()
+        {
+            new FilesystemAction(NotificationHost).Undo(_undoParameter.Item1, _undoParameter.Item2, _undoParameter.Item3);
         }
 
         public override async void DoAction(FileItem selection)
@@ -282,8 +289,7 @@ namespace Kexi.ViewModel.Lister
             if (e?.NewItems?.Count > 0 && e.NewItems?[0] is FileItem newItem)
             {
                 ClearSelection();
-                var firstPaste = System.IO.Path.GetFileName(Clipboard.GetFileDropList().Cast<string>().FirstOrDefault());
-                if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems.Count > 0 && newItem.Name == firstPaste)
+                if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems.Count > 0)
                     View.FocusItem(newItem);
             }
         }

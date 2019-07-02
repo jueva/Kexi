@@ -135,5 +135,22 @@ namespace Kexi.Files
 
             return null;
         }
+
+        public void Undo(string path, StringCollection items, FileAction action)
+        {
+            switch (action)
+            {
+                case FileAction.Copy:
+                    new UndoCopyCommand(path, items).DoUndo();
+                    break;
+                case FileAction.Move:
+                    new UndoMoveCommand(path, items).DoUndo();
+                    break;
+                case FileAction.Delete:
+                    new UndoDeleteCommand(path, items).DoUndo();
+                    break;
+            }
+            _notificationHost.AddInfo($"{path} - {items.Count} - {action}");
+        }
     }
 }

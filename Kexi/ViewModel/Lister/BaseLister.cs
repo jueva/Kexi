@@ -98,6 +98,11 @@ namespace Kexi.ViewModel.Lister
             NotificationHost.AddInfo("Paste Action not supported");
         }
 
+        public virtual void Undo()
+        {
+            NotificationHost.AddInfo("Undo Action not supported");
+        }
+
         public Workspace Workspace { get; }
 
         public string HighlightString

@@ -49,6 +49,7 @@ namespace Kexi
         public ICommand SelectAll => GetCommandByName(nameof(SelectAllCommand));
         public ICommand SelectNone => GetCommandByName(nameof(InvertSelectionCommand)); //TODO: selectNoneCommand
         public ICommand InvertSelection => GetCommandByName(nameof(InvertSelectionCommand));
+        public ICommand Undo => GetCommandByName(nameof(UndoCommand));
 
         public IKexiCommand GetCommandByName(string name)
         {
@@ -56,6 +57,7 @@ namespace Kexi
         }
 
         public IKexiCommand LastCommand { get; private set; }
+        public IUndoable LastUndoable { get; private set; }
 
         public void Execute(string name, object arg = null)
         {
@@ -68,8 +70,11 @@ namespace Kexi
             if (command.CanExecute(arg))
             {
                 command.Execute(arg);
-                if (command.GetType().Name != nameof(RepeatLastCommandCommand))
+                var commandName = command.GetType().Name;
+                if (commandName != nameof(RepeatLastCommandCommand))
                     LastCommand = command;
+                if (command is IUndoable undoable)
+                    LastUndoable = undoable;
             }
         }
     }

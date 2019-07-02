@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel.Composition;
+using Kexi.Files;
 using Kexi.Interfaces;
 
 namespace Kexi.ViewModel.Commands
@@ -16,13 +18,24 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
+            if (_workspace.CommandRepository.LastUndoable != null)
+            { 
+                return true;
+            }
+
             return false;
         }
 
         public void Execute(object parameter)
         {
-            _workspace.NotificationHost.AddInfo("Undo actually not supported. To  undo last fileaction open windows explorer and press ctrl+z");
+            if (_workspace.CommandRepository.LastUndoable != null)
+            {
+                _workspace.CommandRepository.LastUndoable.Undo();
+            }
+            else
+                _workspace.NotificationHost.AddInfo("Cant undo last command");
         }
+
 
         public event EventHandler  CanExecuteChanged;
         private readonly Workspace _workspace;
