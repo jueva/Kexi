@@ -18,7 +18,7 @@ namespace Kexi.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            if (_workspace.CommandRepository.LastCommand is IUndoable undoable)
+            if (_workspace.CommandRepository.LastUndoable != null)
             { 
                 return true;
             }
@@ -28,9 +28,9 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            if (_workspace.CommandRepository.LastCommand is IUndoable undoable)
+            if (_workspace.CommandRepository.LastUndoable != null)
             {
-                undoable.Undo();
+                _workspace.CommandRepository.LastUndoable.Undo();
             }
             else
                 _workspace.NotificationHost.AddInfo("Cant undo last command");

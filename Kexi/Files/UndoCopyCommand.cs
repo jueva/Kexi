@@ -21,7 +21,7 @@ namespace Kexi.Files
             {
                 var item = GetCopiedItem(source, _path);
                 if (File.Exists(item)) File.Delete(item);
-                if (Directory.Exists(item)) Directory.Delete(item);
+                else if (Directory.Exists(item)) Directory.Delete(item);
             }
         }
 

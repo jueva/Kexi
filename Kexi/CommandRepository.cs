@@ -57,6 +57,7 @@ namespace Kexi
         }
 
         public IKexiCommand LastCommand { get; private set; }
+        public IUndoable LastUndoable { get; private set; }
 
         public void Execute(string name, object arg = null)
         {
@@ -72,6 +73,8 @@ namespace Kexi
                 var commandName = command.GetType().Name;
                 if (commandName != nameof(RepeatLastCommandCommand))
                     LastCommand = command;
+                if (command is IUndoable undoable)
+                    LastUndoable = undoable;
             }
         }
     }
