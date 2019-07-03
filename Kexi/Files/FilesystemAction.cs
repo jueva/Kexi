@@ -59,81 +59,12 @@ namespace Kexi.Files
 
         public string Paste(string target, StringCollection items, FileAction action, short flags = ShellNative.FOF_ALLOWUNDO)
         {
-            if (!Clipboard.ContainsFileDropList())
-                return null;
-
-            if (action != FileAction.Copy && action != FileAction.Move && action != FileAction.Create)
-                throw new ArgumentOutOfRangeException(nameof(action), action, "Action should be Copy or Move");
-
-            var   it                    = items.Cast<string>().ToList();
-            var   from                  = string.Join("\0", it) + "\0";
-            var   to                    = target + "\0";
-
-            if (items.Count == 1)
-            {
-                var info = new FileInfo(items[0]);
-                if (info.Directory.FullName.ToLower() == target.ToLower())
-                {
-                    flags = (short) (flags | ShellNative.FOF_RENAMEONCOLLISION);
-                }
-            }
-
-            var fileop = new ShellNative.SHFILEOPSTRUCT
-            {
-                wFunc  = action == FileAction.Copy ? ShellNative.FO_COPY : ShellNative.FO_MOVE,
-                pFrom  = from,
-                pTo    = to,
-                fFlags = flags
-            };
-            ShellNative.SHFileOperation(ref fileop);
-
-            return $@"{target}\{it.LastOrDefault()}";
+            return PasteAction.Paste(target, items, action, flags);
         }
 
         public string Delete(IEnumerable<FileItem> selectedItems)
-            {
-            if (selectedItems.FirstOrDefault()?.DisplayName == "..")
-            {
-                return "Can't delete this item";
-            }
-            foreach (var i in selectedItems)
-                if (i.ItemType == ItemType.Container)
-                    try
-                    {
-                        Directory.Delete(i.Path, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (File.Exists(i.Path)) //.zip files haben ItemType.Container sind aber files
-                        {
-                            try
-                            {
-                                File.Delete(i.Path);
-                            }
-                            catch (Exception innerEx)
-                            {
-                                _notificationHost.AddError(innerEx);
-                                return "Fehler beim Löschen von " + i.Path;
-                            }
-                        }
-                        else
-                        {
-                            _notificationHost.AddError(ex);
-                            return "Fehler beim Löschen von " + i.Path;
-                        }
-                    }
-                else
-                    try
-                    {
-                        File.Delete(i.Path);
-                    }
-                    catch (Exception ex)
-                    {
-                        _notificationHost.AddError(ex);
-                        return "Fehler beim Löschen von " + i.Path;
-                    }
-
-            return null;
+        {
+            return new DeleteAction(_notificationHost).Delete(selectedItems);
         }
 
         public void Undo(string path, StringCollection items, FileAction action)
@@ -141,16 +72,15 @@ namespace Kexi.Files
             switch (action)
             {
                 case FileAction.Copy:
-                    new UndoCopyCommand(path, items).DoUndo();
+                    new UndoCopyAction(path, items).DoUndo();
                     break;
                 case FileAction.Move:
-                    new UndoMoveCommand(path, items).DoUndo();
+                    new UndoMoveAction(path, items).DoUndo();
                     break;
                 case FileAction.Delete:
-                    new UndoDeleteCommand(path, items).DoUndo();
+                    new UndoDeleteAction(path, items).DoUndo();
                     break;
             }
-            _notificationHost.AddInfo($"{path} - {items.Count} - {action}");
         }
     }
 }

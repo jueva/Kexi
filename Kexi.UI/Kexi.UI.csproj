@@ -272,6 +272,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Themes\dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Themes\winDark.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

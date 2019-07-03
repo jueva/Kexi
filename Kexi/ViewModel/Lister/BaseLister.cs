@@ -279,6 +279,10 @@ namespace Kexi.ViewModel.Lister
 
                 SortHandler.ClearSort();
             }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 NotificationHost.AddError(ex.Message, ex.ToString());

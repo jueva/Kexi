@@ -297,9 +297,11 @@
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Converter\LengthConverter.cs" />
     <Compile Include="Converter\StringToXamlConverter.cs" />
-    <Compile Include="Files\UndoCopyCommand.cs" />
-    <Compile Include="Files\UndoDeleteCommand.cs" />
-    <Compile Include="Files\UndoMoveCommand.cs" />
+    <Compile Include="Files\DeleteAction.cs" />
+    <Compile Include="Files\PasteAction.cs" />
+    <Compile Include="Files\UndoCopyAction.cs" />
+    <Compile Include="Files\UndoDeleteAction.cs" />
+    <Compile Include="Files\UndoMoveAction.cs" />
     <Compile Include="Interfaces\Detaillevel.cs" />
     <Compile Include="Interfaces\ICanDelete.cs" />
     <Compile Include="Interfaces\IKeyHandler.cs" />
@@ -363,6 +365,7 @@
     <Compile Include="ViewModel\Commands\FilterToCurrentExtensionCommand.cs" />
     <Compile Include="ViewModel\Commands\FocusNextConsoleCommand.cs" />
     <Compile Include="ViewModel\Commands\FocusPreviousConsoleCommand.cs" />
+    <Compile Include="ViewModel\Commands\GainAccessToDirectoryCommand.cs" />
     <Compile Include="ViewModel\Commands\HistoryBackKeepFilterCommand.cs" />
     <Compile Include="ViewModel\Commands\IncreaseFontSizeCommand.cs" />
     <Compile Include="ViewModel\Commands\LoadLayoutCommand.cs" />

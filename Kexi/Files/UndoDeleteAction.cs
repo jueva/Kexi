@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Kexi.Files
 {
-    public class UndoDeleteCommand
+    public class UndoDeleteAction
     {
         private readonly string _path;
         private readonly StringCollection _items;
 
-        public UndoDeleteCommand(string path, StringCollection items)
+        public UndoDeleteAction(string path, StringCollection items)
         {
             _path = path;
             _items = items;

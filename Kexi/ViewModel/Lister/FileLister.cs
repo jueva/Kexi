@@ -7,14 +7,18 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Kexi.Common;
 using Kexi.Files;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
+using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Item;
 using Clipboard = System.Windows.Clipboard;
 using LengthConverter = Kexi.Converter.LengthConverter;
@@ -205,14 +209,22 @@ namespace Kexi.ViewModel.Lister
             if (selection == null)
                 return;
 
+            var result = new FileListerAction(Workspace, selection).DoAction();
             try
             {
-                var result = new FileListerAction(Workspace, selection).DoAction();
                 if (result != null)
                 {
                     Path = result;
                     await Refresh().ConfigureAwait(false);
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await System.Windows.Application.Current.Dispatcher.Invoke(async () =>
+                    {
+                        Workspace.CommandRepository.GetCommandByName(nameof(GainAccessToDirectoryCommand)).Execute(result);
+                    }
+                );
             }
             catch (Exception ex)
             {
@@ -222,6 +234,8 @@ namespace Kexi.ViewModel.Lister
                 NotificationHost.AddError(message + selection.Name, ex);
             }
         }
+
+ 
 
         public override string GetParentContainer()
         {
