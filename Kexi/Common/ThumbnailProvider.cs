@@ -60,13 +60,25 @@ namespace Kexi.Common
 
         public static BitmapSource GetThumbnailSource(string fileName, int width, int height, ThumbnailOptions options, CancellationToken? token = null)
         {
-            if (token != null && token.Value.IsCancellationRequested)
-                return null;
+            try
+            {
+                if (token != null && token.Value.IsCancellationRequested)
+                    return null;
 
-            var bitmap = GetThumbnail(fileName, width, height, options);
-            var bitmapSource = Convert(bitmap);
-            bitmapSource.Freeze();
-            return bitmapSource;
+                var bitmap = GetThumbnail(fileName, width, height, options);
+                var bitmapSource = Convert(bitmap);
+                bitmapSource.Freeze();
+                return bitmapSource;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
+
+        public static BitmapSource GetLargeThumbnail(string path, CancellationToken? cancellationToken = null)
+        {
+            return GetThumbnailSource(path, 256, 256, ThumbnailOptions.None, cancellationToken);
         }
 
         public static Task<BitmapSource> GetLargeThumbnailAsync(string path, CancellationToken? cancellationToken = null)
@@ -74,7 +86,7 @@ namespace Kexi.Common
             if (string.IsNullOrEmpty(path))
                 return Task.FromResult(default(BitmapSource));
 
-            return Task.Factory.StartNew(() => GetThumbnailSource(path, 256, 256, ThumbnailOptions.None, cancellationToken));
+            return Task.Factory.StartNew(() => GetLargeThumbnail(path, cancellationToken));
         }
 
         private static BitmapSource Convert(Bitmap bitmap)

@@ -8,21 +8,36 @@ using Kexi.Files;
 using Kexi.Interfaces;
 using Kexi.ItemProvider;
 using Kexi.Shell;
+using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Item
 {
-    public class FileItem : BaseItem, IRenameable
+    public class FileItem : BaseItem, IRenameable, IHasBackgroundData<FileItem>
     {
+        private readonly bool _fetchDisplayName;
+        private readonly FileItemProvider _itemProvider;
+        private FileAttributes? _attributes;
+        private string _attributeString;
+        private FileDetailItem _details;
+        private string _directory;
+        private string _extension;
+        private FileInfo _fileInfo;
+        private FileSystemInfo _fileSystemInfo;
+        private bool _isMarkedForMove;
+        private bool _isSystemOrHidden;
+        private long _length;
+        private string _name;
+
         public FileItem(string path, ItemType itemType, string name = null, FileItemProvider itemProvider = null)
         {
-            _itemProvider     = itemProvider;
+            _itemProvider = itemProvider;
             CancellationToken = _itemProvider?.CancellationTokenSource.Token;
             if (name != null)
                 _fetchDisplayName = name != ".." && !name.EndsWith(".lnk");
-            Path         = path;
-            DisplayName  = name ?? System.IO.Path.GetFileName(path);
+            Path = path;
+            DisplayName = name ?? System.IO.Path.GetFileName(path);
             FilterString = DisplayName;
-            ItemType     = itemType;
+            ItemType = itemType;
         }
 
         public FileItem(string path) : this(path, System.IO.Directory.Exists(path) ? ItemType.Container : ItemType.Item)
@@ -36,7 +51,11 @@ namespace Kexi.ViewModel.Item
             get
             {
                 if (_details == null)
-                    SetDetails();
+                {
+                    if (_itemProvider?.Workspace.ActiveLister is FileLister lister)
+                        lister.AddPriorityItem(this);
+                }
+                
                 return _details;
             }
             internal set
@@ -46,26 +65,25 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-        public FileInfo FileInfo {
+        public FileInfo FileInfo
+        {
             get
             {
                 if (_fileInfo == null)
-                {
                     try
                     {
-                        _fileInfo = (_fileInfo = string.IsNullOrEmpty(Path) ? null : new FileInfo(Path));
+                        _fileInfo = _fileInfo = string.IsNullOrEmpty(Path) ? null : new FileInfo(Path);
                     }
                     catch
                     {
                         //handle
                     }
-                }
 
                 return _fileInfo;
             }
         }
 
-    public FileSystemInfo FileSystemInfo
+        public FileSystemInfo FileSystemInfo
             =>
                 _fileSystemInfo ??
                 (_fileSystemInfo = string.IsNullOrEmpty(Path)
@@ -98,7 +116,7 @@ namespace Kexi.ViewModel.Item
             set
             {
                 _isSystemOrHidden = value;
-                ThumbnailOpacity  = value ? 0.6 : 1;
+                ThumbnailOpacity = value ? 0.6 : 1;
                 OnPropertyChanged();
             }
         }
@@ -114,14 +132,14 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-        public bool   IsFileShare     { get; set; }
+        public bool IsFileShare { get; set; }
         public string AttributeString => _attributeString ?? (_attributeString = GetAttributeString());
 
-        public string Name => System.IO.Path.GetFileName(Path);
+        public string Name => _name ?? (_name = System.IO.Path.GetFileName(Path));
 
-        public string Directory => System.IO.Path.GetDirectoryName(Path) ?? Path;
+        public string Directory => _directory ?? (_directory = System.IO.Path.GetDirectoryName(Path) ?? Path);
 
-        public string Extension => System.IO.Path.GetExtension(Path);
+        public string Extension => _extension ?? (_extension = System.IO.Path.GetExtension(Path));
 
         public long Length
         {
@@ -135,8 +153,6 @@ namespace Kexi.ViewModel.Item
             }
         }
 
-        public bool IsBinary { get; set; }
-
         public void Rename(string newName)
         {
             FileHelper.Rename(this, newName);
@@ -147,44 +163,15 @@ namespace Kexi.ViewModel.Item
             return FileHelper.GetRenameSelectionBorder(this);
         }
 
-        private readonly bool _fetchDisplayName;
-
-        private readonly FileItemProvider _itemProvider;
-
-        private FileAttributes? _attributes;
-        private string          _attributeString;
-
-        private FileDetailItem _details;
-
-        private FileInfo _fileInfo;
-
-        private FileSystemInfo _fileSystemInfo;
-        private bool           _isMarkedForMove;
-        private bool           _isSystemOrHidden;
-        private long           _length;
-
-        private readonly object locker = new object();
-        private bool gettingDetails;
-        public async void SetDetails()
-        {
-            lock (locker)
-            {
-                if (gettingDetails)
-                    return;
-                gettingDetails = true;
-            }
-            await SetDetailsAsync();
-        }
-
         public async Task<FileDetailItem> SetDetailsAsync()
         {
             if (CancellationToken?.IsCancellationRequested ?? false)
                 return null;
 
             var largeThumb = _itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail;
-            var token      = CancellationToken ?? System.Threading.CancellationToken.None;
-            _details = await Task.Factory.StartNew(()=>GetDetail(largeThumb, token), token);
-            Details   = _details;
+            var token = CancellationToken ?? System.Threading.CancellationToken.None;
+            _details = await Task.Factory.StartNew(() => GetDetail(largeThumb, token), token);
+            Details = _details;
             Thumbnail = _details.Thumbnail;
 
             if (_fetchDisplayName && !string.IsNullOrEmpty(_details.DisplayName))
@@ -194,9 +181,6 @@ namespace Kexi.ViewModel.Item
 
         public FileDetailItem GetDetail(bool largeThumb, CancellationToken token)
         {
-            if (_details != null)
-                return _details;
-
             var det = new FileDetailItem(this, CancellationToken);
             SetTargetType();
             det.Init(token);
@@ -214,7 +198,7 @@ namespace Kexi.ViewModel.Item
         {
             if (Path.StartsWith(@"\\"))
                 return true;
-            var dir   = new DirectoryInfo(Path);
+            var dir = new DirectoryInfo(Path);
             var drive = new DriveInfo(dir.Root.ToString());
             return drive.DriveType == DriveType.Network;
         }
@@ -249,5 +233,15 @@ namespace Kexi.ViewModel.Item
                 return "N/A";
             }
         }
+
+        public void LoadBackgroundData(FileItem item)
+        {
+            var largeThumbs = (_itemProvider?.Workspace.ActiveLister.CurrentViewMode == ViewType.Thumbnail);
+            Details = GetDetail(largeThumbs, _itemProvider?.CancellationTokenSource.Token ?? System.Threading.CancellationToken.None);
+            Thumbnail = Details.Thumbnail;
+            BackgroundDataLoaded = true;
+        }
+
+        public bool BackgroundDataLoaded { get; private set; }
     }
 }

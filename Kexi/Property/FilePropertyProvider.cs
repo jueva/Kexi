@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -115,7 +116,7 @@ namespace Kexi.Property
             if (Item.IsNetwork())
                 return  GetNetworkBottomItems();
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 var detail = Item.GetDetail(false, CancellationToken.None);
                 var tempProp = new ObservableCollection<PropertyItem>
@@ -135,7 +136,7 @@ namespace Kexi.Property
 
                 if (!Item.IsContainer)
                 {
-                    var encoding = GetEncoding(Item.Path);
+                    var encoding = await GetEncoding(Item.Path);
                     if (encoding != null)
                         tempProp.Add(new PropertyItem("Encoding", encoding.EncodingName));
                 }
@@ -160,24 +161,44 @@ namespace Kexi.Property
             });
         }
 
-        private static Encoding GetEncoding(string path)
+        private static async Task<Encoding> GetEncoding(string path)
         {
             try
             {
                 using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
+                    var size =(int) Math.Min(1024, stream.Length);
+                    var buffer = new byte[size];
+                    await stream.ReadAsync(buffer, 0, size);
+
                     var detector = new CharsetDetector();
-                    detector.Feed(stream);
+                    detector.Feed(buffer, 0, size);
                     detector.DataEnd();
                     return detector.Charset == null ? null : Encoding.GetEncoding(detector.Charset);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 //File locks, etc.
                 return null;
             }
         }
+
+        //private static Encoding GetEncoding(string filename)
+        //{
+        //    // This is a direct quote from MSDN:  
+        //    // The CurrentEncoding value can be different after the first
+        //    // call to any Read method of StreamReader, since encoding
+        //    // autodetection is not done until the first call to a Read method.
+
+        //    using (var reader = new StreamReader(filename, Encoding.Default, true))
+        //    {
+        //        if (reader.Peek() >= 0) // you need this!
+        //            reader.Read();
+
+        //        return reader.CurrentEncoding;
+        //    }
+        //}
 
         private Task<ObservableCollection<PropertyItem>> GetNetworkTopItems()
         {

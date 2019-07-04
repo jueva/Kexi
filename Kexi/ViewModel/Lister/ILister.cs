@@ -45,7 +45,7 @@ namespace Kexi.ViewModel.Lister
         IEnumerable<IItem> SelectedItems { get; }
         string HighlightString { get; set; }
         Task Refresh(bool clearFilterAndGroup = true);
-        string GetParentContainer();
+        string GetParentPath();
         void DoAction(IItem item);
         event Action<string> PathChanged;
         void ShowContextMenu(IEnumerable<IItem> selectedItems);
@@ -61,6 +61,7 @@ namespace Kexi.ViewModel.Lister
     public interface ILister<T> : ILister
         where T : class, IItem
     {
+        Stack<T> PriorityItems { get; }
         new ObservableCollection<T>      Items     { get; }
         new MultiSelectCollectionView<T> ItemsView { get; }
         new IEnumerable<T> SelectedItems { get; }

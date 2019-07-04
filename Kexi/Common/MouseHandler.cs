@@ -114,7 +114,7 @@ namespace Kexi.Common
                     HandleLeftButtonUp(e, item);
                     break;
                 case MouseButton.Middle:
-                    _workspace.ActiveLister.Path = _workspace.ActiveLister.GetParentContainer();
+                    _workspace.ActiveLister.Path = _workspace.ActiveLister.GetParentPath();
                     _workspace.ActiveLister.Refresh();
                     e.Handled = true;
                     break;

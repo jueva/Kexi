@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using Kexi.Common;
@@ -31,6 +33,22 @@ namespace Kexi.ViewModel.TreeView
             BindingOperations.CollectionRegistering += BindingOperations_CollectionRegistering;
             ExpandItem(_favorites);
             Root.Add(_favorites);
+            SetDetails();
+        }
+
+        private void SetDetails()
+        {
+            Task.Run(() =>
+            {
+                foreach (var r in Root)
+                {
+                    r.Thumbnail = ThumbnailProvider.GetThumbnailSource(r.Path, 32, 32, ThumbnailOptions.IconOnly);
+                    foreach (var c in r.Children)
+                    {
+                        c.Thumbnail = ThumbnailProvider.GetThumbnailSource(c.Path, 32, 32, ThumbnailOptions.IconOnly);
+                    }
+                }
+            });
         }
 
         public Workspace Workspace { get; }
@@ -87,19 +105,22 @@ namespace Kexi.ViewModel.TreeView
 
             foreach (var fsi in Directory.EnumerateFileSystemEntries(item.Path))
             {
-                var f = new FileItem(fsi, Directory.Exists(fsi) ? ItemType.Container : ItemType.Item);
-                if (onlyContainers && f.ItemType != ItemType.Container)
+                var type = Directory.Exists(fsi) ? ItemType.Container : ItemType.Item;
+                if (onlyContainers && type != ItemType.Container)
                     continue;
 
-                try
-                {
-                    var ti = new TreeViewItem(f);
-                    item.Children.Add(ti);
-                }
-                catch (Exception)
-                {
-                }
+                var ti = new TreeViewItem(fsi, type, Path.GetFileName(fsi));
+                item.Children.Add(ti);
             }
+
+            Task.Run(() =>
+            {
+                foreach (var c in item.Children)
+                {
+                    c.Thumbnail = ThumbnailProvider.GetThumbnailSource(c.Path, 32, 32, ThumbnailOptions.IconOnly);
+                }
+            });
+
         }
     }
 }

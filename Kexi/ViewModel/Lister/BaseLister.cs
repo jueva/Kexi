@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -27,11 +28,37 @@ namespace Kexi.ViewModel.Lister
     public abstract class BaseLister<T> : ILister<T>, ICanCopyPaste
         where T : class, IItem
     {
+        protected readonly INotificationHost NotificationHost;
+        private CancellationTokenSource _cancellation;
+        private Style _currentContainerStyle;
+        private ViewType _currentViewMode;
+        private string _filter;
+        private string _groupBy;
+        private string _highlightString;
+        private ObservableCollection<T> _items;
+        private MultiSelectCollectionView<T> _itemsView;
+        private DispatcherTimer _loadingSpinnerTimer;
+        private Visibility _loadingSpinnerVisibility = Visibility.Collapsed;
+        private LoadingStatus _loadingStatus;
+        private NotificationItem _notification;
+        private string _oldFilter;
+        private string _oldGroupBy;
+        private SortDescription _oldSortExpression;
+        private string _path;
+        private string _pathName;
+        private string _previousPath;
+        private IPropertyProvider _propertyProvider;
+        private string _statusString;
+        private BitmapSource _thumbnail;
+        private string _title;
+        private IListerView _view;
+
         [ImportingConstructor]
         protected BaseLister(Workspace workspace, Options options, CommandRepository commandRepository)
         {
             Workspace = workspace;
             SortHandler = new SortHandler(this);
+            PriorityItems = new Stack<T>();
             NotificationHost = workspace.NotificationHost;
             GotView += GotTheView;
             Options = options;
@@ -44,13 +71,7 @@ namespace Kexi.ViewModel.Lister
             _loadingSpinnerTimer.Tick += LoadingSpinnerTimer_Tick;
         }
 
-        private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Options.Highlights))
-            {
-                HighlightString = Options.Highlights ? Filter : "";
-            }
-        }
+        public Stack<T> PriorityItems { get; private set; }
 
         public Visibility LoadingSpinnerVisibility
         {
@@ -247,22 +268,19 @@ namespace Kexi.ViewModel.Lister
 
         public virtual async Task Refresh(bool clearFilterAndGroup = true)
         {
+            var backgroundLoader = (typeof(IHasBackgroundData<T>).IsAssignableFrom(typeof(T)));
             try
             {
                 LoadingStatus = LoadingStatus.Loading;
-                var items = await GetItems();
-                Items = new ObservableCollection<T>(items);
-
-                if (this is IBackgroundLoader preloadDetails)
+                var itemsPreloaded = new ObservableCollection<T>(await GetItems());
+                if (backgroundLoader)
                 {
                     _cancellation?.Cancel();
                     var newCancellation = new CancellationTokenSource();
-                    new Task(
-                        () => preloadDetails.LoadBackgroundData(Items, newCancellation.Token),
-                        newCancellation.Token).Start();
+                    new Task(() => LoadBackgroundData(itemsPreloaded, newCancellation.Token), newCancellation.Token).Start();
                     _cancellation = newCancellation;
                 }
-
+                Items = itemsPreloaded;
                 if (this is IHistorisationProvider history)
                 {
                     _oldFilter = Filter;
@@ -298,7 +316,54 @@ namespace Kexi.ViewModel.Lister
             }
             finally
             {
-                LoadingStatus = LoadingStatus.Loaded;
+                if (!backgroundLoader)
+                    LoadingStatus = LoadingStatus.Loaded;
+            }
+        }
+
+        private readonly Stopwatch _watch = new Stopwatch();
+        public void LoadBackgroundData(IEnumerable<T> items, CancellationToken cancellationToken)
+        {
+            _watch.Restart();
+            PriorityItems.Clear();
+            foreach (var i in items)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+
+                if (i is IHasBackgroundData<T> back)
+                {
+                    if (back.BackgroundDataLoaded)
+                        continue;
+
+                    CheckPriorityItems(cancellationToken);
+                    back.LoadBackgroundData(i);
+                }
+            }
+            LoadingStatus = LoadingStatus.Loaded;
+        }
+
+        public void AddPriorityItem(T item)
+        {
+            if (_watch.ElapsedMilliseconds < 500)
+            {
+                return;
+            }
+            PriorityItems.Push(item);
+        }
+
+        private void CheckPriorityItems(CancellationToken cancellationToken)
+        {
+            while (PriorityItems.Count > 0)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
+                var i = PriorityItems.Pop();
+                if (i is IHasBackgroundData<T> back)
+                {
+                    back.LoadBackgroundData(i);
+                }
             }
         }
 
@@ -311,7 +376,7 @@ namespace Kexi.ViewModel.Lister
         {
         }
 
-        public virtual string GetParentContainer()
+        public virtual string GetParentPath()
         {
             return null;
         }
@@ -394,6 +459,7 @@ namespace Kexi.ViewModel.Lister
                 _currentViewMode = value;
 
                 OnNotifyPropertyChanged();
+                Refresh(false);
             }
         }
 
@@ -459,30 +525,10 @@ namespace Kexi.ViewModel.Lister
             GC.SuppressFinalize(this);
         }
 
-        protected readonly INotificationHost NotificationHost;
-        private Style _currentContainerStyle;
-        private ViewType _currentViewMode;
-        private string _filter;
-        private string _groupBy;
-        private string _highlightString;
-        private ObservableCollection<T> _items;
-        private MultiSelectCollectionView<T> _itemsView;
-        private Visibility _loadingSpinnerVisibility = Visibility.Collapsed;
-        private LoadingStatus _loadingStatus;
-        private NotificationItem _notification;
-        private string _oldFilter;
-        private string _oldGroupBy;
-        private SortDescription _oldSortExpression;
-        private string _path;
-        private string _pathName;
-        private IPropertyProvider _propertyProvider;
-        private string _statusString;
-        private BitmapSource _thumbnail;
-        private string _title;
-        private IListerView _view;
-        private CancellationTokenSource _cancellation;
-        private DispatcherTimer _loadingSpinnerTimer;
-        private string _previousPath;
+        private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Options.Highlights)) HighlightString = Options.Highlights ? Filter : "";
+        }
 
         private IPropertyProvider GetPropertyProvider()
         {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Kexi.Common;
 using Kexi.Interfaces;
@@ -12,14 +13,22 @@ namespace Kexi.ViewModel
 {
     public class BreadcrumbViewModel : ViewModelBase
     {
+        private bool _adressVisible;
+        private bool _breadcrumbVisible = true;
+        private IEnumerable<FileItem> _items;
+        private BreadcrumbMode _mode = BreadcrumbMode.Breadcrumb;
+        private Control _popupTarget;
+        private bool _popupVisible;
+        private string _separatorPopupPath;
+
         public BreadcrumbViewModel(Workspace workspace)
         {
-            Workspace         = workspace;
-            Options           = workspace.Options;
+            Workspace = workspace;
+            Options = workspace.Options;
         }
 
-        public Workspace            Workspace         { get; }
-        public Options              Options           { get; }
+        public Workspace Workspace { get; }
+        public Options Options { get; }
 
         public bool AdressVisible
         {
@@ -67,11 +76,13 @@ namespace Kexi.ViewModel
                 }, a => Workspace.ActiveLister is IBreadCrumbProvider);
             }
         }
+
         public RelayCommand LastPathPartSelectedCommand
         {
             get
             {
-                return new RelayCommand(c => { Mode = BreadcrumbMode.Adressbox; }, a => Workspace.ActiveLister is IBreadCrumbProvider);
+                return new RelayCommand(c => { Mode = BreadcrumbMode.Adressbox; },
+                    a => Workspace.ActiveLister is IBreadCrumbProvider);
             }
         }
 
@@ -83,22 +94,12 @@ namespace Kexi.ViewModel
                 {
                     if (c is Button button)
                     {
-                        var part   = button.DataContext as PathPart;
-                        PopupTarget        = button;
+                        var part = button.DataContext as PathPart;
+                        PopupTarget = button;
                         SeparatorPopupPath = part?.Path;
                         Open();
                     }
                 }, a => Workspace.ActiveLister is IBreadCrumbProvider);
-            }
-        }
-
-        public async void Open()
-        {
-            PopupVisible  = true;
-            Items = Directory.EnumerateDirectories(SeparatorPopupPath).Select(i => new FileItem(i, ItemType.Container));
-            foreach (var i in Items)
-            {
-                await i.SetDetailsAsync().ConfigureAwait(false);
             }
         }
 
@@ -146,16 +147,16 @@ namespace Kexi.ViewModel
             }
         }
 
-        private bool _adressVisible;
-        private bool _breadcrumbVisible = true;
-
-        private IEnumerable<FileItem> _items;
-        private BreadcrumbMode        _mode = BreadcrumbMode.Breadcrumb;
-
-
-        private Control _popupTarget;
-        private bool    _popupVisible;
-        private string  _separatorPopupPath;
+        public async void Open()
+        {
+            PopupVisible = true;
+            Items = Directory.EnumerateDirectories(SeparatorPopupPath).Select(i => new FileItem(i, ItemType.Container))
+                .ToList();
+            await Task.Run(() =>
+            {
+                foreach (var i in Items) i.Details = i.GetDetail(false, CancellationToken.None);
+            });
+        }
 
 
         public event EventHandler ModeChanged;

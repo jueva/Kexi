@@ -37,11 +37,12 @@ namespace Kexi.Files
                 var link = GetLink(_fileItem);
                 if (link != null)
                 {
-                    TargetPath       = link.Path;
+                    TargetPath = link.Target.Path;
                     WorkingDirectory = link.WorkingDirectory;
+                    TargetType = link.Target.IsFolder ? ItemType.Container : ItemType.Item;
                 }
-
-                TargetType = Directory.Exists(TargetPath) ? ItemType.Container : ItemType.Item;
+                else
+                    TargetType = Directory.Exists(TargetPath) ? ItemType.Container : ItemType.Item;
             }
             else
             {

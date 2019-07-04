@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Kexi.Annotations;
 using Kexi.Common;
@@ -58,9 +59,6 @@ namespace Kexi.ViewModel.Item
         {
             get
             {
-                if (_largeThumbnail == null)
-                    SetLargeThumbAsync();
-
                 return _largeThumbnail;
             }
             set
@@ -165,22 +163,15 @@ namespace Kexi.ViewModel.Item
                 DisplayName = fullInfo.DisplayName;
                 Thumbnail = fullInfo.Icon;
                 Thumbnail.Freeze();
+                if (largeThumbs)
+                    LargeThumbnail = ThumbnailProvider.GetLargeThumbnail(_fileItem.Path, CancellationToken.None);
             }
-            catch
+            catch (Exception ex)
             {
                 // ignored
             }
         }
 
-        private async void SetLargeThumbAsync()
-        {
-            LargeThumbnail = await GetLargeThumbAsync();
-        }
-
-        public  Task<BitmapSource> GetLargeThumbAsync()
-        {
-            return ThumbnailProvider.GetLargeThumbnailAsync(_fileItem.Path, _cancellationToken);
-        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

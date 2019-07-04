@@ -92,7 +92,7 @@
                                 <GridViewColumn Width="24">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Details.Thumbnail}" />
+                                            <Image Source="{Binding Details.Thumbnail}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

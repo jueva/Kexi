@@ -141,7 +141,7 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        public override string GetParentContainer()
+        public override string GetParentPath()
         {
             return null;
         }

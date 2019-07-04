@@ -1,14 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Kexi.Interfaces;
 using Kexi.Shell;
+using Kexi.ViewModel.Lister;
 
 namespace Kexi.ViewModel.Item
 {
-    public class ProcessItem : BaseItem
+    public class ProcessItem : BaseItem, IHasBackgroundData<ProcessItem>
     {
-        public ProcessItem(Process process) : base(process.ProcessName)
+        private readonly ProcessLister _processLister;
+
+        public ProcessItem(Process process, ProcessLister processLister) : base(process.ProcessName)
         {
+            _processLister = processLister;
             Process = process;
         }
 
@@ -17,7 +22,7 @@ namespace Kexi.ViewModel.Item
             get
             {
                 if (_details == null)
-                    SetDetailsAsync();
+                    _processLister.AddPriorityItem(this);
                 return _details;
             }
             set
@@ -104,6 +109,13 @@ namespace Kexi.ViewModel.Item
             {
                 return new ProcessDetailItem();
             }
+        }
+
+        public bool BackgroundDataLoaded { get; private set; }
+        public void LoadBackgroundData(ProcessItem item)
+        {
+            Details = GetDetail();
+            BackgroundDataLoaded = true;
         }
     }
 }

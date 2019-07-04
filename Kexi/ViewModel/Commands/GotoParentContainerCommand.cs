@@ -21,7 +21,7 @@ namespace Kexi.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            var parent = _workspace.ActiveLister.GetParentContainer();
+            var parent = _workspace.ActiveLister.GetParentPath();
             if (_workspace.ActiveLister.Path == null)
                 return;
 

@@ -20,7 +20,7 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(ProcessLister))]
     [Export(typeof(ILister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class ProcessLister : BaseLister<ProcessItem>, IBackgroundLoader<ProcessItem>
+    public class ProcessLister : BaseLister<ProcessItem>
     {
         [ImportingConstructor]
         public ProcessLister(Workspace workspace,  Options options, CommandRepository commandRepository)
@@ -98,22 +98,8 @@ namespace Kexi.ViewModel.Lister
 
         protected override Task<IEnumerable<ProcessItem>> GetItems()
         {
-            return Task.Run(() => Process.GetProcesses().Select(p => new ProcessItem(p)));
+            return Task.Run(() => Process.GetProcesses().Select(p => new ProcessItem(p,this)));
         }
 
-        public void LoadBackgroundData(IEnumerable<ProcessItem> items, CancellationToken cancellationToken)
-        {
-            foreach (var i in items)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-                i.Details = i.GetDetail();
-            }
-        }
-
-        public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
-        {
-            LoadBackgroundData(items.Cast<ProcessItem>(), cancellationToken);
-        }
     }
 }

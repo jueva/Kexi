@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Threading;
+using System.Windows;
 using Kexi.Common;
 using Kexi.Files;
 using Kexi.Interfaces;
@@ -20,7 +18,6 @@ using Kexi.ItemProvider;
 using Kexi.Shell;
 using Kexi.ViewModel.Commands;
 using Kexi.ViewModel.Item;
-using Clipboard = System.Windows.Clipboard;
 using LengthConverter = Kexi.Converter.LengthConverter;
 
 namespace Kexi.ViewModel.Lister
@@ -28,37 +25,55 @@ namespace Kexi.ViewModel.Lister
     [Export(typeof(FileLister))]
     [Export(typeof(ILister))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider, IBackgroundLoader<FileItem>, ICanDelete
+    public class FileLister : BaseLister<FileItem>, IHistorisationProvider, IBreadCrumbProvider, ICanDelete
     {
+        private readonly FileItemProvider _itemProvider;
+
+        private Tuple<string, StringCollection, FileAction> _undoParameter;
+        private FilesystemChangeWatcher _watcher;
+
         [ImportingConstructor]
-        public FileLister(Workspace workspace,  Options options,
+        public FileLister(Workspace workspace, Options options,
             CommandRepository commandRepository)
-            : base(workspace,  options, commandRepository)
+            : base(workspace, options, commandRepository)
         {
-            Title    = "Files";
-            History  = new BrowsingHistory();
+            Title = "Files";
+            History = new BrowsingHistory();
             _watcher = new FilesystemChangeWatcher(this);
             _watcher.Register();
-            _itemProvider =  new FileItemProvider(workspace);
-            PathChanged   += FileLister_PathChanged;
+            _itemProvider = new FileItemProvider(workspace);
+            PathChanged += FileLister_PathChanged;
         }
 
         public override ObservableCollection<Column> Columns { get; } = new ObservableCollection<Column>
         {
-            new Column("", "Thumbnail", ColumnType.Image) {OneTimeBinding                      = true},
-            new Column("Name", "DisplayName", ColumnType.Highlightable) {Width                 = 300},
+            new Column("", "Thumbnail", ColumnType.Image) {OneTimeBinding = true},
+            new Column("Name", "DisplayName", ColumnType.Highlightable) {Width = 300},
             new Column("LastModified", "Details.LastModified", ColumnType.RightAligned) {Width = 180},
-            new Column("Type", "Details.Type", ColumnType.Text, ColumnSize.Auto) {Width        = 180},
+            new Column("Type", "Details.Type", ColumnType.Text, ColumnSize.Auto) {Width = 180},
             new Column("Size", "Details.Length", ColumnType.Number)
             {
-                Width     = 100,
+                Width = 100,
                 Converter = new LengthConverter()
             }
         };
 
         public override string ProtocolPrefix => "File";
 
-        public override bool SupportsMultiview => true;
+        public override bool SupportsMultiview => true; 
+
+
+        private void FetchDetails(FileItem item, bool thumbs, CancellationToken cancellationToken)
+        {
+            item.Details = item.GetDetail(thumbs, cancellationToken);
+            item.Thumbnail = item.Details.Thumbnail;
+        }
+
+
+        public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
+        {
+            LoadBackgroundData(items.Cast<FileItem>(), cancellationToken);
+        }
 
         public async Task<bool> DoBreadcrumbAction(string breadPath)
         {
@@ -69,10 +84,7 @@ namespace Kexi.ViewModel.Lister
                 {
                     LoadingStatus = LoadingStatus.Loading;
                     var valid = await IsValidNetworkLocation(uri).ConfigureAwait(false);
-                    if (valid)
-                    {
-                        Path = breadPath;
-                    }
+                    if (valid) Path = breadPath;
                 }
                 finally
                 {
@@ -94,13 +106,18 @@ namespace Kexi.ViewModel.Lister
                 NotificationHost.AddError(breadPath + " could not be found.");
                 return false;
             }
+
             await Refresh().ConfigureAwait(false);
             return true;
         }
 
-        public           BrowsingHistory         History { get; }
-        private readonly FileItemProvider        _itemProvider;
-        private          FilesystemChangeWatcher _watcher;
+        public void Delete()
+        {
+            var result = new FilesystemAction(Workspace.NotificationHost).Delete(ItemsView.SelectedItems);
+            if (result != null) Workspace.NotificationHost.AddError(result);
+        }
+
+        public BrowsingHistory History { get; }
 
         private async Task<bool> IsValidNetworkLocation(Uri uri)
         {
@@ -123,20 +140,21 @@ namespace Kexi.ViewModel.Lister
         private async void FileLister_PathChanged(string value)
         {
             if (value != null)
-            {
                 try
                 {
-                    Thumbnail = await Task.Factory.StartNew(() => ThumbnailProvider.GetThumbnailSource(value, 32, 32, ThumbnailOptions.IconOnly));
+                    Thumbnail = await Task.Factory.StartNew(() =>
+                        ThumbnailProvider.GetThumbnailSource(value, 32, 32, ThumbnailOptions.IconOnly));
                     _watcher?.ObservePath(value);
                 }
                 catch (Exception)
                 {
                     //ignore
                 }
-            }
 
             if (string.IsNullOrEmpty(value))
+            {
                 PathName = Constants.RootName;
+            }
             else
             {
                 var uri = new Uri(value);
@@ -175,20 +193,21 @@ namespace Kexi.ViewModel.Lister
         public override async void Paste()
         {
             var action = FileAction.Copy;
-            if (Clipboard.GetData("Preferred DropEffect") is Stream act)
+            if (System.Windows.Clipboard.GetData("Preferred DropEffect") is Stream act)
             {
                 var effectData = new byte[4];
                 act.Read(effectData, 0, effectData.Length);
                 action = effectData[0] == 2 ? FileAction.Move : FileAction.Copy;
             }
 
-            if (!Clipboard.ContainsFileDropList())
+            if (!System.Windows.Clipboard.ContainsFileDropList())
                 return;
 
             Items.CollectionChanged += FocusFirstPastedItem;
             var items = Clipboard.GetFileDropList();
             var copyTask = new TaskItem("Copying");
-            await Workspace.TaskManager.RunAsync(copyTask, () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
+            await Workspace.TaskManager.RunAsync(copyTask,
+                () => { new FilesystemAction(NotificationHost).Paste(Path, items, action); });
             _undoParameter = new Tuple<string, StringCollection, FileAction>(Path, items, action);
             if (action == FileAction.Move)
             {
@@ -197,11 +216,10 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
-        private Tuple<string, StringCollection, FileAction> _undoParameter;
-
         public override void Undo()
         {
-            new FilesystemAction(NotificationHost).Undo(_undoParameter.Item1, _undoParameter.Item2, _undoParameter.Item3);
+            new FilesystemAction(NotificationHost).Undo(_undoParameter.Item1, _undoParameter.Item2,
+                _undoParameter.Item3);
         }
 
         public override async void DoAction(FileItem selection)
@@ -220,9 +238,10 @@ namespace Kexi.ViewModel.Lister
             }
             catch (UnauthorizedAccessException)
             {
-                await System.Windows.Application.Current.Dispatcher.Invoke(async () =>
+                await Application.Current.Dispatcher.Invoke(async () =>
                     {
-                        Workspace.CommandRepository.GetCommandByName(nameof(GainAccessToDirectoryCommand)).Execute(result);
+                        Workspace.CommandRepository.GetCommandByName(nameof(GainAccessToDirectoryCommand))
+                            .Execute(result);
                     }
                 );
             }
@@ -235,9 +254,8 @@ namespace Kexi.ViewModel.Lister
             }
         }
 
- 
 
-        public override string GetParentContainer()
+        public override string GetParentPath()
         {
             return FileItemProvider.GetParentContainer(Path);
         }
@@ -248,12 +266,12 @@ namespace Kexi.ViewModel.Lister
             if (selectedItems == null && Path != null)
             {
                 var dirInfo = new[] {new DirectoryInfo(Path)};
-                scm.ShowContextMenu(dirInfo, Cursor.Position);
+                scm.ShowContextMenu(dirInfo, System.Windows.Forms.Cursor.Position);
             }
             else if (selectedItems != null)
             {
                 var fileInfos = selectedItems.Select(getFileInfo).Where(i => i != null).ToArray();
-                scm.ShowContextMenu(fileInfos, Cursor.Position);
+                scm.ShowContextMenu(fileInfos, System.Windows.Forms.Cursor.Position);
             }
         }
 
@@ -273,13 +291,8 @@ namespace Kexi.ViewModel.Lister
         {
             _itemProvider.CancelCurrentTasks();
             if (string.IsNullOrEmpty(Path))
-            {
                 PathName = Constants.RootName;
-            }
-            else if (new Uri(Path).IsUnc && !Directory.Exists(Path))
-            {
-                return NetworkShareProvider.GetItems(Path);
-            }
+            else if (new Uri(Path).IsUnc && !Directory.Exists(Path)) return NetworkShareProvider.GetItems(Path);
 
             return _itemProvider.GetItems(Path);
         }
@@ -290,8 +303,8 @@ namespace Kexi.ViewModel.Lister
                 return null;
 
             var selected = View.ListView.SelectedItems.Cast<FileItem>().ToList();
-            var count    = selected.Count();
-            var size     = "";
+            var count = selected.Count();
+            var size = "";
             if (count < 100)
                 size = $"({new LengthConverter().Convert(selected.Sum(i => i.Details?.Length), null, null, null)})";
             return $"{Items.Count} Items, {count} selected {size}";
@@ -310,32 +323,10 @@ namespace Kexi.ViewModel.Lister
 
         protected override void Dispose(bool disposing)
         {
-            _watcher    =  null;
+            _watcher = null;
             PathChanged -= FileLister_PathChanged;
             _itemProvider.Dispose();
             base.Dispose(disposing);
-        }
-
-        public void LoadBackgroundData(IEnumerable<FileItem> items, CancellationToken cancellationToken)
-        {
-            foreach(var i in items)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-                i.Details = i.GetDetail(false, cancellationToken);
-                i.Thumbnail = i.Details.Thumbnail;
-            }
-        }
-
-        public void LoadBackgroundData(IEnumerable items, CancellationToken cancellationToken)
-        {
-            LoadBackgroundData(items.Cast<FileItem>(), cancellationToken);
-        }
-
-        public void Delete()
-        {
-            var result = new FilesystemAction(Workspace.NotificationHost).Delete(ItemsView.SelectedItems);
-            if (result != null) Workspace.NotificationHost.AddError(result);
         }
     }
 }
